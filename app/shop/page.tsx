@@ -49,7 +49,7 @@ export default function ShopPage() {
 
         <Stagger
           as="ul"
-          className="mx-auto mt-14 grid max-w-4xl gap-6 sm:grid-cols-2"
+          className="mx-auto mt-14 grid max-w-5xl grid-cols-2 gap-4 sm:grid-cols-3"
           stagger={0.08}
         >
           {products.map((product) => {
@@ -70,56 +70,56 @@ export default function ShopPage() {
                         src={cover.src}
                         alt={cover.alt}
                         fill
-                        sizes="(max-width: 640px) 100vw, 45vw"
+                        sizes="(max-width: 640px) 50vw, 30vw"
                         quality={80}
                         className="object-cover transition-transform duration-700 ease-(--ease-out-expo) group-hover:scale-[1.03]"
                       />
                     </div>
                   )}
 
-                  <div className="p-6">
+                  <div className="p-4">
                     {product.subtitle && (
-                      <p className="font-label text-[0.64rem] font-semibold tracking-widest text-sage-deep uppercase">
+                      <p className="font-label text-[0.58rem] font-semibold tracking-widest text-sage-deep uppercase">
                         {product.subtitle}
                       </p>
                     )}
-                    <h2 className="font-display mt-2 text-[1.15rem] leading-snug font-medium text-espresso">
+                    <h2 className="font-display mt-1.5 text-[0.98rem] leading-snug font-medium text-espresso">
                       {product.title}
                     </h2>
 
                     {reviewSet && (
-                      <span className="mt-2.5 flex items-center gap-2">
+                      <span className="mt-1.5 flex items-center gap-1.5">
                         <RatingStars
                           value={reviewSet.summary.average}
-                          starClassName="h-3.5 w-3.5"
+                          starClassName="h-3 w-3"
                         />
-                        <span className="text-[0.76rem] text-espresso-mute tabular-nums">
+                        <span className="font-mono text-[0.68rem] text-espresso-mute">
                           {reviewSet.summary.average.toFixed(1)} ·{" "}
                           {reviewSet.summary.count.toLocaleString("en-US")}
                         </span>
                       </span>
                     )}
 
-                    <div className="mt-4 flex items-center justify-between gap-3">
-                      <span className="text-[1.05rem] font-semibold text-espresso tabular-nums">
+                    <div className="mt-3 flex items-center justify-between gap-2">
+                      <span className="font-mono text-[0.9rem] font-semibold text-espresso">
                         From {formatMoney(from, currency)}
                       </span>
-                      <span className="font-label inline-flex items-center gap-1.5 text-[0.7rem] font-bold tracking-widest text-sage-deep uppercase">
+                      <span className="font-label inline-flex items-center gap-1 text-[0.62rem] font-bold tracking-widest text-sage-deep uppercase">
                         Shop
                         <Icon
                           name="arrow-right"
-                          className="size-4 transition-transform duration-300 group-hover:translate-x-1"
+                          className="size-3.5 transition-transform duration-300 group-hover:translate-x-1"
                         />
                       </span>
                     </div>
 
                     {/* Colourway dots — a quick read of what's available
                         without opening the product. */}
-                    <ul className="mt-4 flex flex-wrap gap-1.5 border-t border-sand/70 pt-4">
+                    <ul className="mt-3 flex flex-wrap gap-1 border-t border-sand/70 pt-3">
                       {product.variants.map((v) => (
                         <li
                           key={v.id}
-                          className="relative size-7 overflow-hidden rounded-full border border-sand"
+                          className="relative size-5 overflow-hidden rounded-full border border-sand"
                           title={v.title}
                         >
                           {v.image && (
@@ -127,7 +127,7 @@ export default function ShopPage() {
                               src={v.image}
                               alt=""
                               fill
-                              sizes="28px"
+                              sizes="20px"
                               quality={50}
                               className="object-cover"
                             />

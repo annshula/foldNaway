@@ -103,6 +103,62 @@ export const trustBar = [
   { label: "Replies in 12h", detail: "A person, not a bot" },
 ];
 
+/**
+ * The six marketing angles this product is sold on — one card each, shown
+ * on the product page between the trust bar and "Why it works". Each is a
+ * distinct reason to buy, not a restatement of the others: pain point,
+ * feature surprise, values, versatility, gifting, perceived value. `icon`
+ * keys into components/ui/Icons.tsx.
+ */
+export const marketingAngles = {
+  eyebrow: "Why people buy it",
+  title: "Same pouch. Six reasons.",
+  angles: [
+    {
+      tag: "Pain point",
+      icon: "clip",
+      hook: "I got tired of paying for a plastic bag every single time.",
+      body: "Forgetting a bag at the store means juggling items by hand or paying for plastic you didn't want. Clip this to your keys and it's already there.",
+      bestFor: "UGC / testimonial",
+    },
+    {
+      tag: "Surprise",
+      icon: "fold",
+      hook: "This fits in your palm — and holds your entire grocery run.",
+      body: "The size contrast is the whole story: a pouch small enough to close a fist around, unfolding into a full-size tote in two seconds.",
+      bestFor: "Before / after video",
+    },
+    {
+      tag: "Values",
+      icon: "leaf",
+      hook: "Your city banned plastic bags. Are you ready?",
+      body: "A practical, guilt-free swap for shoppers who want convenience, not a lecture — built for the world plastic bans are creating.",
+      bestFor: "Carousel",
+    },
+    {
+      tag: "Versatility",
+      icon: "bag",
+      hook: "Groceries. Gym clothes. Beach day. Same bag.",
+      body: "One pouch, used across every scenario — not a single-purpose item you buy once and forget in a drawer.",
+      bestFor: "Multi-scene video",
+    },
+    {
+      tag: "Gifting",
+      icon: "check",
+      hook: "Stocking stuffer that actually gets used.",
+      body: "Inexpensive, useful for anyone, comes in six colours — the rare gift that doesn't sit in a drawer after the holidays.",
+      bestFor: "Bundle offer",
+    },
+    {
+      tag: "Value",
+      icon: "shield",
+      hook: "Looks like a designer tote. Costs a fraction.",
+      body: "Modern, minimalist build that reads as premium next to bags several times the price — without the markup.",
+      bestFor: "Close-up product shot",
+    },
+  ],
+} as const;
+
 export const details = {
   eyebrow: "The details",
   title: "Built to be abused, quietly.",

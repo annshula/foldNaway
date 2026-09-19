@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import BreadcrumbSchema from "@/components/BreadcrumbSchema";
 import FaqSchema from "@/components/FaqSchema";
 import ProductSchema from "@/components/ProductSchema";
+import { MarketingAngles } from "@/components/product/MarketingAngles";
 import { ProductDetails } from "@/components/product/ProductDetails";
 import { ProductPurchase } from "@/components/product/ProductPurchase";
 import ProductReviews from "@/components/product/ProductReviews";
@@ -88,6 +89,7 @@ export default async function ProductPage({
     <main>
       <ProductPurchase product={product} rating={rating} />
       <TrustBar />
+      <MarketingAngles />
       <ProductDetails product={product} />
       <QualityTests />
       <HowItWorks />

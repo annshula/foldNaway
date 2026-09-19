@@ -25,7 +25,7 @@ export default function Details() {
           <StaggerItem
             as="li"
             key={card.label}
-            className="rounded-(--radius-card) border border-sand/70 bg-paper p-8"
+            className="rounded-card border border-sand/70 bg-paper p-8"
           >
             <span className="grid size-11 place-items-center rounded-full bg-sage-soft">
               <Icon name={cardIcons[i]} className="size-5 text-sage-deep" />
@@ -41,7 +41,7 @@ export default function Details() {
       </Stagger>
 
       <Reveal className="mt-14">
-        <dl className="grid overflow-hidden rounded-(--radius-card) border border-sand/70 sm:grid-cols-2">
+        <dl className="grid overflow-hidden rounded-card border border-sand/70 sm:grid-cols-2">
           {details.specs.map((spec, i) => (
             <div
               key={spec.label}

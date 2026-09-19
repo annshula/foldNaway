@@ -22,7 +22,7 @@ export default function Benefits() {
           <StaggerItem
             as="li"
             key={b.label}
-            className="group relative overflow-hidden rounded-(--radius-card) border border-sand/70 bg-paper p-7 transition-all duration-500 ease-(--ease-out-expo) hover:-translate-y-1 hover:border-sage/35 hover:shadow-(--shadow-e3)"
+            className="group relative overflow-hidden rounded-card border border-sand/70 bg-paper p-7 transition-all duration-500 ease-(--ease-out-expo) hover:-translate-y-1 hover:border-sage/35 hover:shadow-(--shadow-e3)"
           >
             <span
               aria-hidden
