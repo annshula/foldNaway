@@ -116,7 +116,7 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
-const title = `${site.name}: Foldable Keychain Eco-Bags`;
+const title = `${site.name}: Premium Foldable Carry Bag`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
