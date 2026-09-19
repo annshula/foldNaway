@@ -13,9 +13,17 @@ import { Section, SectionHeading } from "@/components/ui/Section";
  */
 export default function QualityTests() {
   return (
+    // `scroll-mt-20` (5rem/80px) previously here didn't match `--nav-h`
+    // (72px) and, worse, stacked additively with globals.css's own
+    // `html { scroll-padding-top: var(--nav-h) }` — a click on the
+    // "checks passed" link measurably landed 80px past the section's real
+    // top instead of flush with the nav (confirmed by measuring the actual
+    // post-click scroll position, not just eyeballing a screenshot). The
+    // already-correct global scroll-padding-top handles this alone; no
+    // per-element scroll-mt-* needed.
     <Section
       id="quality-test"
-      className="scroll-mt-20 border-y border-sand/70 bg-cream-deep"
+      className="border-y border-sand/70 bg-cream-deep"
     >
       <SectionHeading
         align="center"

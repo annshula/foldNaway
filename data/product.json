@@ -1,6 +1,6 @@
 {
   "version": 8,
-  "syncedAt": "2026-09-19T12:31:05.878Z",
+  "syncedAt": "2026-09-19T14:16:09.903Z",
   "shop": {
     "domain": "trackify-com.myshopify.com",
     "name": "Trackify",
@@ -33,6 +33,21 @@
           "availableForSale": true,
           "stockQuantity": 9000,
           "pricesByMarket": {
+            "US": {
+              "amount": 32.99,
+              "compareAtAmount": null,
+              "currencyCode": "USD"
+            },
+            "GB": {
+              "amount": 26,
+              "compareAtAmount": null,
+              "currencyCode": "GBP"
+            },
+            "CA": {
+              "amount": 47,
+              "compareAtAmount": null,
+              "currencyCode": "CAD"
+            },
             "ZA": {
               "amount": 548,
               "compareAtAmount": null,
@@ -47,24 +62,9 @@
               "amount": 3230.07,
               "compareAtAmount": null,
               "currencyCode": "INR"
-            },
-            "US": {
-              "amount": 32.99,
-              "compareAtAmount": null,
-              "currencyCode": "USD"
-            },
-            "CA": {
-              "amount": 47,
-              "compareAtAmount": null,
-              "currencyCode": "CAD"
-            },
-            "GB": {
-              "amount": 26,
-              "compareAtAmount": null,
-              "currencyCode": "GBP"
             }
           },
-          "image": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/5f33e4d9-cd3b-4167-9286-53e44ee4f2f2.jpg?v=1789758210",
+          "image": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/62b8d984-6d11-4f7c-8340-5050d9972e05.jpg?v=1789758210",
           "shopifyTitle": "Army Green",
           "subtitle": "",
           "quantity": 1,
@@ -79,6 +79,21 @@
           "availableForSale": true,
           "stockQuantity": 8946,
           "pricesByMarket": {
+            "US": {
+              "amount": 32.99,
+              "compareAtAmount": null,
+              "currencyCode": "USD"
+            },
+            "GB": {
+              "amount": 26,
+              "compareAtAmount": null,
+              "currencyCode": "GBP"
+            },
+            "CA": {
+              "amount": 47,
+              "compareAtAmount": null,
+              "currencyCode": "CAD"
+            },
             "ZA": {
               "amount": 548,
               "compareAtAmount": null,
@@ -93,21 +108,6 @@
               "amount": 3230.07,
               "compareAtAmount": null,
               "currencyCode": "INR"
-            },
-            "US": {
-              "amount": 32.99,
-              "compareAtAmount": null,
-              "currencyCode": "USD"
-            },
-            "CA": {
-              "amount": 47,
-              "compareAtAmount": null,
-              "currencyCode": "CAD"
-            },
-            "GB": {
-              "amount": 26,
-              "compareAtAmount": null,
-              "currencyCode": "GBP"
             }
           },
           "image": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/b21c2d32-6708-4af0-95f3-0d5b5c2deda6.jpg?v=1789758210",
@@ -125,6 +125,21 @@
           "availableForSale": true,
           "stockQuantity": 9485,
           "pricesByMarket": {
+            "US": {
+              "amount": 32.99,
+              "compareAtAmount": null,
+              "currencyCode": "USD"
+            },
+            "GB": {
+              "amount": 26,
+              "compareAtAmount": null,
+              "currencyCode": "GBP"
+            },
+            "CA": {
+              "amount": 47,
+              "compareAtAmount": null,
+              "currencyCode": "CAD"
+            },
             "ZA": {
               "amount": 548,
               "compareAtAmount": null,
@@ -139,21 +154,6 @@
               "amount": 3230.07,
               "compareAtAmount": null,
               "currencyCode": "INR"
-            },
-            "US": {
-              "amount": 32.99,
-              "compareAtAmount": null,
-              "currencyCode": "USD"
-            },
-            "CA": {
-              "amount": 47,
-              "compareAtAmount": null,
-              "currencyCode": "CAD"
-            },
-            "GB": {
-              "amount": 26,
-              "compareAtAmount": null,
-              "currencyCode": "GBP"
             }
           },
           "image": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/27d75e64-e063-4ed4-83ef-638f78504635.jpg?v=1789758210",
@@ -171,6 +171,21 @@
           "availableForSale": true,
           "stockQuantity": 6941,
           "pricesByMarket": {
+            "US": {
+              "amount": 32.99,
+              "compareAtAmount": null,
+              "currencyCode": "USD"
+            },
+            "GB": {
+              "amount": 26,
+              "compareAtAmount": null,
+              "currencyCode": "GBP"
+            },
+            "CA": {
+              "amount": 47,
+              "compareAtAmount": null,
+              "currencyCode": "CAD"
+            },
             "ZA": {
               "amount": 548,
               "compareAtAmount": null,
@@ -185,21 +200,6 @@
               "amount": 3230.07,
               "compareAtAmount": null,
               "currencyCode": "INR"
-            },
-            "US": {
-              "amount": 32.99,
-              "compareAtAmount": null,
-              "currencyCode": "USD"
-            },
-            "CA": {
-              "amount": 47,
-              "compareAtAmount": null,
-              "currencyCode": "CAD"
-            },
-            "GB": {
-              "amount": 26,
-              "compareAtAmount": null,
-              "currencyCode": "GBP"
             }
           },
           "image": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/3dfe6cf7-08f2-4281-ad33-a640970eb033.jpg?v=1789758210",
@@ -217,6 +217,21 @@
           "availableForSale": true,
           "stockQuantity": 7928,
           "pricesByMarket": {
+            "US": {
+              "amount": 32.99,
+              "compareAtAmount": null,
+              "currencyCode": "USD"
+            },
+            "GB": {
+              "amount": 26,
+              "compareAtAmount": null,
+              "currencyCode": "GBP"
+            },
+            "CA": {
+              "amount": 47,
+              "compareAtAmount": null,
+              "currencyCode": "CAD"
+            },
             "ZA": {
               "amount": 548,
               "compareAtAmount": null,
@@ -231,21 +246,6 @@
               "amount": 3230.07,
               "compareAtAmount": null,
               "currencyCode": "INR"
-            },
-            "US": {
-              "amount": 32.99,
-              "compareAtAmount": null,
-              "currencyCode": "USD"
-            },
-            "CA": {
-              "amount": 47,
-              "compareAtAmount": null,
-              "currencyCode": "CAD"
-            },
-            "GB": {
-              "amount": 26,
-              "compareAtAmount": null,
-              "currencyCode": "GBP"
             }
           },
           "image": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/c9381bbd-62d4-4a7f-bb24-f1c506ccf275.jpg?v=1789758210",
@@ -263,6 +263,21 @@
           "availableForSale": true,
           "stockQuantity": 7894,
           "pricesByMarket": {
+            "US": {
+              "amount": 32.99,
+              "compareAtAmount": null,
+              "currencyCode": "USD"
+            },
+            "GB": {
+              "amount": 26,
+              "compareAtAmount": null,
+              "currencyCode": "GBP"
+            },
+            "CA": {
+              "amount": 47,
+              "compareAtAmount": null,
+              "currencyCode": "CAD"
+            },
             "ZA": {
               "amount": 548,
               "compareAtAmount": null,
@@ -277,21 +292,6 @@
               "amount": 3230.07,
               "compareAtAmount": null,
               "currencyCode": "INR"
-            },
-            "US": {
-              "amount": 32.99,
-              "compareAtAmount": null,
-              "currencyCode": "USD"
-            },
-            "CA": {
-              "amount": 47,
-              "compareAtAmount": null,
-              "currencyCode": "CAD"
-            },
-            "GB": {
-              "amount": 26,
-              "compareAtAmount": null,
-              "currencyCode": "GBP"
             }
           },
           "image": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/54339bf2-9641-41d4-9690-1688accf2dfa.jpg?v=1789758210",
@@ -307,12 +307,6 @@
           "alt": "Foldable Keychain Storage Pouch Large-Capacity Portable Handheld Shoulder Eco-Bag",
           "width": 1200,
           "height": 1200
-        },
-        {
-          "src": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/Sea61695a517e477685770ac17927866b2.jpg?v=1789816822",
-          "alt": "Foldable Keychain Storage Pouch Large-Capacity Portable Handheld Shoulder Eco-Bag",
-          "width": 1000,
-          "height": 1000
         },
         {
           "src": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/S2611474f1265419f92b594656699b858B.png?v=1789816822",
@@ -390,11 +384,22 @@
           "height": 1200
         },
         {
-          "kind": "image",
-          "src": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/Sea61695a517e477685770ac17927866b2.jpg?v=1789816822",
-          "alt": "Foldable Keychain Storage Pouch Large-Capacity Portable Handheld Shoulder Eco-Bag",
-          "width": 1000,
-          "height": 1000
+          "kind": "video",
+          "poster": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/preview_images/a3317467203e4a068fc06eb1ed521ab9.thumbnail.0000000000.jpg?v=1789827172",
+          "sources": [
+            {
+              "src": "https://cdn.shopify.com/videos/c/vp/a3317467203e4a068fc06eb1ed521ab9/a3317467203e4a068fc06eb1ed521ab9.HD-1080p-2.5Mbps-94932555.mp4",
+              "type": "video/mp4"
+            },
+            {
+              "src": "https://cdn.shopify.com/videos/c/vp/a3317467203e4a068fc06eb1ed521ab9/a3317467203e4a068fc06eb1ed521ab9.HD-720p-1.6Mbps-94932555.mp4",
+              "type": "video/mp4"
+            },
+            {
+              "src": "https://cdn.shopify.com/videos/c/vp/a3317467203e4a068fc06eb1ed521ab9/a3317467203e4a068fc06eb1ed521ab9.SD-480p-0.9Mbps-94932555.mp4",
+              "type": "video/mp4"
+            }
+          ]
         },
         {
           "kind": "image",

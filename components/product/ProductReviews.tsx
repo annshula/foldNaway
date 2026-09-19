@@ -93,7 +93,17 @@ export default function ProductReviews({
     <section
       id="reviews"
       aria-label={`${summary.count.toLocaleString("en-US")} customer reviews`}
-      className="relative scroll-mt-20 border-t border-sand/70 bg-cream"
+      // `scroll-mt-20` (5rem/80px) previously here didn't match `--nav-h`
+      // (72px) and, worse, stacked with globals.css's own
+      // `html { scroll-padding-top: var(--nav-h) }` — scroll-margin (on the
+      // target) and scroll-padding (on the scroll container) are additive
+      // per spec, so a click on the "reviews" link landed 80px past where
+      // it should, not flush with the nav. `scroll-mt-(--nav-h)` alone
+      // would double it again the same way; the fix is to stop setting a
+      // per-element scroll-margin here and let the already-correct global
+      // scroll-padding-top do the whole job, same as any anchor elsewhere
+      // on the page that doesn't set its own scroll-mt-*.
+      className="relative border-t border-sand/70 bg-cream"
     >
       <div className="mx-auto w-full max-w-310 px-5 py-20 sm:px-8 lg:py-28">
         <SectionHeading

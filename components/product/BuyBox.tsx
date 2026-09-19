@@ -104,9 +104,13 @@ export function BuyBox({
           are the same kind of thing: a quick trust signal that jumps
           further down the page. The checks-passed count is pulled from the
           QC list itself so it can never drift from the section it jumps
-          to. Native CSS smooth-scroll (globals.css) plus each target
-          section's own scroll-mt-20 handle the nav-clearing scroll
-          position, no JS handler needed. */}
+          to. Native CSS smooth-scroll plus globals.css's global
+          `scroll-padding-top: var(--nav-h)` handle the nav-clearing scroll
+          position — no per-target scroll-mt-* and no JS handler needed;
+          the two targets (ProductReviews.tsx, QualityTests.tsx) used to
+          each carry their own scroll-mt-20, which didn't match --nav-h and
+          stacked additively with this same global rule, landing 80px past
+          the section's real top on every click. */}
       <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">
         {rating && (
           <a
@@ -115,11 +119,11 @@ export function BuyBox({
           >
             <RatingStars value={rating.average} starClassName="h-4 w-4" />
             <span className="text-[0.82rem] text-espresso-soft">
-              <span className="font-mono font-semibold text-espresso">
+              <span className="font-semibold text-espresso tabular-nums">
                 {rating.average.toFixed(1)}
               </span>{" "}
               ·{" "}
-              <span className="font-mono underline decoration-sand-strong underline-offset-2">
+              <span className="underline decoration-sand-strong underline-offset-2 tabular-nums">
                 {rating.count.toLocaleString("en-US")} reviews
               </span>
             </span>
