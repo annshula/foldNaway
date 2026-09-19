@@ -17,7 +17,7 @@ export function Logo({
   return (
     <a
       href="/"
-      aria-label={`${site.name} — home`}
+      aria-label={`${site.name}, home`}
       className={`font-display inline-flex items-baseline text-[1.4rem] leading-none font-semibold tracking-[-0.02em] transition-opacity duration-300 hover:opacity-80 ${
         variant === "light" ? "text-oat" : "text-espresso"
       } ${className}`}

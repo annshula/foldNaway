@@ -58,7 +58,7 @@ export function BuyBox({
 
   const handleAdd = () => {
     add(selected.id, quantity, Math.round(price * 100), currency);
-    toast.success("Added to your bag", { description: `${product.title} — ${selected.title}` });
+    toast.success("Added to your bag", { description: `${product.title}, ${selected.title}` });
     open();
   };
 
@@ -97,11 +97,11 @@ export function BuyBox({
         >
           <RatingStars value={rating.average} starClassName="h-4 w-4" />
           <span className="text-[0.82rem] text-espresso-soft">
-            <span className="font-semibold text-espresso tabular-nums">
+            <span className="font-mono font-semibold text-espresso">
               {rating.average.toFixed(1)}
             </span>{" "}
             ·{" "}
-            <span className="underline decoration-sand-strong underline-offset-2 tabular-nums">
+            <span className="font-mono underline decoration-sand-strong underline-offset-2">
               {rating.count.toLocaleString("en-US")} reviews
             </span>
           </span>
@@ -110,12 +110,12 @@ export function BuyBox({
 
       {/* ------------------------------ price ------------------------------ */}
       <div className="mt-6 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-        <span className="font-display text-[2rem] leading-none font-semibold text-espresso tabular-nums">
+        <span className="font-mono text-[2rem] leading-none font-semibold text-espresso">
           {formatMoney(price, currency)}
         </span>
         {compareAt && compareAt > price && (
           <>
-            <span className="text-[1rem] text-espresso-mute line-through tabular-nums">
+            <span className="font-mono text-[1rem] text-espresso-mute line-through">
               {formatMoney(compareAt, currency)}
             </span>
             <span className="font-label rounded-full bg-terracotta-soft px-2.5 py-1 text-[0.65rem] font-bold tracking-widest text-terracotta uppercase">
@@ -147,7 +147,7 @@ export function BuyBox({
                 onClick={() => onSelectId(v.id)}
                 disabled={!v.availableForSale}
                 aria-pressed={active}
-                aria-label={`${v.title}${v.availableForSale ? "" : " — sold out"}`}
+                aria-label={`${v.title}${v.availableForSale ? "" : ", sold out"}`}
                 title={v.title}
                 className={cn(
                   "relative size-16 overflow-hidden rounded-xl border-2 transition-all duration-300 ease-(--ease-out-expo)",
@@ -205,7 +205,7 @@ export function BuyBox({
           </button>
           <span
             aria-live="polite"
-            className="min-w-8 text-center text-[0.92rem] font-semibold text-espresso tabular-nums"
+            className="font-mono min-w-8 text-center text-[0.92rem] font-semibold text-espresso"
           >
             {quantity}
           </span>

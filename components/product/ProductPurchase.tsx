@@ -55,7 +55,7 @@ export function ProductPurchase({
 
       <ProductViewTracker
         variantId={selected.id}
-        name={`${product.title} — ${selected.title}`}
+        name={`${product.title}, ${selected.title}`}
         amount={selected.price.amount}
         currencyCode={selected.price.currencyCode}
       />

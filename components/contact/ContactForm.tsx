@@ -46,17 +46,17 @@ export function ContactForm() {
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !email.trim() || !message.trim()) {
-      setError("Fill in your name, email and a message — we need all three to reply.");
+      setError("Fill in your name, email and a message. We need all three to reply.");
       return;
     }
     if (!EMAIL_RE.test(email.trim())) {
-      setError("That email doesn't look right — double-check it.");
+      setError("That email doesn't look right. Double-check it.");
       return;
     }
     setError(null);
 
     const subject = `[${category}] ${name.trim()}`;
-    const body = `${message.trim()}\n\n—\n${name.trim()}\n${email.trim()}`;
+    const body = `${message.trim()}\n\n-\n${name.trim()}\n${email.trim()}`;
     window.location.href = `mailto:${site.email}?subject=${encodeURIComponent(
       subject,
     )}&body=${encodeURIComponent(body)}`;

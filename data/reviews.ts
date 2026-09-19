@@ -154,7 +154,7 @@ const TEXT_5 = [
   "Well made, the handles are a comfortable length over the shoulder.",
   "Came exactly as pictured. Very happy with it.",
   "Simple and it just works. Wish I'd bought one years ago.",
-  "The pouch being sewn on is the best part — nothing to lose.",
+  "The pouch being sewn on is the best part, nothing to lose.",
   "Ordered for a trip and used it every single day for shopping.",
   "Looks smarter than the free supermarket bags. Folds smaller too.",
   "Very good value. Would order again in another colour.",

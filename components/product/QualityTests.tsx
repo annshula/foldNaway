@@ -42,7 +42,7 @@ export default function QualityTests() {
             <span className="grid size-10 place-items-center rounded-full border border-sage/30 bg-cream text-sage-deep">
               <Icon name={check.icon as IconName} className="size-4.5" />
             </span>
-            <h3 className="font-display mt-5 pr-16 text-[1.02rem] leading-snug font-medium text-espresso">
+            <h3 className="font-grotesk mt-5 pr-16 text-[1.02rem] leading-snug font-semibold text-espresso">
               {check.title}
             </h3>
             <p className="mt-2 text-[0.87rem] leading-[1.6] text-espresso-soft">

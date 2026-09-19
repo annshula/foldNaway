@@ -36,7 +36,7 @@ export default function FaqPage() {
         <SectionHeading
           eyebrow="Help"
           title="Questions, answered."
-          body={`If something isn't here, email ${site.email} — a person replies inside 12 hours.`}
+          body={`If something isn't here, email ${site.email}. A person replies inside 12 hours.`}
           align="center"
         />
       </Section>

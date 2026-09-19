@@ -42,7 +42,7 @@ export const quickAnswers: QuickAnswer[] = [
   },
   {
     q: "How much can a foldable shopping bag hold?",
-    a: "FoldNAway's pouch opens into a wide, full-capacity tote with dual handles sized for a comfortable grip by hand or over the shoulder — enough for a full grocery run. Published capacity figures are limited to what the product data supports, so no kilogram load rating is claimed.",
+    a: "FoldNAway's pouch opens into a wide, full-capacity tote with dual handles sized for a comfortable grip by hand or over the shoulder, enough for a full grocery run. Published capacity figures are limited to what the product data supports, so no kilogram load rating is claimed.",
   },
   {
     q: "What colours does the FoldNAway bag come in?",
@@ -58,7 +58,7 @@ export const quickAnswers: QuickAnswer[] = [
   },
   {
     q: "What is FoldNAway's return policy?",
-    a: "FoldNAway replaces or refunds items that arrive damaged, missing or incorrect — send a photo within 30 days of delivery and the fix is free. This covers damage, missing items and mis-ships specifically; it is not a general change-of-mind return policy.",
+    a: "FoldNAway replaces or refunds items that arrive damaged, missing or incorrect. Send a photo within 30 days of delivery and the fix is free. This covers damage, missing items and mis-ships specifically; it is not a general change-of-mind return policy.",
   },
 ];
 

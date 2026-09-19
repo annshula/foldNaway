@@ -27,6 +27,32 @@ const ICONS: Record<string, IconName> = {
   wash: "wash",
 };
 
+/**
+ * The "Folds to keychain size" and "Opens to a full-size tote" feature
+ * images come from Shopify mislabeled — swapped relative to their own
+ * label, confirmed by eye (the "folds to keychain size" entry shows the
+ * fully unfolded tote, and vice versa). This is a fix on the Shopify side
+ * (the `custom.feature_highlights` metaobject), not something wrong in this
+ * repo, so it can't be fixed by editing data/product.json — that file is
+ * overwritten wholesale on every sync (see sync-product.ts). Un-swap by
+ * label at render time instead, so the fix survives re-syncs until the
+ * metaobject itself is corrected in Shopify Admin.
+ */
+const SWAPPED_FEATURE_IMAGE_LABELS = new Set([
+  "Folds to keychain size",
+  "Opens to a full-size tote",
+]);
+
+function imageForFeature(features: Product["features"], label: string) {
+  const own = features.find((f) => f.label === label);
+  if (!own?.image) return own?.image;
+  if (!SWAPPED_FEATURE_IMAGE_LABELS.has(label)) return own.image;
+  const other = features.find(
+    (f) => f.label !== label && SWAPPED_FEATURE_IMAGE_LABELS.has(f.label),
+  );
+  return other?.image ?? own.image;
+}
+
 export function ProductDetails({ product }: { product: Product }) {
   const { features, specs, descriptionHtml } = product;
 
@@ -44,40 +70,43 @@ export function ProductDetails({ product }: { product: Product }) {
             className="mt-12 grid gap-5 sm:grid-cols-2"
             stagger={0.08}
           >
-            {features.map((f) => (
-              <StaggerItem
-                as="li"
-                key={f.label}
-                className="overflow-hidden rounded-card border border-sand/70 bg-paper"
-              >
-                {f.image && (
-                  <div className="relative aspect-[16/10] w-full bg-cream-deep">
-                    <Image
-                      src={f.image.src}
-                      alt={f.image.alt}
-                      fill
-                      sizes="(max-width: 640px) 100vw, 45vw"
-                      quality={80}
-                      className="object-cover"
-                    />
+            {features.map((f) => {
+              const image = imageForFeature(features, f.label);
+              return (
+                <StaggerItem
+                  as="li"
+                  key={f.label}
+                  className="overflow-hidden rounded-card border border-sand/70 bg-paper"
+                >
+                  {image && (
+                    <div className="relative aspect-square w-full bg-cream-deep">
+                      <Image
+                        src={image.src}
+                        alt={image.alt}
+                        fill
+                        sizes="(max-width: 640px) 100vw, 45vw"
+                        quality={80}
+                        className="object-cover"
+                      />
+                    </div>
+                  )}
+                  <div className="p-7">
+                    <span className="grid size-10 place-items-center rounded-full bg-sage-soft text-sage-deep">
+                      <Icon
+                        name={ICONS[f.icon] ?? "check"}
+                        className="size-4.5"
+                      />
+                    </span>
+                    <h3 className="font-display mt-4 text-[1.15rem] leading-tight font-medium text-espresso">
+                      {f.label}
+                    </h3>
+                    <p className="mt-2 text-[0.93rem] leading-[1.65] text-espresso-soft">
+                      {f.body}
+                    </p>
                   </div>
-                )}
-                <div className="p-7">
-                  <span className="grid size-10 place-items-center rounded-full bg-sage-soft text-sage-deep">
-                    <Icon
-                      name={ICONS[f.icon] ?? "check"}
-                      className="size-4.5"
-                    />
-                  </span>
-                  <h3 className="font-display mt-4 text-[1.15rem] leading-tight font-medium text-espresso">
-                    {f.label}
-                  </h3>
-                  <p className="mt-2 text-[0.93rem] leading-[1.65] text-espresso-soft">
-                    {f.body}
-                  </p>
-                </div>
-              </StaggerItem>
-            ))}
+                </StaggerItem>
+              );
+            })}
           </Stagger>
         </Section>
       )}
@@ -90,7 +119,11 @@ export function ProductDetails({ product }: { product: Product }) {
             align="center"
           />
 
-          <Stagger as="ul" className="mt-12 grid gap-4 lg:grid-cols-3" stagger={0.06}>
+          <Stagger
+            as="ul"
+            className="mt-12 grid gap-4 lg:grid-cols-3"
+            stagger={0.06}
+          >
             {specs.map((spec) => (
               <StaggerItem
                 as="li"
@@ -98,7 +131,7 @@ export function ProductDetails({ product }: { product: Product }) {
                 className="overflow-hidden rounded-card border border-sand/70 bg-paper"
               >
                 {spec.image && (
-                  <div className="relative aspect-[4/3] w-full bg-cream-deep">
+                  <div className="relative aspect-4/3 w-full bg-cream-deep">
                     <Image
                       src={spec.image.src}
                       alt={spec.image.alt}

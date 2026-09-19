@@ -14,7 +14,7 @@ export default function Faq() {
         <SectionHeading
           eyebrow="Questions"
           title="Before you order."
-          body="If something isn't answered here, email us — a person replies inside 12 hours."
+          body="If something isn't answered here, email us. A person replies inside 12 hours."
         />
 
         <Reveal className="divide-y divide-sand/80 border-y border-sand/80">

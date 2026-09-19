@@ -29,7 +29,7 @@ export const quality = {
     {
       icon: "shield" as const,
       title: "Seam & stitch",
-      body: "Every seam is run through by hand, with extra attention at the handle joins and base corners — the two places a loaded tote gives out first. Loose, skipped or puckered stitching is rejected outright.",
+      body: "Every seam is run through by hand, with extra attention at the handle joins and base corners, the two places a loaded tote gives out first. Loose, skipped or puckered stitching is rejected outright.",
     },
     {
       icon: "clip" as const,

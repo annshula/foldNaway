@@ -35,21 +35,21 @@ export function NewsletterForm() {
       const data = await res.json();
       if (!res.ok || !data.ok) {
         setStatus("error");
-        setMessage(data.error ?? "Couldn't sign you up — try again.");
+        setMessage(data.error ?? "Couldn't sign you up. Try again.");
         return;
       }
       setStatus("done");
       setCode(data.code ?? null);
     } catch {
       setStatus("error");
-      setMessage("Couldn't sign you up — try again.");
+      setMessage("Couldn't sign you up. Try again.");
     }
   };
 
   if (status === "done") {
     return (
       <p className="max-w-[38ch] text-[0.88rem] leading-relaxed text-oat">
-        You&rsquo;re in — check your inbox to confirm.
+        You&rsquo;re in. Check your inbox to confirm.
         {code && (
           <>
             {" "}

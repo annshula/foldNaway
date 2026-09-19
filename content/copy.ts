@@ -26,7 +26,7 @@ export const whatItIs = {
   title: "One pouch. Two seconds. A full-size bag.",
   body: "The Foldable Keychain Storage Pouch is a polyester-canvas shoulder tote that lives folded in its own pouch, clipped to your keys.",
   points: [
-    "Folds into its own built-in pouch — nothing to lose",
+    "Folds into its own built-in pouch, nothing to lose",
     "Carabiner clip for keys, belt loop or backpack strap",
     "Polyester canvas with reinforced seams",
     "Dual handles: hand-carry or over the shoulder",
@@ -124,31 +124,31 @@ export const productBenefits = {
       tag: "Deceptively roomy",
       icon: "fold",
       headline: "Fits in your palm. Holds a full grocery run.",
-      body: "Small enough to close a fist around folded — unfolds into a full-size tote in two seconds, no assembly.",
+      body: "Small enough to close a fist around folded. Unfolds into a full-size tote in two seconds, no assembly.",
     },
     {
       tag: "Plastic-free by default",
       icon: "leaf",
       headline: "Skip the bag ban scramble entirely.",
-      body: "A practical, guilt-free swap for shoppers who want convenience, not a lecture — always on hand, no plastic bag needed.",
+      body: "A practical, guilt-free swap for shoppers who want convenience, not a lecture. Always on hand, no plastic bag needed.",
     },
     {
       tag: "One bag, every trip",
       icon: "bag",
       headline: "Groceries. Gym clothes. Beach day. Same bag.",
-      body: "One pouch, used across every scenario — not a single-purpose item you buy once and forget in a drawer.",
+      body: "One pouch, used across every scenario, not a single-purpose item you buy once and forget in a drawer.",
     },
     {
       tag: "Actually useful gift",
       icon: "check",
       headline: "The stocking stuffer that actually gets used.",
-      body: "Inexpensive, useful for anyone, comes in six colours — the rare gift that doesn't sit in a drawer after the holidays.",
+      body: "Inexpensive, useful for anyone, comes in six colours. The rare gift that doesn't sit in a drawer after the holidays.",
     },
     {
       tag: "Looks pricier than it is",
       icon: "shield",
       headline: "Reads as designer. Priced like an everyday bag.",
-      body: "Modern, minimalist build that looks premium next to totes several times the price — without the markup.",
+      body: "Modern, minimalist build that looks premium next to totes several times the price, without the markup.",
     },
   ],
 } as const;
@@ -236,7 +236,7 @@ export const inTheBox = {
 export const faq = [
   {
     q: "How much can it actually hold?",
-    a: "It opens into a full-size tote with dual handles sized for hand or shoulder carry — comfortably a whole grocery run.",
+    a: "It opens into a full-size tote with dual handles sized for hand or shoulder carry, comfortably a whole grocery run.",
   },
   {
     q: "Will it re-fold as small as it arrived?",
@@ -244,11 +244,11 @@ export const faq = [
   },
   {
     q: "What is it made of?",
-    a: "Polyester fiber with reinforced seams and a durable weave — built to be folded and unfolded daily without stretching out or splitting.",
+    a: "Polyester fiber with reinforced seams and a durable weave, built to be folded and unfolded daily without stretching out or splitting.",
   },
   {
     q: "How many bags come in an order?",
-    a: "One tote bag per order. Choose your colourway on the product page — all six are the same reinforced build underneath.",
+    a: "One tote bag per order. Choose your colourway on the product page. All six are the same reinforced build underneath.",
   },
   {
     q: "How long does shipping take?",
@@ -256,7 +256,7 @@ export const faq = [
   },
   {
     q: "What if it arrives damaged or wrong?",
-    a: "Send a photo within 30 days and we'll ship a free replacement or refund you. This covers damage, missing items and mis-ships — it isn't a general change-of-mind return.",
+    a: "Send a photo within 30 days and we'll ship a free replacement or refund you. This covers damage, missing items and mis-ships; it isn't a general change-of-mind return.",
   },
   {
     q: "Does the clip hold on a keyring?",
@@ -264,7 +264,7 @@ export const faq = [
   },
   {
     q: "What colours are there?",
-    a: "Whatever is currently in stock shows on the product page — colourways come straight from our Shopify inventory, so what you see is what's available.",
+    a: "Whatever is currently in stock shows on the product page. Colourways come straight from our Shopify inventory, so what you see is what's available.",
   },
 ];
 

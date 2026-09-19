@@ -30,7 +30,7 @@ export default function WhereItGoes() {
             <figure className="relative aspect-[4/5] w-full overflow-hidden rounded-(--radius-card) bg-cream-deep">
               <Image
                 src={images[i]}
-                alt={`${place.label} — ${place.body}`}
+                alt={`${place.label}: ${place.body}`}
                 fill
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 24vw"
                 quality={75}

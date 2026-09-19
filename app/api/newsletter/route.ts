@@ -148,7 +148,7 @@ export async function POST(request: NextRequest) {
     const message =
       error instanceof ShopifyGraphQLError
         ? error.message
-        : "Something went wrong — try again in a moment.";
+        : "Something went wrong. Try again in a moment.";
     return NextResponse.json({ ok: false, error: message }, { status: 502 });
   }
 }

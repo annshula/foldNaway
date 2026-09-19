@@ -59,7 +59,7 @@ export default function AboutPage() {
         <SectionHeading
           eyebrow="About"
           title="We make one thing, properly."
-          body={`${site.name} exists because the reusable bag problem isn't a supply problem — it's a "did you bring one" problem. So we built the version that's already with you.`}
+          body={`${site.name} exists because the reusable bag problem isn't a supply problem. It's a "did you bring one" problem. So we built the version that's already with you.`}
           align="center"
         />
 

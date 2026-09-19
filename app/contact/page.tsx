@@ -41,7 +41,7 @@ export default function ContactPage() {
             <SectionHeading
               eyebrow="Contact"
               title="Talk to a person."
-              body={`${site.promise.support} — no ticket queue, no bot loop.`}
+              body={`${site.promise.support}. No ticket queue, no bot loop.`}
             />
 
             <ul className="mt-10 flex flex-col gap-5">

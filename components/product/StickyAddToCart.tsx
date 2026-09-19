@@ -57,7 +57,7 @@ export function StickyAddToCart({
   const handleAdd = () => {
     add(selected.id, 1, Math.round(selected.price.amount * 100), selected.price.currencyCode);
     toast.success("Added to your bag", {
-      description: `${product.title} — ${selected.title}`,
+      description: `${product.title}, ${selected.title}`,
     });
     open();
   };
