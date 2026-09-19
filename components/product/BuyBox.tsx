@@ -158,7 +158,7 @@ export function BuyBox({
         )}
       </div>
       <p className="mt-1.5 text-[0.8rem] text-espresso-mute">
-        {site.promise.shipping}. Taxes calculated at checkout.
+        {site.promise.shipping}.
       </p>
 
       {/* ---------------------------- colourway ---------------------------- */}

@@ -24,15 +24,28 @@ const promiseIcons = ["truck", "fold", "leaf"] as const;
  * at page load the transparent nav sits directly on this photograph and the
  * two read as one surface. Nav.tsx gives itself a background only on scroll.
  *
- * ── Requirement 2: the hero fits the screen exactly ──
- * `h-svh` (a fixed height, not a minimum) — see the reference's own
- * `min-h-svh` note: this build uses the fixed form because a fixed height is
- * the version that's actually guaranteed to stop at the fold; `min-h-svh`
- * only sets a floor; and there's no longer an intrinsic-height child that
- * could push past it. `svh`, not `vh`: on mobile `100vh` is measured against
- * the *large* viewport, taller than what's actually visible while the URL
- * bar shows; `svh` measures the visible box and, unlike `dvh`, is static, so
- * nothing re-lays-out mid-scroll as the bar hides.
+ * ── Requirement 2: the hero is at least one screen tall ──
+ * `min-h-svh` (a floor, not a fixed height) at every breakpoint, matching
+ * the reference build exactly — fixing the hero to exactly one viewport
+ * (`h-svh`) is not a desktop behavior here; it was tried and reverted. A
+ * fixed height is only right when the content stack is guaranteed to fit
+ * the viewport at every breakpoint, and that guarantee doesn't hold once
+ * content can be taller at one breakpoint than another (e.g. the mobile
+ * centered layout, Requirement 3) — `min-h-svh` lets the section grow past
+ * one viewport wherever its content needs it, on any screen size. `svh`,
+ * not `vh`: on mobile `100vh` is measured against the *large* viewport,
+ * taller than what's actually visible while the URL bar shows; `svh`
+ * measures the visible box and, unlike `dvh`, is static, so nothing
+ * re-lays-out mid-scroll as the bar hides.
+ *
+ * ── Requirement 3: mobile text is centered, desktop stays left ──
+ * `text-center` below `md:`, `md:text-left` at `md:` and up. The outer
+ * content wrapper was already `items-center` on mobile (to center the whole
+ * block against a mobile hero photo with no clear "left side" the way the
+ * desktop crop has), but the text inside it stayed `text-left` — a mismatch
+ * that read as ragged/off-center type in a centered column. Centering the
+ * text itself on mobile fixes that; desktop's left-aligned column (matched
+ * to the desktop photo's product-on-the-right composition) is unchanged.
  *
  * ── Formats ──
  * <picture> offers AVIF, then WebP, then a JPEG fallback — same crop, three
@@ -62,7 +75,7 @@ export default function Hero() {
     <section
       ref={ref}
       id="top"
-      className="grain relative isolate -mt-(--nav-h) flex h-svh flex-col overflow-hidden bg-cream px-5 sm:px-8"
+      className="grain relative isolate -mt-(--nav-h) flex min-h-svh flex-col overflow-hidden bg-cream px-5 sm:px-8"
     >
       {/* --------------------------- backdrop ---------------------------- */}
       <motion.div
@@ -97,15 +110,31 @@ export default function Hero() {
       </motion.div>
 
       {/* ----------------------------- content ---------------------------- */}
-      {/* The section is pulled up under the nav by `-mt-(--nav-h)` (see the
-          section className below), so this flex-1 wrapper's box already
-          spans exactly the true viewport height — `justify-center` here
-          centres against the real svh, not a nav-padded remainder. The nav
-          itself floats on top via its own `sticky` position, so it doesn't
-          need to be excluded from this box by padding. */}
+      {/* Mobile and desktop use genuinely different layout strategies here,
+          not just different alignment:
+           - Desktop (md: and up): `flex-1` + `justify-center`, same as
+             before — the section is pulled up under the nav by
+             `-mt-(--nav-h)` (see the section className below), so this
+             box already spans exactly the true viewport height, and the
+             desktop copy (2-line headline, left-aligned) reliably fits
+             within it with room to spare. The nav floats on top via its
+             own `sticky` position, so it doesn't need to be excluded from
+             this box by padding.
+           - Mobile (below md:): plain top-down flow with real `pt-*` to
+             clear the nav and `pb-*` for bottom breathing room, no
+             `flex-1`/`justify-center`. Forcing mobile into that same
+             "exactly one viewport, centered" box silently crammed
+             everything to fit whenever the content was taller than the
+             screen (eyebrow colliding with the nav, the second button and
+             promise row squeezed against the bottom edge) — `justify-center`
+             centers within whatever height it's given without ever
+             signalling "I need more room," so the browser never grew the
+             section past one viewport even though `min-h-svh` allows it.
+             Natural flow lets the section grow taller than one screen
+             exactly when the (now 3-line, centered) mobile copy needs it. */}
       <motion.div
         style={{ y: contentY, opacity: contentOpacity }}
-        className="relative z-10 mx-auto flex w-full max-w-310 flex-1 flex-col items-center justify-center text-left md:items-start"
+        className="relative z-10 mx-auto flex w-full max-w-310 flex-col items-center pt-28 pb-14 text-center md:flex-1 md:items-start md:justify-center md:pt-0 md:pb-0 md:text-left"
       >
         <p className="font-label text-[0.68rem] font-semibold tracking-[0.26em] text-sage-deep uppercase">
           {hero.eyebrow}

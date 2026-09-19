@@ -106,24 +106,27 @@ export const trustBar = [
 /**
  * Six customer-facing benefits, shown as image + text cards on the product
  * page between the trust bar and "Why it works" (components/product/
- * ProductBenefitCards.tsx). `icon` keys into components/ui/Icons.tsx and
- * doubles as the placeholder art's watermark until real product photography
- * replaces it.
+ * ProductBenefitCards.tsx). `icon` keys into components/ui/Icons.tsx (used
+ * as a small badge above the tag, not a watermark — see the component).
+ * `image` is a basename under public/benefits/: each one ships as
+ * <name>.avif + <name>.webp + <name>.jpg (smallest-first `<picture>`,
+ * same pattern as Hero.tsx's background photo), generated from the sourced
+ * PNGs via `sharp` — see the conversion note in ProductBenefitCards.tsx.
  *
  * Positioning: premium, high-capacity, multi-purpose carry system — not the
  * "skip the plastic bag" framing this section used to carry. That framing
  * read as a budget/eco swap, not a premium product; this version leads with
  * capacity, build and versatility instead.
  *
- * ⚠️ "Holds up to 50 lbs" (the `deceptivelyRoomy` item below) is a specific
- * weight-capacity claim with no supporting spec in the Shopify product data
- * — every other file in this codebase that touches capacity (lib/site.ts,
- * lib/product.ts, content/quality.ts, content/answers.ts) deliberately
- * avoids stating a kg/lb number for exactly this reason. This one was added
- * on explicit instruction despite that standing rule. Confirm it's actually
- * true (real load testing, not a guess) before this ships to production —
- * an unverified weight claim on a live product page is a real liability if
- * it's wrong.
+ * ⚠️ "Holds up to 50 lbs" (the `engineeredCapacity` item below) is a
+ * specific weight-capacity claim with no supporting spec in the Shopify
+ * product data — every other file in this codebase that touches capacity
+ * (lib/site.ts, lib/product.ts, content/quality.ts, content/answers.ts)
+ * deliberately avoids stating a kg/lb number for exactly this reason. This
+ * one was added on explicit instruction despite that standing rule.
+ * Confirm it's actually true (real load testing, not a guess) before this
+ * ships to production — an unverified weight claim on a live product page
+ * is a real liability if it's wrong.
  */
 export const productBenefits = {
   eyebrow: "Premium, multi-purpose carry",
@@ -132,36 +135,42 @@ export const productBenefits = {
     {
       tag: "Engineered capacity",
       icon: "shield",
+      image: "engineered-capacity",
       headline: "Holds up to 50 lbs without sagging.",
       body: "Reinforced seams and a heavy-duty weave built for real loads, not just a light grocery run. This is a bag you can actually load up.",
     },
     {
       tag: "Deceptively roomy",
       icon: "fold",
+      image: "deceptively-roomy",
       headline: "Fits in your palm. Opens to a full-size tote.",
       body: "Collapses small enough to close a fist around, then unfolds in two seconds into a tote with real, usable capacity.",
     },
     {
       tag: "Everyday carry, elevated",
       icon: "bag",
+      image: "everyday-carry-elevated",
       headline: "From the grocery run to the boardroom.",
       body: "Farmers market, airport carry-on, office supply run, weekend errands. One premium bag that looks the part in every one of them.",
     },
     {
       tag: "Built for the outdoors",
       icon: "leaf",
+      image: "built-for-outdoors",
       headline: "Beach, trail, campsite, tailgate.",
       body: "A durable, weather-ready build that keeps up outdoors as easily as it does at the store, without looking like gear.",
     },
     {
       tag: "A gift that reads premium",
       icon: "check",
+      image: "gift-reads-premium",
       headline: "Unwraps like a designer piece.",
       body: "Six colourways, a refined finish, and genuine everyday utility. The rare gift that gets used constantly, not shelved.",
     },
     {
       tag: "Designer look, real utility",
       icon: "weight",
+      image: "designer-look-real-utility",
       headline: "Reads as luxury. Works as hard as gear.",
       body: "A refined, modern silhouette that doesn't sacrifice capacity or durability for the sake of looking good.",
     },

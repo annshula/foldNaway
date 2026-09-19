@@ -11,11 +11,11 @@ import { cn } from "@/lib/utils";
  * (or tapping) a thumbnail swaps the main image directly, no carousel state
  * to animate through.
  *
- * The rail is capped to the gallery's own fixed height (see the 34rem cap
- * below) so with more thumbnails than fit, the *rail* scrolls independently
- * of the page — vertically at `sm:` and up (left column beside the image),
- * horizontally below it (a row above the image, native touch-swipe/scroll,
- * same overflow-scroll mechanism as desktop, just the other axis).
+ * The rail is capped to its own fixed height (max-h-115, see below) so with
+ * more thumbnails than fit, the *rail* scrolls independently of the page —
+ * vertically at `sm:` and up (left column beside the image), horizontally
+ * below it (a row above the image, native touch-swipe/scroll, same
+ * overflow-scroll mechanism as desktop, just the other axis).
  *
  * `activeSrc` is driven by the parent so choosing a colourway in the BuyBox
  * moves this gallery to that variant's photo. Clicking a thumbnail here only
@@ -46,14 +46,21 @@ export function ProductGallery({
   const current = images[Math.min(index, images.length - 1)];
 
   return (
-    // Capped at 34rem: without a height ceiling the flex row stretches to
-    // fit the main image's own aspect-square width, which on a wide desktop
-    // column makes it enormous — and the thumbnail rail never gets a chance
-    // to overflow (so it never scrolls) because it just matches whatever
-    // height that oversized image ends up being.
-    <div className="flex max-h-136 flex-col-reverse gap-3 sm:h-136 sm:flex-row">
+    // Height matches reference/components/product/ProductGallery.tsx: the
+    // *rail* alone is capped (max-h-115, 460px), not the whole row.
+    //
+    // `sm:items-start` is load-bearing, not decoration: a flex row with no
+    // `items-*` defaults to `align-items: stretch`, which silently forces
+    // every flex child to the row's own height — INCLUDING the image div,
+    // overriding its `aspect-square` entirely. That's what was actually
+    // making the gallery too tall (measured: a 460×460 box rendering at
+    // 460×784 in production, `aspect-ratio: 1/1` present in computed style
+    // but overridden by the stretch-driven explicit height). `items-start`
+    // lets each column size itself from its own content/aspect-ratio
+    // instead of inheriting the tallest sibling's height.
+    <div className="flex flex-col-reverse gap-3 sm:flex-row sm:items-start">
       {images.length > 1 && (
-        <ul className="scrollbar-none flex shrink-0 gap-2 overflow-x-auto sm:h-full sm:w-20 sm:flex-col sm:overflow-x-visible sm:overflow-y-auto">
+        <ul className="scrollbar-none flex shrink-0 gap-2 overflow-x-auto sm:max-h-115 sm:w-19 sm:flex-col sm:overflow-x-visible sm:overflow-y-auto">
           {images.map((img, i) => (
             <li key={img.src} className="shrink-0">
               <button
@@ -62,7 +69,7 @@ export function ProductGallery({
                 aria-label={`View image ${i + 1}`}
                 aria-current={i === index ? "true" : undefined}
                 className={cn(
-                  "relative block size-16 overflow-hidden rounded-lg border-2 bg-cream-deep transition-colors duration-300 sm:size-20",
+                  "relative block size-14 overflow-hidden rounded-lg border-2 bg-cream-deep transition-colors duration-300 sm:size-16",
                   i === index
                     ? "border-sage"
                     : "border-transparent hover:border-sand-strong",
@@ -72,7 +79,7 @@ export function ProductGallery({
                   src={img.src}
                   alt=""
                   fill
-                  sizes="80px"
+                  sizes="64px"
                   quality={65}
                   className="object-cover"
                 />
@@ -82,18 +89,18 @@ export function ProductGallery({
         </ul>
       )}
 
-      {/* Mobile sizes itself by aspect-square (bounded by viewport width,
-          since there's no fixed-height ancestor there). Desktop switches to
-          the row's own fixed height instead, so the image is bounded by
-          height rather than by the wide grid column's width. */}
-      <div className="relative aspect-square max-w-full flex-1 overflow-hidden rounded-card bg-cream-deep sm:aspect-auto sm:h-full">
+      {/* aspect-square + max-w-115 (matching the reference) sizes this to
+          460×460px at its cap, on every breakpoint — not bounded by a
+          shared row height, so it can't grow taller than the reference's
+          own main image does. */}
+      <div className="relative aspect-square w-full max-w-full overflow-hidden rounded-card bg-cream-deep lg:max-w-115">
         <Image
           key={current.src}
           src={current.src}
           alt={current.alt}
           fill
           priority={index === 0}
-          sizes="(max-width: 1024px) 100vw, 45vw"
+          sizes="(max-width: 1024px) 100vw, 460px"
           quality={82}
           className="animate-fade-in object-cover"
         />

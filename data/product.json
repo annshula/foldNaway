@@ -1,18 +1,25 @@
 {
   "version": 8,
-  "syncedAt": "2026-09-19T08:06:20.755Z",
+  "syncedAt": "2026-09-19T11:42:14.529Z",
   "shop": {
     "domain": "trackify-com.myshopify.com",
-    "name": "FoldNAway",
+    "name": "Trackify",
     "currencyCode": "USD"
   },
-  "markets": [],
+  "markets": [
+    "AU",
+    "CA",
+    "IN",
+    "ZA",
+    "GB",
+    "US"
+  ],
   "products": [
     {
       "id": "gid://shopify/Product/9680566649059",
       "handle": "foldable-keychain-storage-pouch-large-capacity-portable-handheld-shoulder-eco-bag",
       "title": "Foldable Keychain Storage Pouch Large-Capacity Portable Handheld Shoulder Eco-Bag",
-      "price": 30.12,
+      "price": 32.99,
       "compareAtPrice": null,
       "currencyCode": "USD",
       "availableForSale": true,
@@ -21,11 +28,42 @@
           "id": "gid://shopify/ProductVariant/49771948966115",
           "title": "Army Green",
           "sku": "CJYD305398204DW",
-          "price": 30.12,
+          "price": 32.99,
           "compareAtPrice": null,
           "availableForSale": true,
           "stockQuantity": 9000,
-          "pricesByMarket": {},
+          "pricesByMarket": {
+            "CA": {
+              "amount": 47,
+              "compareAtAmount": null,
+              "currencyCode": "CAD"
+            },
+            "IN": {
+              "amount": 3230.07,
+              "compareAtAmount": null,
+              "currencyCode": "INR"
+            },
+            "AU": {
+              "amount": 48,
+              "compareAtAmount": null,
+              "currencyCode": "AUD"
+            },
+            "ZA": {
+              "amount": 548,
+              "compareAtAmount": null,
+              "currencyCode": "ZAR"
+            },
+            "GB": {
+              "amount": 26,
+              "compareAtAmount": null,
+              "currencyCode": "GBP"
+            },
+            "US": {
+              "amount": 32.99,
+              "compareAtAmount": null,
+              "currencyCode": "USD"
+            }
+          },
           "image": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/5f33e4d9-cd3b-4167-9286-53e44ee4f2f2.jpg?v=1789758210",
           "shopifyTitle": "Army Green",
           "subtitle": "",
@@ -36,11 +74,42 @@
           "id": "gid://shopify/ProductVariant/49771948998883",
           "title": "Black",
           "sku": "CJYD305398201AZ",
-          "price": 37.62,
+          "price": 32.99,
           "compareAtPrice": null,
           "availableForSale": true,
           "stockQuantity": 8946,
-          "pricesByMarket": {},
+          "pricesByMarket": {
+            "CA": {
+              "amount": 47,
+              "compareAtAmount": null,
+              "currencyCode": "CAD"
+            },
+            "IN": {
+              "amount": 3230.07,
+              "compareAtAmount": null,
+              "currencyCode": "INR"
+            },
+            "AU": {
+              "amount": 48,
+              "compareAtAmount": null,
+              "currencyCode": "AUD"
+            },
+            "ZA": {
+              "amount": 548,
+              "compareAtAmount": null,
+              "currencyCode": "ZAR"
+            },
+            "GB": {
+              "amount": 26,
+              "compareAtAmount": null,
+              "currencyCode": "GBP"
+            },
+            "US": {
+              "amount": 32.99,
+              "compareAtAmount": null,
+              "currencyCode": "USD"
+            }
+          },
           "image": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/b21c2d32-6708-4af0-95f3-0d5b5c2deda6.jpg?v=1789758210",
           "shopifyTitle": "Black",
           "subtitle": "",
@@ -51,11 +120,42 @@
           "id": "gid://shopify/ProductVariant/49771949031651",
           "title": "Brown",
           "sku": "CJYD305398202BY",
-          "price": 33.56,
+          "price": 32.99,
           "compareAtPrice": null,
           "availableForSale": true,
           "stockQuantity": 9485,
-          "pricesByMarket": {},
+          "pricesByMarket": {
+            "CA": {
+              "amount": 47,
+              "compareAtAmount": null,
+              "currencyCode": "CAD"
+            },
+            "IN": {
+              "amount": 3230.07,
+              "compareAtAmount": null,
+              "currencyCode": "INR"
+            },
+            "AU": {
+              "amount": 48,
+              "compareAtAmount": null,
+              "currencyCode": "AUD"
+            },
+            "ZA": {
+              "amount": 548,
+              "compareAtAmount": null,
+              "currencyCode": "ZAR"
+            },
+            "GB": {
+              "amount": 26,
+              "compareAtAmount": null,
+              "currencyCode": "GBP"
+            },
+            "US": {
+              "amount": 32.99,
+              "compareAtAmount": null,
+              "currencyCode": "USD"
+            }
+          },
           "image": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/27d75e64-e063-4ed4-83ef-638f78504635.jpg?v=1789758210",
           "shopifyTitle": "Brown",
           "subtitle": "",
@@ -66,11 +166,42 @@
           "id": "gid://shopify/ProductVariant/49771949064419",
           "title": "Green",
           "sku": "CJYD305398205EV",
-          "price": 38.23,
+          "price": 32.99,
           "compareAtPrice": null,
           "availableForSale": true,
           "stockQuantity": 6941,
-          "pricesByMarket": {},
+          "pricesByMarket": {
+            "CA": {
+              "amount": 47,
+              "compareAtAmount": null,
+              "currencyCode": "CAD"
+            },
+            "IN": {
+              "amount": 3230.07,
+              "compareAtAmount": null,
+              "currencyCode": "INR"
+            },
+            "AU": {
+              "amount": 48,
+              "compareAtAmount": null,
+              "currencyCode": "AUD"
+            },
+            "ZA": {
+              "amount": 548,
+              "compareAtAmount": null,
+              "currencyCode": "ZAR"
+            },
+            "GB": {
+              "amount": 26,
+              "compareAtAmount": null,
+              "currencyCode": "GBP"
+            },
+            "US": {
+              "amount": 32.99,
+              "compareAtAmount": null,
+              "currencyCode": "USD"
+            }
+          },
           "image": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/3dfe6cf7-08f2-4281-ad33-a640970eb033.jpg?v=1789758210",
           "shopifyTitle": "Green",
           "subtitle": "",
@@ -81,11 +212,42 @@
           "id": "gid://shopify/ProductVariant/49771949097187",
           "title": "Khaki",
           "sku": "CJYD305398206FU",
-          "price": 37,
+          "price": 32.99,
           "compareAtPrice": null,
           "availableForSale": true,
           "stockQuantity": 7928,
-          "pricesByMarket": {},
+          "pricesByMarket": {
+            "CA": {
+              "amount": 47,
+              "compareAtAmount": null,
+              "currencyCode": "CAD"
+            },
+            "IN": {
+              "amount": 3230.07,
+              "compareAtAmount": null,
+              "currencyCode": "INR"
+            },
+            "AU": {
+              "amount": 48,
+              "compareAtAmount": null,
+              "currencyCode": "AUD"
+            },
+            "ZA": {
+              "amount": 548,
+              "compareAtAmount": null,
+              "currencyCode": "ZAR"
+            },
+            "GB": {
+              "amount": 26,
+              "compareAtAmount": null,
+              "currencyCode": "GBP"
+            },
+            "US": {
+              "amount": 32.99,
+              "compareAtAmount": null,
+              "currencyCode": "USD"
+            }
+          },
           "image": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/c9381bbd-62d4-4a7f-bb24-f1c506ccf275.jpg?v=1789758210",
           "shopifyTitle": "Khaki",
           "subtitle": "",
@@ -96,11 +258,42 @@
           "id": "gid://shopify/ProductVariant/49771949129955",
           "title": "Wine Red",
           "sku": "CJYD305398203CX",
-          "price": 30.12,
+          "price": 32.99,
           "compareAtPrice": null,
           "availableForSale": true,
           "stockQuantity": 7894,
-          "pricesByMarket": {},
+          "pricesByMarket": {
+            "CA": {
+              "amount": 47,
+              "compareAtAmount": null,
+              "currencyCode": "CAD"
+            },
+            "IN": {
+              "amount": 3230.07,
+              "compareAtAmount": null,
+              "currencyCode": "INR"
+            },
+            "AU": {
+              "amount": 48,
+              "compareAtAmount": null,
+              "currencyCode": "AUD"
+            },
+            "ZA": {
+              "amount": 548,
+              "compareAtAmount": null,
+              "currencyCode": "ZAR"
+            },
+            "GB": {
+              "amount": 26,
+              "compareAtAmount": null,
+              "currencyCode": "GBP"
+            },
+            "US": {
+              "amount": 32.99,
+              "compareAtAmount": null,
+              "currencyCode": "USD"
+            }
+          },
           "image": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/54339bf2-9641-41d4-9690-1688accf2dfa.jpg?v=1789758210",
           "shopifyTitle": "Wine Red",
           "subtitle": "",
@@ -114,6 +307,24 @@
           "alt": "Foldable Keychain Storage Pouch Large-Capacity Portable Handheld Shoulder Eco-Bag",
           "width": 1200,
           "height": 1200
+        },
+        {
+          "src": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/Sea61695a517e477685770ac17927866b2.jpg?v=1789816822",
+          "alt": "Foldable Keychain Storage Pouch Large-Capacity Portable Handheld Shoulder Eco-Bag",
+          "width": 1000,
+          "height": 1000
+        },
+        {
+          "src": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/S2611474f1265419f92b594656699b858B.png?v=1789816822",
+          "alt": "Foldable Keychain Storage Pouch Large-Capacity Portable Handheld Shoulder Eco-Bag",
+          "width": 1000,
+          "height": 1000
+        },
+        {
+          "src": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/S0afcd5d77dd44020a1c56f1dd61ff5ffd.png?v=1789816823",
+          "alt": "Foldable Keychain Storage Pouch Large-Capacity Portable Handheld Shoulder Eco-Bag",
+          "width": 1000,
+          "height": 1000
         },
         {
           "src": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/5f974abd-7a7b-44f3-91f6-9d0eed7c649f.jpg?v=1789758210",
@@ -177,6 +388,27 @@
           "alt": "Foldable Keychain Storage Pouch Large-Capacity Portable Handheld Shoulder Eco-Bag",
           "width": 1200,
           "height": 1200
+        },
+        {
+          "kind": "image",
+          "src": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/Sea61695a517e477685770ac17927866b2.jpg?v=1789816822",
+          "alt": "",
+          "width": 1000,
+          "height": 1000
+        },
+        {
+          "kind": "image",
+          "src": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/S2611474f1265419f92b594656699b858B.png?v=1789816822",
+          "alt": "",
+          "width": 1000,
+          "height": 1000
+        },
+        {
+          "kind": "image",
+          "src": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/S0afcd5d77dd44020a1c56f1dd61ff5ffd.png?v=1789816823",
+          "alt": "",
+          "width": 1000,
+          "height": 1000
         },
         {
           "kind": "image",
@@ -252,7 +484,7 @@
           "description": "A durable woven polyester built to be folded and unfolded daily without stretching out or splitting at the seams.",
           "image": {
             "src": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/27d75e64-e063-4ed4-83ef-638f78504635.jpg?v=1789758210",
-            "alt": "Foldable Keychain Storage Pouch Large-Capacity Portable Handheld Shoulder Eco-Bag",
+            "alt": "54b9d9792e2f65ecd6470eb3a17caf4d",
             "width": 1200,
             "height": 1200
           },
@@ -264,7 +496,7 @@
           "description": "Folds along its seams into a pouch small enough to clip to a keyring, bag strap, or belt loop.",
           "image": {
             "src": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/5f974abd-7a7b-44f3-91f6-9d0eed7c649f.jpg?v=1789758210",
-            "alt": "Foldable Keychain Storage Pouch Large-Capacity Portable Handheld Shoulder Eco-Bag",
+            "alt": "92ec3a1b998d10f1103b671ab9f0051f",
             "width": 1200,
             "height": 1200
           },
@@ -276,7 +508,7 @@
           "description": "Opens into a wide, full-capacity tote with dual handles sized for a comfortable grip, by hand or over the shoulder.",
           "image": {
             "src": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/62b8d984-6d11-4f7c-8340-5050d9972e05.jpg?v=1789758210",
-            "alt": "Foldable Keychain Storage Pouch Large-Capacity Portable Handheld Shoulder Eco-Bag",
+            "alt": "FoldNAway 3-Pack Bundle",
             "width": 1200,
             "height": 1200
           },
@@ -288,7 +520,7 @@
           "description": "Six colorways on the same reinforced build, so you can match it to how you’ll actually use it.",
           "image": {
             "src": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/cd4f7f67-bcaa-43e1-a202-96cdb06f2aa8.jpg?v=1789758210",
-            "alt": "Foldable Keychain Storage Pouch Large-Capacity Portable Handheld Shoulder Eco-Bag",
+            "alt": "745d5fdbdb70a1d1cbae73ba000cbce",
             "width": 1200,
             "height": 1200
           },
@@ -300,7 +532,7 @@
           "description": "Stitched seams and a durable weave hold up to daily shopping runs, commutes, and gym trips.",
           "image": {
             "src": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/b21c2d32-6708-4af0-95f3-0d5b5c2deda6.jpg?v=1789758210",
-            "alt": "Foldable Keychain Storage Pouch Large-Capacity Portable Handheld Shoulder Eco-Bag",
+            "alt": "7cb27d80d7e9301f7257f63792d9318f",
             "width": 1200,
             "height": 1200
           },
@@ -312,7 +544,7 @@
           "description": "Built for the errand you did not plan for — the extra grocery run, the gift that needs carrying, the overflowing gym bag.",
           "image": {
             "src": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/3dfe6cf7-08f2-4281-ad33-a640970eb033.jpg?v=1789758210",
-            "alt": "Foldable Keychain Storage Pouch Large-Capacity Portable Handheld Shoulder Eco-Bag",
+            "alt": "e7164048afc4ece6096add2728ec875c",
             "width": 1200,
             "height": 1200
           },
@@ -326,7 +558,7 @@
           "body": "Collapses down small enough to clip to a keyring or bag strap — it travels with you, ready before you need it.",
           "image": {
             "src": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/5f974abd-7a7b-44f3-91f6-9d0eed7c649f.jpg?v=1789758210",
-            "alt": "Foldable Keychain Storage Pouch Large-Capacity Portable Handheld Shoulder Eco-Bag",
+            "alt": "92ec3a1b998d10f1103b671ab9f0051f",
             "width": 1200,
             "height": 1200
           },
@@ -338,7 +570,7 @@
           "body": "Reinforced polyester holds its shape under load, wide enough for a grocery haul.",
           "image": {
             "src": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/62b8d984-6d11-4f7c-8340-5050d9972e05.jpg?v=1789758210",
-            "alt": "Foldable Keychain Storage Pouch Large-Capacity Portable Handheld Shoulder Eco-Bag",
+            "alt": "FoldNAway 3-Pack Bundle",
             "width": 1200,
             "height": 1200
           },
