@@ -1,0 +1,411 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------
+   FoldNAway design tokens.
+
+   Token *structure* — semantic surfaces, fluid clamp() type scale,
+   elevation levels, easing curves, the motion utility library — is
+   carried over from the reference build. The palette is not: this is a
+   foldable/packable eco-bag brand, so the canvas is a warm cream
+   (not a cool near-white), text is espresso (not pure black), and the
+   single accent is sage green pulled from the product's own colorway.
+   Terracotta exists only as a secondary for tags/badges, never as a
+   competing CTA colour.
+   ------------------------------------------------------------------ */
+@theme {
+  /* ── Warm neutrals: the whole site lives here ──────────────────── */
+  --color-cream: #faf7f1; /* page canvas */
+  --color-cream-deep: #f4efe5; /* sunken panels, alternating sections */
+  --color-paper: #ffffff; /* cards */
+  --color-sand: #ebe3d5; /* hairlines, dividers */
+  --color-sand-strong: #d9cdb9;
+
+  /* ── Espresso text ramp (never pure black) ─────────────────────── */
+  --color-espresso: #2e2620; /* headings, primary text */
+  --color-espresso-soft: #5c5148; /* body copy */
+  --color-espresso-mute: #8a7d71; /* captions, meta */
+
+  /* ── Dark surfaces (footer, drawers, mobile menu) ──────────────── */
+  --color-bark: #241d18;
+  --color-bark-deep: #1a1410;
+  --color-bark-line: #3a302a;
+
+  /* Light text for the dark surfaces */
+  --color-oat: #f2ece1;
+  --color-oat-soft: #cdc2b3;
+  --color-oat-mute: #9a8e80;
+
+  /* ── The one accent: sage, from the product's own colorway ─────── */
+  --color-sage: #7d8f6f;
+  --color-sage-hot: #8fa17f;
+  --color-sage-deep: #64744f;
+  --color-sage-soft: #e8ecdf;
+
+  /* Secondary only — tags, "low stock", never a CTA */
+  --color-terracotta: #b4715a;
+  --color-terracotta-soft: #f5e6e0;
+
+  /* ── Semantic tokens (what components actually reference) ───────── */
+  --color-canvas: #faf7f1;
+  --color-surface: #ffffff;
+  --color-surface-sunken: #f4efe5;
+  --color-ink: #2e2620;
+  --color-ink-soft: #5c5148;
+  --color-ink-mute: #8a7d71;
+  --color-ink-muted: #5c5148;
+  --color-ink-subtle: #8a7d71;
+  --color-line: #ebe3d5;
+  --color-line-strong: #d9cdb9;
+  --color-primary: #7d8f6f;
+  --color-primary-hover: #8fa17f;
+  --color-on-primary: #ffffff;
+  --color-accent: #7d8f6f;
+  --color-accent-hover: #8fa17f;
+  --color-accent-soft: #e8ecdf;
+  --color-on-accent: #ffffff;
+  --color-footer: #1a1410;
+  --color-ring: #7d8f6f;
+  --color-overlay: rgb(36 29 24 / 0.5);
+
+  /* ── Typography: exactly two families ──────────────────────────────
+     Fraunces  -> font-display  (warm variable serif: headings, hero)
+     Figtree   -> font-sans     (geometric-humanist: body, UI, labels)
+     `font-label` is Figtree at wide tracking — a role, not a 3rd family. */
+  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-sans: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
+  --font-label: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
+
+  /* ── Fluid type scale (same curve shape as the reference) ───────── */
+  --text-caption: 0.75rem;
+  --text-caption--line-height: 1.6;
+  --text-caption--letter-spacing: 0.14em;
+  --text-body-sm: 0.875rem;
+  --text-body-sm--line-height: 1.65;
+  --text-body: 1rem;
+  --text-body--line-height: 1.7;
+  --text-subheading: clamp(1rem, 0.6rem + 1.1vw, 1.5rem);
+  --text-subheading--line-height: 1.15;
+  --text-heading-sm: clamp(1.5rem, 1.1rem + 1.6vw, 2rem);
+  --text-heading-sm--line-height: 1.1;
+  --text-heading: clamp(1.9rem, 1.1rem + 3.2vw, 2.9rem);
+  --text-heading--line-height: 1.08;
+  --text-heading-lg: clamp(2.3rem, 1.2rem + 4.4vw, 3.4rem);
+  --text-heading-lg--line-height: 1.04;
+  --text-display: clamp(2.6rem, 1rem + 6.6vw, 4.6rem);
+  --text-display--line-height: 1;
+
+  --radius-card: 18px;
+
+  /* ── Easing ────────────────────────────────────────────────────── */
+  --ease-out-soft: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-in-soft: cubic-bezier(0.6, 0, 0.9, 0.4);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+  --ease-out-expo: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  /* ── Elevation, warm-tinted (shadows on cream must never read gray) */
+  --shadow-e1: 0 1px 2px rgb(46 38 32 / 0.04), 0 1px 3px rgb(46 38 32 / 0.03);
+  --shadow-e2: 0 2px 4px rgb(46 38 32 / 0.04), 0 6px 16px -6px rgb(46 38 32 / 0.08);
+  --shadow-e3: 0 4px 8px rgb(46 38 32 / 0.04), 0 16px 40px -12px rgb(46 38 32 / 0.12);
+  --shadow-e4: 0 8px 16px rgb(46 38 32 / 0.05), 0 32px 64px -16px rgb(46 38 32 / 0.18);
+  --shadow-lift: 0 8px 16px rgb(46 38 32 / 0.05), 0 32px 64px -16px rgb(46 38 32 / 0.18);
+}
+
+/* ---------------------------------- base ---------------------------------- */
+
+:root {
+  color-scheme: light;
+  --nav-h: 72px;
+}
+
+* {
+  border-color: var(--color-line);
+}
+
+/* Browsers only give <a href> a pointer cursor; every control here is a real
+   <button>, so restore it globally instead of per-component. */
+button:not(:disabled),
+[role="button"],
+summary,
+label[for] {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--nav-h);
+  -webkit-text-size-adjust: 100%;
+  /* The page never pans sideways — carousels scroll inside their own
+     overflow containers. Clipping at the root guarantees it. */
+  overflow-x: clip;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, currentColor 28%, transparent) transparent;
+}
+
+body {
+  background-color: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+::selection {
+  background: var(--color-sage);
+  color: #ffffff;
+}
+
+/* -------------------------------- scrollbar -------------------------------- */
+/* Resolves per scrolling element, so the dark mobile drawer picks up its own
+   text colour without an override. */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: color-mix(in srgb, currentColor 24%, transparent);
+  border-radius: 999px;
+  transition: background-color 0.25s var(--ease-out-soft);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-sage);
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-ring);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.newsletter-form input:focus-visible {
+  outline: none;
+}
+
+/* ------------------------------- typography ------------------------------- */
+
+/* Fraunces is a variable serif — `soft` and `wonk` axes are what keep it
+   warm rather than editorial-severe at display sizes. */
+.font-display {
+  font-family: var(--font-display);
+  font-variation-settings: "SOFT" 40, "WONK" 1;
+  letter-spacing: -0.015em;
+}
+
+/* Figtree at wide tracking: eyebrows, nav links, UI chrome. */
+.font-label {
+  font-family: var(--font-label);
+  letter-spacing: 0.14em;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-variation-settings: "SOFT" 40, "WONK" 1;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+/* --------------------------------- FAQ ------------------------------------ */
+/* Native <details> keeps answers in the DOM for crawlers and needs no JS. */
+
+.faq-item > summary {
+  list-style: none;
+  cursor: pointer;
+}
+.faq-item > summary::-webkit-details-marker {
+  display: none;
+}
+.faq-item .faq-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.42s var(--ease-out-expo);
+}
+.faq-item[open] .faq-body {
+  grid-template-rows: 1fr;
+}
+.faq-item .faq-body > div {
+  overflow: hidden;
+}
+.faq-item .faq-sign {
+  transition: transform 0.42s var(--ease-out-expo);
+}
+.faq-item[open] .faq-sign {
+  transform: rotate(135deg);
+}
+
+/* --------------------------------- grain ---------------------------------- */
+/* One inline SVG turbulence, tiled. Kills banding on the large warm
+   gradients and gives the cream a paper tooth. */
+
+.grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* A slow drifting warm gradient, for hero/section backdrops. */
+.fold-backdrop {
+  background:
+    radial-gradient(70vmax 70vmax at 12% 8%, rgba(125, 143, 111, 0.1), transparent 60%),
+    radial-gradient(55vmax 55vmax at 88% 82%, rgba(180, 113, 90, 0.07), transparent 58%),
+    radial-gradient(42vmax 42vmax at 68% 18%, rgba(46, 38, 32, 0.04), transparent 62%);
+  animation: fold-drift 24s var(--ease-out-expo) infinite alternate;
+  will-change: transform;
+}
+@keyframes fold-drift {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(2.5%, -2.5%, 0) scale(1.05);
+  }
+}
+
+/* ---------------------------- motion library ------------------------------ */
+/* Keyframes + Tailwind v4 utilities, all on the one shared easing curve, so
+   every reveal on the site belongs to the same object. */
+
+@keyframes fn-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes fn-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fn-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes fn-slide-right {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes fn-slide-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes fn-shimmer {
+  from {
+    background-position: -200% 0;
+  }
+  to {
+    background-position: 200% 0;
+  }
+}
+
+@utility animate-fade-up {
+  animation: fn-fade-up 0.45s var(--ease-out-soft) both;
+}
+@utility animate-fade-in {
+  animation: fn-fade-in 0.3s var(--ease-out-soft) both;
+}
+@utility animate-scale-in {
+  animation: fn-scale-in 0.22s var(--ease-out-soft) both;
+}
+@utility animate-slide-right {
+  animation: fn-slide-right 0.3s var(--ease-out-soft) both;
+}
+@utility animate-slide-up {
+  animation: fn-slide-up 0.32s var(--ease-out-soft) both;
+}
+@utility reveal-item {
+  animation: fn-fade-up 0.5s var(--ease-out-soft) both;
+  animation-delay: calc(var(--i, 0) * 55ms);
+}
+@utility skeleton {
+  background-image: linear-gradient(
+    90deg,
+    var(--color-surface-sunken) 0%,
+    var(--color-line) 50%,
+    var(--color-surface-sunken) 100%
+  );
+  background-size: 200% 100%;
+  animation: fn-shimmer 1.4s linear infinite;
+}
+
+/* CSS-only scroll reveal, for anything that doesn't need JS. Progressive
+   enhancement: browsers without scroll timelines show the finished state. */
+@keyframes fn-reveal-on-view {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@utility scroll-reveal {
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      animation: fn-reveal-on-view linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 35%;
+    }
+  }
+}
+
+/* ------------------------------ accessibility ----------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

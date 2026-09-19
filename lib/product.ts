@@ -1,0 +1,164 @@
+/**
+ * Product catalog — a typed view over data/product.json, and nothing else.
+ * Every field here (title, subtitle, material, descriptionHtml, gallery,
+ * specs, features, variant prices and images) is read from that one file at
+ * module load; there is no hand-maintained data array in this file to drift
+ * out of sync with it.
+ *
+ * Everything in data/product.json is Shopify-sourced and safe for
+ * `npm run shopify:sync` to overwrite: title and descriptionHtml are the
+ * product's real Shopify fields; subtitle, material, specs and features come
+ * from Shopify Admin metafields (custom.subtitle, custom.material,
+ * custom.specs, custom.feature_highlights — the latter two are lists of
+ * Metaobjects, so a merchant can add, reorder and remove rows from Shopify
+ * Admin, not just edit their text). Editing any of it happens in Shopify,
+ * then the sync pulls it in — never here.
+ *
+ * FoldNAway currently sells one live product on the connected Shopify store:
+ * the Foldable Keychain Storage Pouch, in six colourways. Note the store is
+ * shared with other brands and the product's Shopify `vendor` field reads
+ * HIMVOLT, not FoldNAway — that vendor string is what the products webhook
+ * allowlists against (SHOPIFY_ALLOWED_PRODUCT_BRANDS), so the two must be
+ * changed together if the vendor is ever renamed.
+ *
+ * Claim policy: only what the product data supports. The bag is polyester
+ * fiber with reinforced seams and folds to keychain size — there is no
+ * measured dimension, gram weight or kg load rating anywhere in Shopify, so
+ * no component may state one. Add them as custom.specs metaobjects first if
+ * they ever get measured.
+ */
+
+import catalog from "@/data/product.json";
+import type { SyncedCatalogRecord } from "@/lib/shopify/sync-product";
+
+export type Money = { amount: number; currencyCode: string };
+
+export type Variant = {
+  id: string;
+  sku: string;
+  title: string;
+  subtitle: string;
+  quantity: number;
+  price: Money;
+  compareAtPrice?: Money;
+  /** Bundle framing distinct from a plain sale price — "Buy 1 Get 1", etc. Unused by the current catalog. */
+  badge?: string;
+  offer?: string;
+  image: string;
+  availableForSale: boolean;
+  /** True when real Shopify inventory for this variant is low — the count itself is never exposed here (it flows through client components, and the number is treated as confidential); this is a derived boolean computed once, server-side, from lib/catalog.ts's SyncedVariant.stockQuantity. */
+  lowStock: boolean;
+  weightGrams: number;
+};
+
+export type CatalogImage = { src: string; alt: string; width: number; height: number };
+export type CatalogVideo = { poster: string; sources: { src: string; type: string }[] };
+
+/** One entry in the product's real Shopify media order (images and videos interleaved as merchandised in Admin) — what ProductGallery renders. Distinct from `gallery`, which stays images-only for consumers that can never sensibly land on a video (the listing card's cover photo, a spec/feature's image fallback, OG/meta tags). */
+export type MediaItem =
+  | ({ kind: "image" } & CatalogImage)
+  | ({ kind: "video" } & CatalogVideo);
+
+export type Product = {
+  id: string;
+  handle: string;
+  title: string;
+  subtitle: string;
+  descriptionHtml: string;
+  material: string;
+  gallery: CatalogImage[];
+  media: MediaItem[];
+  /** From the custom.specs Shopify metafield (a list of Product spec metaobjects) — `description`/`image`/`video` are optional richer content a merchant can add per row from Shopify Admin; `image` falls back to a gallery photo where it's rendered (ProductShowcase) if a row has none yet, and `video` (when present) takes over from `image` there entirely. */
+  specs: { label: string; value: string; description?: string; image?: CatalogImage | null; video?: CatalogVideo | null }[];
+  /** From the custom.feature_highlights Shopify metafield — merchant-editable in Shopify Admin, no code change needed. `icon` is validated against the known set where it's rendered (components/product/ProductShowcase.tsx), not here. */
+  features: { icon: string; label: string; body: string; image?: CatalogImage | null; video?: CatalogVideo | null }[];
+  variants: Variant[];
+};
+
+const usd = (amount: number): Money => ({ amount, currencyCode: "USD" });
+
+/** At or below this real Shopify count, a variant is "low stock" — see Variant.lowStock. */
+const LOW_STOCK_THRESHOLD = 10;
+
+/**
+ * Exported so lib/product-live.ts (server-only) can reuse this exact mapping
+ * for freshly Blob-read data — kept in this file, not there, so there is
+ * only ever one place that turns a synced record into a `Product`.
+ */
+export function mapSyncedProducts(
+  syncedProducts: SyncedCatalogRecord["products"],
+): Product[] {
+  return syncedProducts.map((p) => ({
+    id: p.id,
+    handle: p.handle,
+    title: p.title,
+    subtitle: p.subtitle,
+    descriptionHtml: p.descriptionHtml,
+    material: p.material,
+    gallery: p.images,
+    // Older catalog entries synced before `media` existed have no field for
+    // it at all — fall back to the images-only gallery so those products
+    // still render (just without video) until their next sync.
+    media:
+      p.media && p.media.length > 0
+        ? p.media
+        : p.images.map((img) => ({ kind: "image" as const, ...img })),
+    specs: p.specs,
+    features: p.features ?? [],
+    variants: p.variants.map((v) => ({
+      id: v.id,
+      sku: v.sku,
+      title: v.title,
+      subtitle: v.subtitle,
+      quantity: v.quantity,
+      price: usd(v.price),
+      compareAtPrice: v.compareAtPrice != null ? usd(v.compareAtPrice) : undefined,
+      // A variant with no image of its own (Shopify allows this) falls back
+      // to the product's main photo rather than rendering blank.
+      image: v.image ?? p.images[0]?.src ?? "",
+      availableForSale: v.availableForSale,
+      lowStock:
+        typeof v.stockQuantity === "number" &&
+        v.stockQuantity > 0 &&
+        v.stockQuantity <= LOW_STOCK_THRESHOLD,
+      weightGrams: v.weightGrams,
+    })),
+  }));
+}
+
+/**
+ * Build-time snapshot — whatever was committed to data/product.json as of
+ * the last deploy. Used by anything that must stay synchronous: client-side
+ * cart validation (lib/cart-catalog.ts, which a browser can call without a
+ * server round-trip), and any type-only import. Never edit this file by
+ * hand; `npm run shopify:sync` regenerates it from Shopify.
+ */
+// TS infers plain `string` for every JSON field (no `resolveJsonModule`
+// support for literal unions), so a discriminated field like a media
+// entry's `kind: "image" | "video"` widens on this import specifically —
+// the cast trusts the runtime shape scripts/sync-product.mjs actually
+// writes, same as any other JSON-sourced data.
+export const products: Product[] = mapSyncedProducts(
+  catalog.products as SyncedCatalogRecord["products"],
+);
+
+/** The main/hero product — every generic "shop now" CTA hands off here. */
+export const product: Product = products[0];
+
+export function getProductByHandle(handle: string): Product | undefined {
+  return products.find((p) => p.handle === handle);
+}
+
+export const formatMoney = (m: Money) =>
+  new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: m.currencyCode,
+    minimumFractionDigits: m.amount % 1 === 0 ? 0 : 2,
+  }).format(m.amount);
+
+export const unitPrice = (v: Variant) => usd(v.price.amount / v.quantity);
+
+export const savingsPercent = (v: Variant) =>
+  v.compareAtPrice
+    ? Math.round((1 - v.price.amount / v.compareAtPrice.amount) * 100)
+    : 0;

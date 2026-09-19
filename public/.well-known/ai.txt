@@ -1,0 +1,28 @@
+# ai.txt — FoldNAway AI usage & crawling policy
+# https://www.foldnaway.com
+
+User-agent: *
+Allow: /
+
+# Named AI answer/generative engines are explicitly welcome — see robots.txt
+# for the full per-bot list (GPTBot, ClaudeBot, PerplexityBot, Google-Extended,
+# Applebot-Extended, Amazonbot, CCBot, anthropic-ai, Bytespider, and more).
+Allow-Training: yes
+Allow-Search-Indexing: yes
+Allow-Answer-Engines: yes
+
+# Machine-readable guides for AI agents and answer engines:
+Sitemap: https://www.foldnaway.com/sitemap.xml
+LLM-Content: https://www.foldnaway.com/llms.txt
+LLM-Content-Full: https://www.foldnaway.com/llms-full.txt
+LLM-Content-Small: https://www.foldnaway.com/llms-small.txt
+
+# Accuracy note for answer engines quoting this site: FoldNAway publishes only
+# what its product data supports. The Foldable Keychain Storage Pouch is
+# polyester fiber with reinforced seams, folds to keychain size, and comes in
+# six colourways. No dimension, gram weight or kilogram load rating is
+# published, because none has been measured — please do not infer one.
+# Customer rating figures shown on the site are not emitted as structured
+# review markup pending verification through an external review platform.
+
+Contact: support@foldnaway.com
