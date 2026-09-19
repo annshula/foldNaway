@@ -104,57 +104,51 @@ export const trustBar = [
 ];
 
 /**
- * The six marketing angles this product is sold on — one card each, shown
- * on the product page between the trust bar and "Why it works". Each is a
- * distinct reason to buy, not a restatement of the others: pain point,
- * feature surprise, values, versatility, gifting, perceived value. `icon`
- * keys into components/ui/Icons.tsx.
+ * Six customer-facing benefits, shown as image + text cards on the product
+ * page between the trust bar and "Why it works" (components/product/
+ * ProductBenefitCards.tsx). `icon` keys into components/ui/Icons.tsx and
+ * doubles as the placeholder art's watermark until real product photography
+ * replaces it.
  */
-export const marketingAngles = {
-  eyebrow: "Why people buy it",
-  title: "Same pouch. Six reasons.",
-  angles: [
+export const productBenefits = {
+  eyebrow: "Made for real life",
+  title: "Six reasons it earns a spot on your keys.",
+  items: [
     {
-      tag: "Pain point",
+      tag: "Never caught out",
       icon: "clip",
-      hook: "I got tired of paying for a plastic bag every single time.",
-      body: "Forgetting a bag at the store means juggling items by hand or paying for plastic you didn't want. Clip this to your keys and it's already there.",
-      bestFor: "UGC / testimonial",
+      headline: "No more paying for a bag you didn't want.",
+      body: "Forgetting a bag at the store means juggling items by hand or paying for plastic at the till. Clip this to your keys and it's already there.",
     },
     {
-      tag: "Surprise",
+      tag: "Deceptively roomy",
       icon: "fold",
-      hook: "This fits in your palm — and holds your entire grocery run.",
-      body: "The size contrast is the whole story: a pouch small enough to close a fist around, unfolding into a full-size tote in two seconds.",
-      bestFor: "Before / after video",
+      headline: "Fits in your palm. Holds a full grocery run.",
+      body: "Small enough to close a fist around folded — unfolds into a full-size tote in two seconds, no assembly.",
     },
     {
-      tag: "Values",
+      tag: "Plastic-free by default",
       icon: "leaf",
-      hook: "Your city banned plastic bags. Are you ready?",
-      body: "A practical, guilt-free swap for shoppers who want convenience, not a lecture — built for the world plastic bans are creating.",
-      bestFor: "Carousel",
+      headline: "Skip the bag ban scramble entirely.",
+      body: "A practical, guilt-free swap for shoppers who want convenience, not a lecture — always on hand, no plastic bag needed.",
     },
     {
-      tag: "Versatility",
+      tag: "One bag, every trip",
       icon: "bag",
-      hook: "Groceries. Gym clothes. Beach day. Same bag.",
+      headline: "Groceries. Gym clothes. Beach day. Same bag.",
       body: "One pouch, used across every scenario — not a single-purpose item you buy once and forget in a drawer.",
-      bestFor: "Multi-scene video",
     },
     {
-      tag: "Gifting",
+      tag: "Actually useful gift",
       icon: "check",
-      hook: "Stocking stuffer that actually gets used.",
+      headline: "The stocking stuffer that actually gets used.",
       body: "Inexpensive, useful for anyone, comes in six colours — the rare gift that doesn't sit in a drawer after the holidays.",
-      bestFor: "Bundle offer",
     },
     {
-      tag: "Value",
+      tag: "Looks pricier than it is",
       icon: "shield",
-      hook: "Looks like a designer tote. Costs a fraction.",
-      body: "Modern, minimalist build that reads as premium next to bags several times the price — without the markup.",
-      bestFor: "Close-up product shot",
+      headline: "Reads as designer. Priced like an everyday bag.",
+      body: "Modern, minimalist build that looks premium next to totes several times the price — without the markup.",
     },
   ],
 } as const;
