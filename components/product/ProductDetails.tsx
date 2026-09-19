@@ -1,3 +1,4 @@
+import { CompareSlider } from "@/components/product/CompareSlider";
 import { Icon, type IconName } from "@/components/ui/Icons";
 import Image from "@/components/ui/Image";
 import { Reveal, Stagger, StaggerItem } from "@/components/ui/Motion";
@@ -53,8 +54,59 @@ function imageForFeature(features: Product["features"], label: string) {
   return other?.image ?? own.image;
 }
 
+/**
+ * When the feature set is exactly this before/after pair, a drag-to-compare
+ * slider shows the relationship between them directly (one photo, one
+ * gesture) instead of two side-by-side cards the shopper has to mentally
+ * compare themselves. Any other feature set (a future third highlight, a
+ * differently-labelled pair) falls back to the plain card grid below —
+ * this is a presentation upgrade for one known case, not a replacement for
+ * the general renderer.
+ */
+type CompareSide = {
+  src: string;
+  alt: string;
+  label: string;
+  avif?: string;
+  webp?: string;
+};
+
+function asCompareSlides(
+  features: Product["features"],
+): { before: CompareSide; after: CompareSide } | null {
+  if (features.length !== 2) return null;
+  const before = features.find((f) => f.label === "Folds to keychain size");
+  const after = features.find((f) => f.label === "Opens to a full-size tote");
+  if (!before || !after) return null;
+  return {
+    // Both sides are hand-shot local photos (public/product/), not the
+    // Shopify ones — they read as the premium/lifestyle pairing rather than
+    // plain product shots. AVIF/WebP pre-built at build time from the
+    // project root's compare_1.png/compare_2.png, each flattened onto a
+    // white background first (both source PNGs carry a transparent
+    // background, and JPEG has no alpha channel to fall back to). PictureSide
+    // in CompareSlider.tsx renders the <picture> from these instead of the
+    // Shopify-CDN <Image> path this component also supports.
+    before: {
+      src: "/product/compare-1.jpg",
+      avif: "/product/compare-1.avif",
+      webp: "/product/compare-1.webp",
+      alt: "Reads as luxury. Works as hard as gear.",
+      label: before.label,
+    },
+    after: {
+      src: "/product/compare-2.jpg",
+      avif: "/product/compare-2.avif",
+      webp: "/product/compare-2.webp",
+      alt: after.label,
+      label: after.label,
+    },
+  };
+}
+
 export function ProductDetails({ product }: { product: Product }) {
   const { features, specs, descriptionHtml } = product;
+  const compareSlides = asCompareSlides(features);
 
   return (
     <>
@@ -65,49 +117,76 @@ export function ProductDetails({ product }: { product: Product }) {
             title="Built around one idea: always on you."
             align="center"
           />
-          <Stagger
-            as="ul"
-            className="mt-12 grid gap-5 sm:grid-cols-2"
-            stagger={0.08}
-          >
-            {features.map((f) => {
-              const image = imageForFeature(features, f.label);
-              return (
-                <StaggerItem
-                  as="li"
-                  key={f.label}
-                  className="overflow-hidden rounded-card border border-sand/70 bg-paper"
-                >
-                  {image && (
-                    <div className="relative aspect-square w-full bg-cream-deep">
-                      <Image
-                        src={image.src}
-                        alt={image.alt}
-                        fill
-                        sizes="(max-width: 640px) 100vw, 45vw"
-                        quality={80}
-                        className="object-cover"
-                      />
-                    </div>
-                  )}
-                  <div className="p-7">
-                    <span className="grid size-10 place-items-center rounded-full bg-sage-soft text-sage-deep">
-                      <Icon
-                        name={ICONS[f.icon] ?? "check"}
-                        className="size-4.5"
-                      />
+
+          {compareSlides ? (
+            <div className="mx-auto mt-12 max-w-130">
+              <CompareSlider
+                before={compareSlides.before}
+                after={compareSlides.after}
+              />
+              <div className="mt-6 grid gap-5 sm:grid-cols-2">
+                {features.map((f) => (
+                  <div key={f.label} className="flex items-start gap-3">
+                    <span className="grid size-9 shrink-0 place-items-center rounded-full bg-sage-soft text-sage-deep">
+                      <Icon name={ICONS[f.icon] ?? "check"} className="size-4" />
                     </span>
-                    <h3 className="font-display mt-4 text-[1.15rem] leading-tight font-medium text-espresso">
-                      {f.label}
-                    </h3>
-                    <p className="mt-2 text-[0.93rem] leading-[1.65] text-espresso-soft">
-                      {f.body}
-                    </p>
+                    <div>
+                      <h3 className="font-display text-[1.02rem] leading-tight font-medium text-espresso">
+                        {f.label}
+                      </h3>
+                      <p className="mt-1 text-[0.86rem] leading-[1.6] text-espresso-soft">
+                        {f.body}
+                      </p>
+                    </div>
                   </div>
-                </StaggerItem>
-              );
-            })}
-          </Stagger>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <Stagger
+              as="ul"
+              className="mx-auto mt-12 grid max-w-160 gap-4 sm:grid-cols-2"
+              stagger={0.08}
+            >
+              {features.map((f) => {
+                const image = imageForFeature(features, f.label);
+                return (
+                  <StaggerItem
+                    as="li"
+                    key={f.label}
+                    className="overflow-hidden rounded-card border border-sand/70 bg-paper"
+                  >
+                    {image && (
+                      <div className="relative aspect-4/3 w-full bg-cream-deep">
+                        <Image
+                          src={image.src}
+                          alt={image.alt}
+                          fill
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 45vw, 30vw"
+                          quality={80}
+                          className="object-cover"
+                        />
+                      </div>
+                    )}
+                    <div className="p-5">
+                      <span className="grid size-9 place-items-center rounded-full bg-sage-soft text-sage-deep">
+                        <Icon
+                          name={ICONS[f.icon] ?? "check"}
+                          className="size-4"
+                        />
+                      </span>
+                      <h3 className="font-display mt-3 text-[1.02rem] leading-tight font-medium text-espresso">
+                        {f.label}
+                      </h3>
+                      <p className="mt-1.5 text-[0.86rem] leading-[1.6] text-espresso-soft">
+                        {f.body}
+                      </p>
+                    </div>
+                  </StaggerItem>
+                );
+              })}
+            </Stagger>
+          )}
         </Section>
       )}
 
