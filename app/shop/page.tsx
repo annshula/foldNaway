@@ -6,7 +6,6 @@ import TrustBar from "@/components/sections/TrustBar";
 import { Icon } from "@/components/ui/Icons";
 import Image from "@/components/ui/Image";
 import { Reveal, Stagger, StaggerItem } from "@/components/ui/Motion";
-import { Section, SectionHeading } from "@/components/ui/Section";
 import { RatingStars } from "@/components/ui/Stars";
 import { reviewSetForHandle } from "@/data/reviews";
 import { pathForHandle } from "@/lib/catalog";
@@ -37,22 +36,41 @@ export const metadata: Metadata = {
 export default function ShopPage() {
   return (
     <main>
-      {/* The nav is transparent at the top of every page, so each page needs
-          just enough top padding to clear it, no more — kept tight (only
-          the nav height, no extra breathing room) so the product grid
-          starts as close to the fold as the heading allows, rather than
-          pushing the first row of products out of the initial viewport. */}
-      <Section className="pt-[calc(var(--nav-h)+0.5rem)]">
-        <SectionHeading
-          eyebrow="Shop"
-          title="One bag. Six colourways."
-          body="Everything folds to keychain size and opens to a full-capacity tote."
-          align="center"
-        />
+      {/* Not <Section>: that component's own py-20/lg:py-28 can't actually
+          be overridden by a passed-in className here — Section's className
+          merge is plain string concatenation (see lib/utils.ts's cn(), which
+          this codebase deliberately keeps non-deduplicating), and Tailwind's
+          real cascade order — not JSX prop order — decides which of two
+          conflicting utilities wins. `py-20`/`lg:py-28` reliably beat a
+          later `pt-0`/`lg:pb-28` in the compiled stylesheet regardless of
+          className string order, so the "removed" top padding kept
+          rendering anyway. Building the wrapper directly here sidesteps
+          that entirely: only the padding actually written below exists, no
+          conflicting utility for it to lose to.
+
+          The nav is `sticky`, not `fixed` — it occupies real space in
+          document flow, so page content already starts right after it with
+          no extra top padding needed (unlike Hero.tsx, which deliberately
+          pulls itself up under the nav with a negative margin to sit behind
+          it; this page never does that).
+
+          Title/description and the grid both use the exact same
+          `mx-auto max-w-310 px-5 sm:px-8` container as Nav.tsx, so their
+          left edge lines up with the wordmark exactly. */}
+      <section className="relative px-5 pt-6 pb-20 sm:px-8 lg:pb-28">
+        <div className="mx-auto max-w-310">
+          <h1 className="font-display text-[1.15rem] font-medium text-espresso sm:text-[1.35rem]">
+            Shop
+          </h1>
+          <p className="mt-2 max-w-2xl text-[0.95rem] leading-relaxed text-espresso-soft">
+            Everything folds to keychain size and opens to a full-capacity
+            tote.
+          </p>
+        </div>
 
         <Stagger
           as="ul"
-          className="mx-auto mt-8 grid max-w-5xl grid-cols-2 gap-4 sm:grid-cols-3"
+          className="mx-auto mt-8 grid max-w-310 grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4"
           stagger={0.08}
         >
           {products.map((product) => {
@@ -150,7 +168,7 @@ export default function ShopPage() {
             {site.promise.shipping} · {site.promise.returns}
           </p>
         </Reveal>
-      </Section>
+      </section>
 
       <TrustBar />
       <FinalCta />
