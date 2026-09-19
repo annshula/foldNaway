@@ -1,6 +1,6 @@
 {
   "version": 8,
-  "syncedAt": "2026-09-19T11:42:14.529Z",
+  "syncedAt": "2026-09-19T12:31:05.878Z",
   "shop": {
     "domain": "trackify-com.myshopify.com",
     "name": "Trackify",
@@ -33,35 +33,35 @@
           "availableForSale": true,
           "stockQuantity": 9000,
           "pricesByMarket": {
-            "CA": {
-              "amount": 47,
+            "ZA": {
+              "amount": 548,
               "compareAtAmount": null,
-              "currencyCode": "CAD"
-            },
-            "IN": {
-              "amount": 3230.07,
-              "compareAtAmount": null,
-              "currencyCode": "INR"
+              "currencyCode": "ZAR"
             },
             "AU": {
               "amount": 48,
               "compareAtAmount": null,
               "currencyCode": "AUD"
             },
-            "ZA": {
-              "amount": 548,
+            "IN": {
+              "amount": 3230.07,
               "compareAtAmount": null,
-              "currencyCode": "ZAR"
-            },
-            "GB": {
-              "amount": 26,
-              "compareAtAmount": null,
-              "currencyCode": "GBP"
+              "currencyCode": "INR"
             },
             "US": {
               "amount": 32.99,
               "compareAtAmount": null,
               "currencyCode": "USD"
+            },
+            "CA": {
+              "amount": 47,
+              "compareAtAmount": null,
+              "currencyCode": "CAD"
+            },
+            "GB": {
+              "amount": 26,
+              "compareAtAmount": null,
+              "currencyCode": "GBP"
             }
           },
           "image": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/5f33e4d9-cd3b-4167-9286-53e44ee4f2f2.jpg?v=1789758210",
@@ -79,35 +79,35 @@
           "availableForSale": true,
           "stockQuantity": 8946,
           "pricesByMarket": {
-            "CA": {
-              "amount": 47,
+            "ZA": {
+              "amount": 548,
               "compareAtAmount": null,
-              "currencyCode": "CAD"
-            },
-            "IN": {
-              "amount": 3230.07,
-              "compareAtAmount": null,
-              "currencyCode": "INR"
+              "currencyCode": "ZAR"
             },
             "AU": {
               "amount": 48,
               "compareAtAmount": null,
               "currencyCode": "AUD"
             },
-            "ZA": {
-              "amount": 548,
+            "IN": {
+              "amount": 3230.07,
               "compareAtAmount": null,
-              "currencyCode": "ZAR"
-            },
-            "GB": {
-              "amount": 26,
-              "compareAtAmount": null,
-              "currencyCode": "GBP"
+              "currencyCode": "INR"
             },
             "US": {
               "amount": 32.99,
               "compareAtAmount": null,
               "currencyCode": "USD"
+            },
+            "CA": {
+              "amount": 47,
+              "compareAtAmount": null,
+              "currencyCode": "CAD"
+            },
+            "GB": {
+              "amount": 26,
+              "compareAtAmount": null,
+              "currencyCode": "GBP"
             }
           },
           "image": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/b21c2d32-6708-4af0-95f3-0d5b5c2deda6.jpg?v=1789758210",
@@ -125,35 +125,35 @@
           "availableForSale": true,
           "stockQuantity": 9485,
           "pricesByMarket": {
-            "CA": {
-              "amount": 47,
+            "ZA": {
+              "amount": 548,
               "compareAtAmount": null,
-              "currencyCode": "CAD"
-            },
-            "IN": {
-              "amount": 3230.07,
-              "compareAtAmount": null,
-              "currencyCode": "INR"
+              "currencyCode": "ZAR"
             },
             "AU": {
               "amount": 48,
               "compareAtAmount": null,
               "currencyCode": "AUD"
             },
-            "ZA": {
-              "amount": 548,
+            "IN": {
+              "amount": 3230.07,
               "compareAtAmount": null,
-              "currencyCode": "ZAR"
-            },
-            "GB": {
-              "amount": 26,
-              "compareAtAmount": null,
-              "currencyCode": "GBP"
+              "currencyCode": "INR"
             },
             "US": {
               "amount": 32.99,
               "compareAtAmount": null,
               "currencyCode": "USD"
+            },
+            "CA": {
+              "amount": 47,
+              "compareAtAmount": null,
+              "currencyCode": "CAD"
+            },
+            "GB": {
+              "amount": 26,
+              "compareAtAmount": null,
+              "currencyCode": "GBP"
             }
           },
           "image": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/27d75e64-e063-4ed4-83ef-638f78504635.jpg?v=1789758210",
@@ -171,35 +171,35 @@
           "availableForSale": true,
           "stockQuantity": 6941,
           "pricesByMarket": {
-            "CA": {
-              "amount": 47,
+            "ZA": {
+              "amount": 548,
               "compareAtAmount": null,
-              "currencyCode": "CAD"
-            },
-            "IN": {
-              "amount": 3230.07,
-              "compareAtAmount": null,
-              "currencyCode": "INR"
+              "currencyCode": "ZAR"
             },
             "AU": {
               "amount": 48,
               "compareAtAmount": null,
               "currencyCode": "AUD"
             },
-            "ZA": {
-              "amount": 548,
+            "IN": {
+              "amount": 3230.07,
               "compareAtAmount": null,
-              "currencyCode": "ZAR"
-            },
-            "GB": {
-              "amount": 26,
-              "compareAtAmount": null,
-              "currencyCode": "GBP"
+              "currencyCode": "INR"
             },
             "US": {
               "amount": 32.99,
               "compareAtAmount": null,
               "currencyCode": "USD"
+            },
+            "CA": {
+              "amount": 47,
+              "compareAtAmount": null,
+              "currencyCode": "CAD"
+            },
+            "GB": {
+              "amount": 26,
+              "compareAtAmount": null,
+              "currencyCode": "GBP"
             }
           },
           "image": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/3dfe6cf7-08f2-4281-ad33-a640970eb033.jpg?v=1789758210",
@@ -217,35 +217,35 @@
           "availableForSale": true,
           "stockQuantity": 7928,
           "pricesByMarket": {
-            "CA": {
-              "amount": 47,
+            "ZA": {
+              "amount": 548,
               "compareAtAmount": null,
-              "currencyCode": "CAD"
-            },
-            "IN": {
-              "amount": 3230.07,
-              "compareAtAmount": null,
-              "currencyCode": "INR"
+              "currencyCode": "ZAR"
             },
             "AU": {
               "amount": 48,
               "compareAtAmount": null,
               "currencyCode": "AUD"
             },
-            "ZA": {
-              "amount": 548,
+            "IN": {
+              "amount": 3230.07,
               "compareAtAmount": null,
-              "currencyCode": "ZAR"
-            },
-            "GB": {
-              "amount": 26,
-              "compareAtAmount": null,
-              "currencyCode": "GBP"
+              "currencyCode": "INR"
             },
             "US": {
               "amount": 32.99,
               "compareAtAmount": null,
               "currencyCode": "USD"
+            },
+            "CA": {
+              "amount": 47,
+              "compareAtAmount": null,
+              "currencyCode": "CAD"
+            },
+            "GB": {
+              "amount": 26,
+              "compareAtAmount": null,
+              "currencyCode": "GBP"
             }
           },
           "image": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/c9381bbd-62d4-4a7f-bb24-f1c506ccf275.jpg?v=1789758210",
@@ -263,35 +263,35 @@
           "availableForSale": true,
           "stockQuantity": 7894,
           "pricesByMarket": {
-            "CA": {
-              "amount": 47,
+            "ZA": {
+              "amount": 548,
               "compareAtAmount": null,
-              "currencyCode": "CAD"
-            },
-            "IN": {
-              "amount": 3230.07,
-              "compareAtAmount": null,
-              "currencyCode": "INR"
+              "currencyCode": "ZAR"
             },
             "AU": {
               "amount": 48,
               "compareAtAmount": null,
               "currencyCode": "AUD"
             },
-            "ZA": {
-              "amount": 548,
+            "IN": {
+              "amount": 3230.07,
               "compareAtAmount": null,
-              "currencyCode": "ZAR"
-            },
-            "GB": {
-              "amount": 26,
-              "compareAtAmount": null,
-              "currencyCode": "GBP"
+              "currencyCode": "INR"
             },
             "US": {
               "amount": 32.99,
               "compareAtAmount": null,
               "currencyCode": "USD"
+            },
+            "CA": {
+              "amount": 47,
+              "compareAtAmount": null,
+              "currencyCode": "CAD"
+            },
+            "GB": {
+              "amount": 26,
+              "compareAtAmount": null,
+              "currencyCode": "GBP"
             }
           },
           "image": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/54339bf2-9641-41d4-9690-1688accf2dfa.jpg?v=1789758210",
@@ -392,21 +392,21 @@
         {
           "kind": "image",
           "src": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/Sea61695a517e477685770ac17927866b2.jpg?v=1789816822",
-          "alt": "",
+          "alt": "Foldable Keychain Storage Pouch Large-Capacity Portable Handheld Shoulder Eco-Bag",
           "width": 1000,
           "height": 1000
         },
         {
           "kind": "image",
           "src": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/S2611474f1265419f92b594656699b858B.png?v=1789816822",
-          "alt": "",
+          "alt": "Foldable Keychain Storage Pouch Large-Capacity Portable Handheld Shoulder Eco-Bag",
           "width": 1000,
           "height": 1000
         },
         {
           "kind": "image",
           "src": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/S0afcd5d77dd44020a1c56f1dd61ff5ffd.png?v=1789816823",
-          "alt": "",
+          "alt": "Foldable Keychain Storage Pouch Large-Capacity Portable Handheld Shoulder Eco-Bag",
           "width": 1000,
           "height": 1000
         },
