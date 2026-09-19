@@ -70,7 +70,7 @@ export default function ShopPage() {
 
         <Stagger
           as="ul"
-          className="mx-auto mt-8 grid max-w-310 grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4"
+          className="mx-auto mt-8 grid max-w-310 grid-cols-1 gap-4 sm:grid-cols-3 lg:grid-cols-4"
           stagger={0.08}
         >
           {products.map((product) => {
