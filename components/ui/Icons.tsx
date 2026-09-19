@@ -86,6 +86,9 @@ const paths = {
       <path d="M11 10.2l3.6 1.8-3.6 1.8z" {...stroke} />
     </>
   ),
+  /** Filled, not stroked — a hairline play triangle disappears against a
+      photo/poster thumbnail; solid currentColor reads at 14–16px. */
+  play: <path d="M8 5.5v13l11-6.5z" fill="currentColor" stroke="none" />,
 } as const;
 
 export type IconName = keyof typeof paths;

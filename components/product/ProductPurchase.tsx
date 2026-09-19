@@ -34,7 +34,16 @@ export function ProductPurchase({
   return (
     <>
       <section className="px-5 pt-8 pb-16 sm:px-8 lg:pt-12 lg:pb-24">
-        <div className="mx-auto grid w-full max-w-310 gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:gap-16">
+        {/* grid-cols-1 below lg: is load-bearing, not decoration — a bare
+            `grid` with no grid-template-columns set at a breakpoint lays out
+            its single implicit column at the content's max-content width,
+            not shrunk to fit the container, the way flex/block would. The
+            gallery's own flex row (thumbnail rail + main image) has real
+            content width, so without an explicit `minmax(0, 1fr)` track
+            here it rendered at ~760px on a 390px mobile viewport — visibly
+            cropped since an ancestor clips overflow, not page-scrollable,
+            so it read as "just broken" rather than an obvious overflow. */}
+        <div className="mx-auto grid w-full max-w-310 grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:gap-16">
           <ProductGallery product={product} activeSrc={selected.image} />
           <div ref={buyBoxRef} className="lg:sticky lg:top-28 lg:self-start">
             <BuyBox

@@ -89,11 +89,34 @@ export function BuyBox({
 
   return (
     <div className="flex flex-col">
-      {product.subtitle && (
-        <p className="font-label text-[0.68rem] font-semibold tracking-widest text-sage-deep uppercase">
-          {product.subtitle}
-        </p>
-      )}
+      {/* Static feature callouts, not `product.subtitle` (Shopify's
+          custom.subtitle field) — deliberately overridden here rather than
+          edited in Shopify, same as the "50 lbs" claim in content/copy.ts's
+          productBenefits. ⚠️ "Holds 50 lbs" repeats that same unverified
+          weight-capacity claim; see the warning on productBenefits in
+          content/copy.ts before this ships live.
+
+          A row of small icon chips, not the single dense uppercase/
+          tracked-out text line this replaced — that read as one dense
+          string rather than three distinct, scannable facts. Each chip
+          pairs an icon with its own short label at normal tracking/case,
+          which is what actually reads as "minimal and modern" instead of
+          "loud all-caps banner". */}
+      <ul className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
+        {[
+          { icon: "weight" as const, label: "Holds 50 lbs" },
+          { icon: "fold" as const, label: "Folds to keychain size" },
+          { icon: "shield" as const, label: "Premium build" },
+        ].map((f) => (
+          <li
+            key={f.label}
+            className="inline-flex items-center gap-1.5 text-[0.78rem] font-medium text-espresso-soft"
+          >
+            <Icon name={f.icon} className="size-3.5 shrink-0 text-sage-deep" />
+            {f.label}
+          </li>
+        ))}
+      </ul>
 
       <h1 className="font-display mt-3 text-[clamp(1.6rem,3vw,2.3rem)] leading-[1.15] font-medium tracking-[-0.02em] text-espresso text-balance">
         {product.title}
