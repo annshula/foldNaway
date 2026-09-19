@@ -159,9 +159,35 @@ export default function Hero() {
           <Button href={hero.ctaHref} size="lg" arrow className="min-w-56">
             {hero.cta}
           </Button>
-          <Button href={hero.secondaryHref} size="lg" variant="outline">
-            {hero.secondary}
-          </Button>
+          {/* variant="outline" is espresso-on-transparent — reads fine on
+              desktop's crop (button sits over the open left side of the
+              photo) but is nearly illegible on mobile, where this button
+              lands over the black bag itself. Two separate buttons, each
+              hidden at the other breakpoint, rather than one button with a
+              className colour override: Button.tsx concatenates its variant
+              styles and any passed className with a plain template string
+              (no cn()/tailwind-merge), so a later className utility isn't
+              guaranteed to beat an earlier same-property variant utility —
+              confirmed the hard way: a first attempt at `hidden
+              md:inline-flex` directly on the Button rendered BOTH buttons on
+              mobile, because `shell`'s own `inline-flex` (display:
+              inline-flex) was compiled earlier in the build than this
+              page's `hidden` (display: none) and won regardless of string
+              order. `display: contents` wrapper divs sidestep this
+              entirely: the visibility toggle lives on an element with no
+              other classes to conflict with, and `contents` removes the
+              wrapper from the box tree so it doesn't affect the Button's
+              own flex-item sizing either. */}
+          <div className="contents md:hidden">
+            <Button href={hero.secondaryHref} size="lg" variant="ghost">
+              {hero.secondary}
+            </Button>
+          </div>
+          <div className="hidden md:contents">
+            <Button href={hero.secondaryHref} size="lg" variant="outline">
+              {hero.secondary}
+            </Button>
+          </div>
         </motion.div>
 
         <motion.ul
@@ -170,14 +196,19 @@ export default function Hero() {
           transition={{ duration: 0.7, delay: 0.42, ease: easeOut }}
           className="mt-11 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 md:justify-start"
         >
+          {/* Same mobile-vs-desktop colour problem as the outline button
+              above: text-espresso-mute/text-sage-deep are dark, and on
+              mobile this row sits over the black bag in the photo, not the
+              open cream desktop crop. Light on mobile, back to the normal
+              dark tones at md: and up. */}
           {hero.promise.map((line, i) => (
             <li
               key={line}
-              className="font-label flex items-center gap-2 text-[0.7rem] font-medium tracking-widest text-espresso-mute uppercase"
+              className="font-label flex items-center gap-2 text-[0.7rem] font-medium tracking-widest text-oat uppercase md:text-espresso-mute"
             >
               <Icon
                 name={promiseIcons[i] ?? "check"}
-                className="size-4 text-sage-deep"
+                className="size-4 text-oat md:text-sage-deep"
               />
               {line}
             </li>
