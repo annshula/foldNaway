@@ -72,7 +72,7 @@ export function NewsletterForm() {
       >
         10% off your first order
       </label>
-      <div className="mt-3 flex items-center gap-2 rounded-full border border-bark-line bg-white/[0.04] pr-1.5 pl-5 transition-colors duration-300 focus-within:border-sage/60">
+      <div className="mt-3 flex items-center gap-2 rounded-full border border-bark-line bg-white/4 pr-1.5 pl-5 transition-colors duration-300 focus-within:border-sage/60">
         <input
           id={inputId}
           type="email"

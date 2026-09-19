@@ -52,7 +52,7 @@ export const site = {
     // add one here without a spec sheet to cite. See lib/product.ts's claim
     // policy note.
     capacity: "Full-size tote open, keyring-sized folded",
-    support: "Human replies in under 12 hours",
+    support: "Instant human replies",
   },
 } as const;
 

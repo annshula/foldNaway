@@ -8,6 +8,7 @@ import Button from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icons";
 import Image from "@/components/ui/Image";
 import { RatingStars } from "@/components/ui/Stars";
+import { quality } from "@/content/quality";
 import { formatMoney } from "@/lib/money";
 import type { Product } from "@/lib/product";
 import { shopifyCheckout } from "@/lib/shopify-checkout";
@@ -90,32 +91,64 @@ export function BuyBox({
         {product.title}
       </h1>
 
-      {rating && (
-        <a
-          href="#reviews"
-          className="mt-3 inline-flex w-fit items-center gap-2.5 transition-opacity duration-200 hover:opacity-75"
-        >
-          <RatingStars value={rating.average} starClassName="h-4 w-4" />
-          <span className="text-[0.82rem] text-espresso-soft">
-            <span className="font-mono font-semibold text-espresso">
-              {rating.average.toFixed(1)}
-            </span>{" "}
-            ·{" "}
-            <span className="font-mono underline decoration-sand-strong underline-offset-2">
-              {rating.count.toLocaleString("en-US")} reviews
+      {/* Rating (jumps to #reviews) and the "checks passed" proof link
+          (jumps to "Put to the test") sit side by side in one row — both
+          are the same kind of thing: a quick trust signal that jumps
+          further down the page. The checks-passed count is pulled from the
+          QC list itself so it can never drift from the section it jumps
+          to. Native CSS smooth-scroll (globals.css) plus each target
+          section's own scroll-mt-20 handle the nav-clearing scroll
+          position, no JS handler needed. */}
+      <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">
+        {rating && (
+          <a
+            href="#reviews"
+            className="inline-flex w-fit items-center gap-2.5 transition-opacity duration-200 hover:opacity-75"
+          >
+            <RatingStars value={rating.average} starClassName="h-4 w-4" />
+            <span className="text-[0.82rem] text-espresso-soft">
+              <span className="font-mono font-semibold text-espresso">
+                {rating.average.toFixed(1)}
+              </span>{" "}
+              ·{" "}
+              <span className="font-mono underline decoration-sand-strong underline-offset-2">
+                {rating.count.toLocaleString("en-US")} reviews
+              </span>
             </span>
-          </span>
+          </a>
+        )}
+
+        {rating && <span aria-hidden className="h-3.5 w-px bg-sand-strong" />}
+
+        <a
+          href="#quality-test"
+          aria-label={`Jump to the ${quality.checks.length} quality checks this bag passes`}
+          className="group inline-flex w-fit min-h-11 touch-manipulation items-center gap-1.5 text-[0.8rem] font-medium text-espresso-soft underline-offset-4 transition-colors duration-200 hover:text-espresso hover:underline focus-visible:underline"
+        >
+          <Icon
+            name="shield"
+            className="size-3.5 shrink-0 text-sage-deep transition-colors duration-200 group-hover:text-espresso"
+          />
+          {quality.checks.length} checks passed
+          <Icon
+            name="arrow-right"
+            className="size-3 shrink-0 -translate-x-1 text-espresso-mute opacity-0 transition-all duration-300 ease-(--ease-out-expo) group-hover:translate-x-0 group-hover:opacity-100"
+          />
         </a>
-      )}
+      </div>
 
       {/* ------------------------------ price ------------------------------ */}
+      {/* The price is a hero moment on a product page, not a spec value —
+          it stays in the display serif (Fraunces) with tabular-nums for
+          alignment, rather than the mono/grotesk voice reserved for actual
+          data rows (specs, step counters, the quantity stepper). */}
       <div className="mt-6 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-        <span className="font-mono text-[2rem] leading-none font-semibold text-espresso">
+        <span className="font-display text-[2rem] leading-none font-semibold text-espresso tabular-nums">
           {formatMoney(price, currency)}
         </span>
         {compareAt && compareAt > price && (
           <>
-            <span className="font-mono text-[1rem] text-espresso-mute line-through">
+            <span className="text-[1rem] text-espresso-mute line-through tabular-nums">
               {formatMoney(compareAt, currency)}
             </span>
             <span className="font-label rounded-full bg-terracotta-soft px-2.5 py-1 text-[0.65rem] font-bold tracking-widest text-terracotta uppercase">

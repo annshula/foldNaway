@@ -73,7 +73,7 @@ export function ContactForm() {
           Your email client should be open
         </p>
         <p className="mt-2 text-sm leading-relaxed text-espresso-soft">
-          Send the draft and we&rsquo;ll reply within 12 hours. If nothing
+          Send the draft and we&rsquo;ll reply instantly. If nothing
           opened, email us directly at{" "}
           <a
             href={`mailto:${site.email}`}

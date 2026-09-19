@@ -100,7 +100,7 @@ export const problemSolution = {
 export const trustBar = [
   { label: "Free tracked shipping", detail: "Worldwide, no minimum" },
   { label: "Free fix", detail: "Damaged, missing or wrong items" },
-  { label: "Replies in 12h", detail: "A person, not a bot" },
+  { label: "Instant replies", detail: "A person, not a bot" },
 ];
 
 /**
@@ -109,46 +109,61 @@ export const trustBar = [
  * ProductBenefitCards.tsx). `icon` keys into components/ui/Icons.tsx and
  * doubles as the placeholder art's watermark until real product photography
  * replaces it.
+ *
+ * Positioning: premium, high-capacity, multi-purpose carry system — not the
+ * "skip the plastic bag" framing this section used to carry. That framing
+ * read as a budget/eco swap, not a premium product; this version leads with
+ * capacity, build and versatility instead.
+ *
+ * ⚠️ "Holds up to 50 lbs" (the `deceptivelyRoomy` item below) is a specific
+ * weight-capacity claim with no supporting spec in the Shopify product data
+ * — every other file in this codebase that touches capacity (lib/site.ts,
+ * lib/product.ts, content/quality.ts, content/answers.ts) deliberately
+ * avoids stating a kg/lb number for exactly this reason. This one was added
+ * on explicit instruction despite that standing rule. Confirm it's actually
+ * true (real load testing, not a guess) before this ships to production —
+ * an unverified weight claim on a live product page is a real liability if
+ * it's wrong.
  */
 export const productBenefits = {
-  eyebrow: "Made for real life",
-  title: "Six reasons it earns a spot on your keys.",
+  eyebrow: "Premium, multi-purpose carry",
+  title: "One bag. Every place life takes you.",
   items: [
     {
-      tag: "Never caught out",
-      icon: "clip",
-      headline: "No more paying for a bag you didn't want.",
-      body: "Forgetting a bag at the store means juggling items by hand or paying for plastic at the till. Clip this to your keys and it's already there.",
+      tag: "Engineered capacity",
+      icon: "shield",
+      headline: "Holds up to 50 lbs without sagging.",
+      body: "Reinforced seams and a heavy-duty weave built for real loads, not just a light grocery run. This is a bag you can actually load up.",
     },
     {
       tag: "Deceptively roomy",
       icon: "fold",
-      headline: "Fits in your palm. Holds a full grocery run.",
-      body: "Small enough to close a fist around folded. Unfolds into a full-size tote in two seconds, no assembly.",
+      headline: "Fits in your palm. Opens to a full-size tote.",
+      body: "Collapses small enough to close a fist around, then unfolds in two seconds into a tote with real, usable capacity.",
     },
     {
-      tag: "Plastic-free by default",
-      icon: "leaf",
-      headline: "Skip the bag ban scramble entirely.",
-      body: "A practical, guilt-free swap for shoppers who want convenience, not a lecture. Always on hand, no plastic bag needed.",
-    },
-    {
-      tag: "One bag, every trip",
+      tag: "Everyday carry, elevated",
       icon: "bag",
-      headline: "Groceries. Gym clothes. Beach day. Same bag.",
-      body: "One pouch, used across every scenario, not a single-purpose item you buy once and forget in a drawer.",
+      headline: "From the grocery run to the boardroom.",
+      body: "Farmers market, airport carry-on, office supply run, weekend errands. One premium bag that looks the part in every one of them.",
     },
     {
-      tag: "Actually useful gift",
+      tag: "Built for the outdoors",
+      icon: "leaf",
+      headline: "Beach, trail, campsite, tailgate.",
+      body: "A durable, weather-ready build that keeps up outdoors as easily as it does at the store, without looking like gear.",
+    },
+    {
+      tag: "A gift that reads premium",
       icon: "check",
-      headline: "The stocking stuffer that actually gets used.",
-      body: "Inexpensive, useful for anyone, comes in six colours. The rare gift that doesn't sit in a drawer after the holidays.",
+      headline: "Unwraps like a designer piece.",
+      body: "Six colourways, a refined finish, and genuine everyday utility. The rare gift that gets used constantly, not shelved.",
     },
     {
-      tag: "Looks pricier than it is",
-      icon: "shield",
-      headline: "Reads as designer. Priced like an everyday bag.",
-      body: "Modern, minimalist build that looks premium next to totes several times the price, without the markup.",
+      tag: "Designer look, real utility",
+      icon: "weight",
+      headline: "Reads as luxury. Works as hard as gear.",
+      body: "A refined, modern silhouette that doesn't sacrifice capacity or durability for the sake of looking good.",
     },
   ],
 } as const;

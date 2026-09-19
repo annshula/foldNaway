@@ -1,5 +1,11 @@
 import type { Metadata, Viewport } from "next";
-import { Figtree, Fraunces, IBM_Plex_Mono, Instrument_Sans } from "next/font/google";
+import {
+  Figtree,
+  Fraunces,
+  IBM_Plex_Mono,
+  Inter,
+  Plus_Jakarta_Sans,
+} from "next/font/google";
 import { Toaster } from "sonner";
 
 import { ClarityAnalytics } from "@/components/analytics/ClarityAnalytics";
@@ -14,36 +20,46 @@ import { site } from "@/lib/site";
 import "./globals.css";
 
 /**
- * Four font families, self-hosted at build time by next/font — no
- * third-party request, no FOUT. Each carries a distinct role so sections
- * read as deliberately different voices rather than one typeface repeated
- * at different sizes:
+ * Five font families, self-hosted at build time by next/font — no
+ * third-party request, no FOUT.
  *
- *   Fraunces        -> font-display  : warm variable serif for narrative
- *                                       headings — Hero, FinalCta, section
- *                                       titles, quotes. The emotional voice.
- *   Figtree         -> font-sans     : geometric-humanist body copy and UI.
- *   Instrument Sans -> font-grotesk  : a cooler, more structured grotesk for
- *                                       functional/data sections — table
- *                                       headers, specs, trust copy. The
- *                                       analytical voice, set apart from
- *                                       Figtree's warmer body text.
- *   IBM Plex Mono   -> font-mono     : tabular figures for numbers that are
- *                                       actually data — step counters, spec
- *                                       values, stats — not just decoration.
- *
- * `font-label` in the CSS is Figtree at wide tracking — a role, not a fifth
- * family.
+ *   Fraunces           -> font-logo     : the wordmark only (Logo.tsx). Its
+ *                                          own dedicated token, deliberately
+ *                                          decoupled from font-display, so
+ *                                          the brand mark stays fixed no
+ *                                          matter how heading type changes
+ *                                          — the exact drift that happened
+ *                                          when the logo briefly inherited
+ *                                          a heading-font swap it shouldn't
+ *                                          have.
+ *   Plus Jakarta Sans  -> font-display  : headings. A rounded-but-controlled
+ *                                          geometric sans — warmer and a
+ *                                          little more casual than a flat
+ *                                          corporate sans (Poppins, Inter),
+ *                                          still fully professional.
+ *   Figtree            -> font-sans     : body copy and UI chrome, plus
+ *                                          font-label (eyebrows, nav links).
+ *   Inter              -> font-grotesk  : the functional/data voice — table
+ *                                          headers, specs, trust copy.
+ *   IBM Plex Mono      -> font-mono     : tabular figures for numbers that
+ *                                          are actually data — step
+ *                                          counters, spec values, stats.
  */
 // Fraunces is a variable font: `axes` may only be set when the weight is
 // variable (next/font errors otherwise), so the whole weight range ships and
-// components pick a weight with a normal `font-*` utility. SOFT and WONK are
-// what keep it warm rather than editorial-severe at display sizes — see the
-// `.font-display` rule in globals.css.
+// Logo.tsx picks a weight with a normal `font-*` utility.
 const fraunces = Fraunces({
   subsets: ["latin"],
   axes: ["SOFT", "WONK"],
   variable: "--font-fraunces",
+  display: "swap",
+  preload: true,
+});
+
+const plusJakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  variable: "--font-plus-jakarta",
   display: "swap",
   preload: true,
 });
@@ -56,10 +72,10 @@ const figtree = Figtree({
   preload: true,
 });
 
-const instrumentSans = Instrument_Sans({
+const inter = Inter({
   subsets: ["latin"],
   weight: ["500", "600", "700"],
-  variable: "--font-instrument",
+  variable: "--font-inter",
   display: "swap",
   preload: true,
 });
@@ -149,7 +165,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${fraunces.variable} ${figtree.variable} ${instrumentSans.variable} ${plexMono.variable}`}
+      className={`${fraunces.variable} ${plusJakarta.variable} ${figtree.variable} ${inter.variable} ${plexMono.variable}`}
       suppressHydrationWarning
     >
       <head>

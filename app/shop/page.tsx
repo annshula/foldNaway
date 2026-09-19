@@ -38,8 +38,11 @@ export default function ShopPage() {
   return (
     <main>
       {/* The nav is transparent at the top of every page, so each page needs
-          its own top padding to clear it — see Nav.tsx. */}
-      <Section className="pt-[calc(var(--nav-h)+2.5rem)]">
+          just enough top padding to clear it, no more — kept tight (only
+          the nav height, no extra breathing room) so the product grid
+          starts as close to the fold as the heading allows, rather than
+          pushing the first row of products out of the initial viewport. */}
+      <Section className="pt-[calc(var(--nav-h)+0.5rem)]">
         <SectionHeading
           eyebrow="Shop"
           title="One bag. Six colourways."
@@ -49,7 +52,7 @@ export default function ShopPage() {
 
         <Stagger
           as="ul"
-          className="mx-auto mt-14 grid max-w-5xl grid-cols-2 gap-4 sm:grid-cols-3"
+          className="mx-auto mt-8 grid max-w-5xl grid-cols-2 gap-4 sm:grid-cols-3"
           stagger={0.08}
         >
           {products.map((product) => {

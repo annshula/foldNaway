@@ -27,7 +27,7 @@ export default function WhereItGoes() {
       >
         {whereItGoes.places.map((place, i) => (
           <StaggerItem as="li" key={place.label} className="group">
-            <figure className="relative aspect-[4/5] w-full overflow-hidden rounded-(--radius-card) bg-cream-deep">
+            <figure className="relative aspect-4/5 w-full overflow-hidden rounded-card bg-cream-deep">
               <Image
                 src={images[i]}
                 alt={`${place.label}: ${place.body}`}

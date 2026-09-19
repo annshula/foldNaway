@@ -67,20 +67,26 @@
   --color-ring: #7d8f6f;
   --color-overlay: rgb(36 29 24 / 0.5);
 
-  /* ── Typography: four families, each a distinct voice ────────────────
-     Fraunces         -> font-display   (warm variable serif: narrative
-                                          headings, hero, quotes)
-     Figtree          -> font-sans      (geometric-humanist: body copy)
-     Instrument Sans  -> font-grotesk   (cooler structured grotesk:
-                                          data/functional sections — specs,
-                                          comparison table, trust copy)
-     IBM Plex Mono    -> font-mono      (tabular figures for real data:
-                                          step counters, spec values, stats)
-     `font-label` is Figtree at wide tracking — a role, not a 5th family. */
-  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+  /* ── Typography: five families, each a distinct role ──────────────────
+     Fraunces           -> font-logo      (wordmark only — Logo.tsx — kept
+                                            on its own token, deliberately
+                                            never reused for headings, so
+                                            the brand mark can't drift when
+                                            font-display changes)
+     Plus Jakarta Sans  -> font-display   (headings — rounded-but-controlled
+                                            geometric sans, professional
+                                            with a little warmth)
+     Figtree            -> font-sans      (body copy, UI chrome)
+     Inter              -> font-grotesk   (functional/data sections — specs,
+                                            comparison table, trust copy)
+     IBM Plex Mono      -> font-mono      (tabular figures for real data:
+                                            step counters, spec values, stats)
+     `font-label` is Figtree at wide tracking — a role, not a 6th family. */
+  --font-logo: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-display: var(--font-plus-jakarta), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
   --font-label: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
-  --font-grotesk: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
+  --font-grotesk: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-plex-mono), ui-monospace, "SF Mono", Menlo, monospace;
 
   /* ── Fluid type scale (same curve shape as the reference) ───────── */
@@ -205,30 +211,41 @@ body {
 
 /* ------------------------------- typography ------------------------------- */
 
-/* Fraunces is a variable serif — `soft` and `wonk` axes are what keep it
-   warm rather than editorial-severe at display sizes. */
-.font-display {
-  font-family: var(--font-display);
+/* Fraunces, the wordmark's own font — never used for anything but the
+   logo. `soft`/`wonk` axes are what give it the brand mark's warm,
+   slightly hand-set character rather than reading editorial-severe. */
+.font-logo {
+  font-family: var(--font-logo);
   font-variation-settings: "SOFT" 40, "WONK" 1;
   letter-spacing: -0.015em;
+}
+
+/* Plus Jakarta Sans: headings, the one rounder/warmer voice on the page. */
+.font-display {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
 }
 
 /* Figtree at wide tracking: eyebrows, nav links, UI chrome. */
 .font-label {
   font-family: var(--font-label);
+  font-weight: 600;
   letter-spacing: 0.14em;
 }
 
-/* Instrument Sans: the analytical voice — table headers, specs, trust
-   copy. Cooler and more structured than Figtree's body warmth, tighter
-   tracking than `.font-label` so it reads as data, not as an eyebrow. */
+/* Inter: the functional/data voice — table headers, specs, trust copy.
+   Slightly tighter tracking than `.font-label` so it reads as data, not an
+   eyebrow. */
 .font-grotesk {
   font-family: var(--font-grotesk);
+  font-weight: 600;
   letter-spacing: 0.01em;
 }
 
-/* IBM Plex Mono: tabular figures for numbers that are actually data —
-   step counters, spec values — not decorative digits. */
+/* IBM Plex Mono: tabular figures for numbers that are actually data — step
+   counters, spec values — not decorative digits. `tnum` keeps every digit
+   the same width so a price or count doesn't visibly reflow as it updates. */
 .font-mono {
   font-family: var(--font-mono);
   font-feature-settings: "tnum" 1;
@@ -240,9 +257,8 @@ h2,
 h3,
 h4 {
   font-family: var(--font-display);
-  font-variation-settings: "SOFT" 40, "WONK" 1;
-  font-weight: 500;
-  letter-spacing: -0.015em;
+  font-weight: 600;
+  letter-spacing: -0.02em;
   text-wrap: balance;
 }
 
