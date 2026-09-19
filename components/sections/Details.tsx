@@ -50,10 +50,10 @@ export default function Details() {
                 i < details.specs.length - 1 ? "border-b border-sand/60" : ""
               } ${i % 2 === 0 ? "sm:border-r sm:border-sand/60" : ""}`}
             >
-              <dt className="font-label text-[0.72rem] font-semibold tracking-[0.12em] text-espresso-mute uppercase">
+              <dt className="font-grotesk text-[0.72rem] font-semibold tracking-[0.12em] text-espresso-mute uppercase">
                 {spec.label}
               </dt>
-              <dd className="text-right text-[0.95rem] font-medium text-espresso tabular-nums">
+              <dd className="font-mono text-right text-[0.95rem] font-medium text-espresso">
                 {spec.value}
               </dd>
             </div>

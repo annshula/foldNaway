@@ -26,7 +26,7 @@ export default function Benefits() {
           >
             <span
               aria-hidden
-              className="font-display block text-[0.95rem] font-semibold text-sage/50 tabular-nums"
+              className="font-mono block text-[0.95rem] font-semibold text-sage/50"
             >
               {String(i + 1).padStart(2, "0")}
             </span>

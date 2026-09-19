@@ -26,7 +26,7 @@ export default function HowItWorks() {
                 className="absolute top-6 left-[calc(3rem+0.75rem)] hidden h-px w-[calc(100%-3rem)] bg-sand-strong/70 lg:block"
               />
             )}
-            <span className="font-display relative grid size-12 place-items-center rounded-full border border-sage/35 bg-paper text-[0.95rem] font-semibold text-sage-deep tabular-nums">
+            <span className="font-mono relative grid size-12 place-items-center rounded-full border border-sage/35 bg-paper text-[0.95rem] font-semibold text-sage-deep">
               {s.step}
             </span>
             <h3 className="font-display mt-5 text-[1.15rem] leading-tight font-medium text-espresso">

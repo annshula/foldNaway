@@ -44,11 +44,11 @@ export default function Testimonials() {
       <div className="mt-8 flex flex-col items-center gap-2">
         <RatingStars value={average} starClassName="h-5 w-5" />
         <p className="text-[0.88rem] text-espresso-soft">
-          <span className="font-semibold text-espresso tabular-nums">
+          <span className="font-mono font-semibold text-espresso">
             {average.toFixed(1)}
           </span>{" "}
           out of 5 ·{" "}
-          <span className="tabular-nums">{count.toLocaleString("en-US")}</span>{" "}
+          <span className="font-mono">{count.toLocaleString("en-US")}</span>{" "}
           reviews
         </p>
       </div>

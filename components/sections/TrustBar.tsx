@@ -25,7 +25,7 @@ export default function TrustBar() {
           >
             <Icon name={icons[i]} className="size-5 shrink-0 text-sage-deep" />
             <span>
-              <span className="font-label block text-[0.78rem] font-bold tracking-[0.08em] text-espresso uppercase">
+              <span className="font-grotesk block text-[0.78rem] font-bold tracking-[0.08em] text-espresso uppercase">
                 {t.label}
               </span>
               <span className="block text-[0.82rem] leading-snug text-espresso-mute">

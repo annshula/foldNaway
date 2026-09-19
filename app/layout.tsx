@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Figtree, Fraunces } from "next/font/google";
+import { Figtree, Fraunces, IBM_Plex_Mono, Instrument_Sans } from "next/font/google";
 import { Toaster } from "sonner";
 
 import { ClarityAnalytics } from "@/components/analytics/ClarityAnalytics";
@@ -14,14 +14,26 @@ import { site } from "@/lib/site";
 import "./globals.css";
 
 /**
- * Two font families, self-hosted at build time by next/font — no
- * third-party request, no FOUT.
+ * Four font families, self-hosted at build time by next/font — no
+ * third-party request, no FOUT. Each carries a distinct role so sections
+ * read as deliberately different voices rather than one typeface repeated
+ * at different sizes:
  *
- *   Fraunces -> font-display : warm variable serif for headings and the hero
- *   Figtree  -> font-sans    : geometric-humanist for body copy and all UI
+ *   Fraunces        -> font-display  : warm variable serif for narrative
+ *                                       headings — Hero, FinalCta, section
+ *                                       titles, quotes. The emotional voice.
+ *   Figtree         -> font-sans     : geometric-humanist body copy and UI.
+ *   Instrument Sans -> font-grotesk  : a cooler, more structured grotesk for
+ *                                       functional/data sections — table
+ *                                       headers, specs, trust copy. The
+ *                                       analytical voice, set apart from
+ *                                       Figtree's warmer body text.
+ *   IBM Plex Mono   -> font-mono     : tabular figures for numbers that are
+ *                                       actually data — step counters, spec
+ *                                       values, stats — not just decoration.
  *
- * `font-label` in the CSS is Figtree at wide tracking — a role, not a third
- * family, so the two-family cap holds.
+ * `font-label` in the CSS is Figtree at wide tracking — a role, not a fifth
+ * family.
  */
 // Fraunces is a variable font: `axes` may only be set when the weight is
 // variable (next/font errors otherwise), so the whole weight range ships and
@@ -42,6 +54,22 @@ const figtree = Figtree({
   variable: "--font-figtree",
   display: "swap",
   preload: true,
+});
+
+const instrumentSans = Instrument_Sans({
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  variable: "--font-instrument",
+  display: "swap",
+  preload: true,
+});
+
+const plexMono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["500", "600"],
+  variable: "--font-plex-mono",
+  display: "swap",
+  preload: false,
 });
 
 /** Google Tag Manager container — loaded high in <head>, noscript after <body>. */
@@ -121,7 +149,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${fraunces.variable} ${figtree.variable}`}
+      className={`${fraunces.variable} ${figtree.variable} ${instrumentSans.variable} ${plexMono.variable}`}
       suppressHydrationWarning
     >
       <head>

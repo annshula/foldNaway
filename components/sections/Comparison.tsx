@@ -30,7 +30,7 @@ export default function Comparison() {
                 <th
                   key={col}
                   scope="col"
-                  className={`font-label pb-4 text-center text-[0.72rem] font-bold tracking-[0.12em] uppercase ${
+                  className={`font-grotesk pb-4 text-center text-[0.72rem] font-bold tracking-[0.12em] uppercase ${
                     i === 0 ? "text-sage-deep" : "text-espresso-mute"
                   }`}
                 >
