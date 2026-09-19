@@ -4,6 +4,7 @@ import {
   Fraunces,
   IBM_Plex_Mono,
   Inter,
+  Kumbh_Sans,
   Plus_Jakarta_Sans,
 } from "next/font/google";
 import { Toaster } from "sonner";
@@ -20,7 +21,7 @@ import { site } from "@/lib/site";
 import "./globals.css";
 
 /**
- * Five font families, self-hosted at build time by next/font — no
+ * Six font families, self-hosted at build time by next/font — no
  * third-party request, no FOUT.
  *
  *   Fraunces           -> font-logo     : the wordmark only (Logo.tsx). Its
@@ -44,6 +45,13 @@ import "./globals.css";
  *   IBM Plex Mono      -> font-mono     : tabular figures for numbers that
  *                                          are actually data — step
  *                                          counters, spec values, stats.
+ *   Kumbh Sans         -> font-button   : every button site-wide (Button.tsx).
+ *                                          Its own dedicated token, same
+ *                                          reasoning as font-logo — buttons
+ *                                          previously shared font-label with
+ *                                          eyebrows/nav links/badges, so
+ *                                          changing this couldn't be done
+ *                                          without also touching those.
  */
 // Fraunces is a variable font: `axes` may only be set when the weight is
 // variable (next/font errors otherwise), so the whole weight range ships and
@@ -86,6 +94,14 @@ const plexMono = IBM_Plex_Mono({
   variable: "--font-plex-mono",
   display: "swap",
   preload: false,
+});
+
+const kumbhSans = Kumbh_Sans({
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  variable: "--font-kumbh-sans",
+  display: "swap",
+  preload: true,
 });
 
 /** Google Tag Manager container — loaded high in <head>, noscript after <body>. */
@@ -165,7 +181,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${fraunces.variable} ${plusJakarta.variable} ${figtree.variable} ${inter.variable} ${plexMono.variable}`}
+      className={`${fraunces.variable} ${plusJakarta.variable} ${figtree.variable} ${inter.variable} ${plexMono.variable} ${kumbhSans.variable}`}
       suppressHydrationWarning
     >
       <head>

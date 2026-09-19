@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { ArrowIcon } from "./Icons";
 
-type Variant = "sage" | "invert" | "ghost" | "outline";
+type Variant = "sage" | "invert" | "ghost" | "outline" | "outline-primary" | "espresso";
 
 const base = {
   sm: "h-10 text-[0.78rem]",
@@ -28,12 +28,18 @@ const iconPos = {
 } as const;
 
 /**
- * There is only ever one loud button in view at a time.
- *
- *  sage    — the brand CTA on light/cream surfaces
- *  invert  — solid cream on the dark hero and footer
- *  ghost   — hairline over imagery
- *  outline — quiet secondary on cream
+ * sage            — the brand CTA on light/cream surfaces
+ * invert          — solid cream on the dark hero and footer
+ * ghost           — hairline over imagery
+ * outline         — quiet secondary on cream, faint espresso border/text
+ * outline-primary — espresso border/text on transparent, filling solid
+ *                   espresso (cream text) on hover — a second CTA that
+ *                   still needs real presence next to a solid button,
+ *                   without being filled at rest.
+ * espresso        — solid espresso fill with cream text, always (not just
+ *                   on hover) — the dark equivalent of `sage`, for when a
+ *                   button needs that same fully-filled weight but in the
+ *                   dark/neutral tone instead of the brand green.
  *
  * The hover sheen is a single translated pseudo-gradient, so it costs one
  * composited layer rather than a repaint.
@@ -69,7 +75,7 @@ export default function Button({
   rel?: string;
 }) {
   const shell =
-    "group relative inline-flex items-center justify-center gap-2.5 overflow-hidden rounded-full font-label font-semibold uppercase leading-none tracking-[0.12em] whitespace-nowrap transition-all duration-400 ease-(--ease-out-expo) will-change-transform";
+    "group relative inline-flex items-center justify-center gap-2.5 overflow-hidden rounded-full font-button leading-none tracking-[0.01em] whitespace-nowrap transition-all duration-400 ease-(--ease-out-expo) will-change-transform";
 
   const styles: Record<Variant, string> = {
     sage: "bg-sage text-on-accent shadow-(--shadow-e2) hover:-translate-y-0.5 hover:bg-sage-hot hover:shadow-(--shadow-e3) active:translate-y-0",
@@ -79,6 +85,19 @@ export default function Button({
       "border border-white/25 text-oat backdrop-blur-sm hover:border-white/45 hover:bg-white/10 hover:text-white",
     outline:
       "border border-espresso/20 bg-transparent text-espresso hover:border-espresso/45 hover:bg-espresso/[0.04]",
+    // Deliberately plain `border` (1px), not `border-2`: this codebase's
+    // Tailwind build silently fails to generate a border-color rule when
+    // `border-2` and a `border-<color>` utility are combined (confirmed by
+    // inspecting the compiled stylesheet — no `.border-espresso` rule
+    // existed at all when paired with `border-2`, leaving the universal
+    // `* { border-color: var(--color-line) } ` reset as the only rule that
+    // applied, so the border silently fell back to sand instead of
+    // espresso). `border` + `border-espresso` is the same combination
+    // already proven working elsewhere in this codebase (ProductReviews.tsx).
+    "outline-primary":
+      "border border-espresso bg-transparent text-espresso hover:bg-espresso hover:text-cream",
+    espresso:
+      "bg-espresso text-cream shadow-(--shadow-e2) hover:-translate-y-0.5 hover:bg-bark hover:shadow-(--shadow-e3) active:translate-y-0",
   };
 
   const classes = `${shell} ${base[size]} ${

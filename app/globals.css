@@ -81,13 +81,19 @@
                                             comparison table, trust copy)
      IBM Plex Mono      -> font-mono      (tabular figures for real data:
                                             step counters, spec values, stats)
-     `font-label` is Figtree at wide tracking — a role, not a 6th family. */
+     Kumbh Sans         -> font-button    (every button, site-wide — its own
+                                            token, not font-label, so it can
+                                            change without touching eyebrows/
+                                            nav links/badges that share
+                                            font-label)
+     `font-label` is Figtree at wide tracking — a role, not a 7th family. */
   --font-logo: var(--font-fraunces), ui-serif, Georgia, serif;
   --font-display: var(--font-plus-jakarta), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
   --font-label: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
   --font-grotesk: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-plex-mono), ui-monospace, "SF Mono", Menlo, monospace;
+  --font-button: var(--font-kumbh-sans), ui-sans-serif, system-ui, sans-serif;
 
   /* ── Fluid type scale (same curve shape as the reference) ───────── */
   --text-caption: 0.75rem;
@@ -250,6 +256,11 @@ body {
   font-family: var(--font-mono);
   font-feature-settings: "tnum" 1;
   letter-spacing: -0.01em;
+}
+
+/* Kumbh Sans, every button site-wide (Button.tsx's shell). */
+.font-button {
+  font-family: var(--font-button);
 }
 
 h1,

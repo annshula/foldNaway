@@ -59,7 +59,9 @@ export function BuyBox({
 
   const handleAdd = () => {
     add(selected.id, quantity, Math.round(price * 100), currency);
-    toast.success("Added to your bag", { description: `${product.title}, ${selected.title}` });
+    toast.success("Added to your bag", {
+      description: `${product.title}, ${selected.title}`,
+    });
     open();
   };
 
@@ -68,7 +70,13 @@ export function BuyBox({
     setBuying(true);
     setBuyError(null);
     const result = await shopifyCheckout(
-      [{ variantId: selected.id, qty: quantity, priceCents: Math.round(price * 100) }],
+      [
+        {
+          variantId: selected.id,
+          qty: quantity,
+          priceCents: Math.round(price * 100),
+        },
+      ],
       currency,
     );
     if (result.ok) {
@@ -255,19 +263,21 @@ export function BuyBox({
       </div>
 
       {/* ------------------------------ buy -------------------------------- */}
-      <div className="mt-7 flex flex-col gap-3">
+      {/* Stacked on narrow screens (a half-width button is too tight once
+          "Taking you to checkout…" has to fit), side by side from `sm:` up. */}
+      <div className="mt-7 flex flex-col gap-3 sm:flex-row">
         <Button
+          variant="outline-primary"
           onClick={handleAdd}
           disabled={!selected.availableForSale}
-          className="w-full"
+          className="w-full sm:flex-1"
         >
           {selected.availableForSale ? "Add to bag" : "Sold out"}
         </Button>
         <Button
-          variant="outline"
           onClick={handleBuyNow}
           disabled={!selected.availableForSale || buying}
-          className="w-full"
+          className="w-full sm:flex-1"
         >
           {buying ? "Taking you to checkout…" : "Buy it now"}
         </Button>
