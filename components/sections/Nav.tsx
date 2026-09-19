@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { usePathname } from "next/navigation";
 import { useEffect, useState, type ButtonHTMLAttributes } from "react";
 
+import { AccountMenu } from "@/components/account/AccountMenu";
 import { useCart } from "@/components/providers/CartProvider";
 import Button from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icons";
@@ -180,6 +181,9 @@ export default function Nav() {
           </ul>
 
           <div className="flex items-center justify-end gap-1.5 sm:gap-2">
+            <span className="hidden sm:block">
+              <AccountMenu variant="dropdown" lightMobile={lightMobile} />
+            </span>
             <CartButton lightMobile={lightMobile} onOpen={() => setMenuOpen(false)} />
             <span className="ml-1 hidden sm:block">
               <Button href="/shop" size="sm">
@@ -276,7 +280,8 @@ export default function Nav() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: 0.32, ease: easeOut }}
               >
-                <div className="flex items-center justify-center">
+                <div className="flex items-center justify-center gap-3">
+                  <AccountMenu variant="list" dark />
                   <button
                     type="button"
                     onClick={() => {

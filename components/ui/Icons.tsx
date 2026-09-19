@@ -89,6 +89,56 @@ const paths = {
   /** Filled, not stroked — a hairline play triangle disappears against a
       photo/poster thumbnail; solid currentColor reads at 14–16px. */
   play: <path d="M8 5.5v13l11-6.5z" fill="currentColor" stroke="none" />,
+  user: (
+    <>
+      <circle cx="12" cy="8" r="3.6" {...stroke} />
+      <path d="M4.5 20c.7-3.6 3.5-5.4 7.5-5.4s6.8 1.8 7.5 5.4" {...stroke} />
+    </>
+  ),
+  package: (
+    <>
+      <path d="M3.5 7.4 12 3l8.5 4.4v9.2L12 21l-8.5-4.4V7.4Z" {...stroke} />
+      <path d="M3.6 7.5 12 12l8.4-4.5M12 12v9" {...stroke} />
+    </>
+  ),
+  "map-pin": (
+    <>
+      <path d="M12 21s-7-5.4-7-11a7 7 0 0 1 14 0c0 5.6-7 11-7 11Z" {...stroke} />
+      <circle cx="12" cy="10" r="2.6" {...stroke} />
+    </>
+  ),
+  logout: (
+    <>
+      <path d="M14 4.5H6a1.5 1.5 0 0 0-1.5 1.5v12A1.5 1.5 0 0 0 6 19.5h8" {...stroke} />
+      <path d="M10 12h11M17.5 8.5 21 12l-3.5 3.5" {...stroke} />
+    </>
+  ),
+  feather: (
+    <>
+      <path d="M20 4c-6 0-12 3-14.5 9.5L4 20l6.5-1.5C17 16 21 10 20 4Z" {...stroke} />
+      <path d="M4 20c1.5-3 4-5.5 7.5-7.5" {...stroke} />
+    </>
+  ),
+  "chevron-right": <path d="m9 6 6 6-6 6" {...stroke} />,
+  refresh: (
+    <>
+      <path d="M20 12a8 8 0 1 1-2.3-5.6" {...stroke} />
+      <path d="M20 3.4V8h-4.6" {...stroke} />
+    </>
+  ),
+  alert: (
+    <>
+      <path d="M12 3.5 21 19.5H3L12 3.5Z" {...stroke} />
+      <path d="M12 9v4.5M12 16.6v.2" {...stroke} />
+    </>
+  ),
+  globe: (
+    <>
+      <circle cx="12" cy="12" r="9" {...stroke} />
+      <path d="M3.2 9.6h17.6M3.2 14.4h17.6" {...stroke} opacity={0.6} />
+      <ellipse cx="12" cy="12" rx="4.1" ry="9" {...stroke} opacity={0.6} />
+    </>
+  ),
 } as const;
 
 export type IconName = keyof typeof paths;
