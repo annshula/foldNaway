@@ -153,7 +153,7 @@ export default function Hero() {
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.25, ease: easeOut }}
+          transition={{ duration: 0.4, delay: 0.1, ease: easeOut }}
           className="mt-10 flex flex-col items-center gap-3.5 sm:flex-row sm:gap-4 md:items-start"
         >
           <Button href={hero.ctaHref} size="lg" arrow className="min-w-56">
@@ -193,7 +193,7 @@ export default function Hero() {
         <motion.ul
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.42, ease: easeOut }}
+          transition={{ duration: 0.4, delay: 0.18, ease: easeOut }}
           className="mt-11 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 md:justify-start"
         >
           {/* Same mobile-vs-desktop colour problem as the outline button

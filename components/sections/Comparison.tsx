@@ -20,8 +20,11 @@ export default function Comparison() {
 
       <Reveal className="mt-14 overflow-x-auto">
         <table className="w-full min-w-150 border-collapse text-left">
+          {/* Derived from `comparison.columns` rather than a second
+              hand-written string — the two can never drift apart. */}
           <caption className="sr-only">
-            FoldNAway compared with a canvas tote and a store plastic bag
+            {comparison.columns[0]} compared with{" "}
+            {comparison.columns.slice(1).join(" and ")}
           </caption>
           <thead>
             <tr>

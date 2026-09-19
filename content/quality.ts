@@ -24,7 +24,7 @@ export const quality = {
     {
       icon: "weight" as const,
       title: "Loaded carry",
-      body: "Filled to a full grocery-run load and carried by hand, then over the shoulder. The base has to hold its shape without bunching, and the handles must not stretch out of true under real weight.",
+      body: "Filled to a heavy, real-world load and carried by hand, then over the shoulder. The base has to hold its shape without bunching, and the handles must not stretch out of true under real weight.",
     },
     {
       icon: "shield" as const,

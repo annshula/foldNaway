@@ -11,8 +11,11 @@ export const site = {
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.foldnaway.com",
   email: "support@foldnaway.com",
   address: "Toronto, Ontario, Canada",
+  // ⚠️ "50 lbs" repeats the unverified weight-capacity claim flagged in
+  // content/copy.ts's productBenefits — no kg/lb spec exists in the Shopify
+  // product data. Confirm with real load testing before this ships live.
   description:
-    "Foldable, keychain-sized eco-bags that pack down to a pocket and open to a large-capacity shoulder tote. Free tracked worldwide shipping.",
+    "A premium, keychain-sized carry system that holds up to 50 lbs and opens into a full-size tote in two seconds. Free tracked worldwide shipping.",
   locale: "en_US",
   currency: "USD",
 

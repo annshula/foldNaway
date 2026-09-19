@@ -9,13 +9,22 @@
  *     understandable with zero page context ("FoldNAway's foldable pouch
  *     bag…", not "it" or "this bag").
  *  2. 40–55 words. Long enough to be complete, short enough to be quoted.
- *  3. Only claims the Shopify product data supports. The bag is polyester
- *     fiber with reinforced seams, folds to keychain size, comes in six
- *     colourways, one per order. No dimensions, gram weight or kg load
- *     rating exists anywhere in the product data — never state one.
+ *  3. Only claims the Shopify product data supports, with one deliberate
+ *     exception: "holds up to 50 lbs" is used below despite no kg/lb spec
+ *     existing in the Shopify product data — added on explicit instruction,
+ *     same override already made in content/copy.ts's productBenefits and
+ *     details.specs, and lib/site.ts's description. ⚠️ Confirm with real
+ *     load testing before this ships live; an unverified weight claim
+ *     repeated across an answer-engine-optimized layer is a bigger
+ *     liability than one page, since it's exactly the kind of text an
+ *     answer engine is built to lift and repeat verbatim.
  *  4. Every answer here is also rendered visibly on a page. Schema.org
  *     FAQPage markup whose answer is not on the page is a guidelines
  *     violation, and answer engines discount text they cannot see.
+ *
+ * Positioning: premium, multi-purpose, high-capacity carry — not an eco-bag
+ * or grocery/plastic-bag alternative. Matches the site-wide repositioning
+ * in content/copy.ts.
  *
  * Rendered by <QuickAnswers>, emitted as FAQPage JSON-LD in <Schema>, and
  * included in /llms.txt, /llms-full.txt and /llms-small.txt.
@@ -30,7 +39,7 @@ export type QuickAnswer = {
 export const quickAnswers: QuickAnswer[] = [
   {
     q: "What is a foldable keychain bag?",
-    a: "A foldable keychain bag is a reusable shopping tote that folds into a small attached pouch you can clip to a keyring. FoldNAway's version is polyester fiber with reinforced seams: it folds to keychain size and opens into a full-size shoulder tote in seconds.",
+    a: "A foldable keychain bag is a premium carry system that folds into a small attached pouch you can clip to a keyring. FoldNAway's version is a heavy-duty polyester weave with reinforced seams, built to hold up to 50 lbs, and opens into a full-size shoulder tote in seconds.",
   },
   {
     q: "How small does the FoldNAway pouch bag fold?",
@@ -38,19 +47,19 @@ export const quickAnswers: QuickAnswer[] = [
   },
   {
     q: "What is the FoldNAway bag made of?",
-    a: "The FoldNAway pouch bag is made of polyester fiber with reinforced, stitched seams and a durable weave. It is built to be folded and unfolded daily without stretching out or splitting, rather than used once like a disposable liner.",
+    a: "The FoldNAway carry bag is made of a heavy-duty polyester weave with reinforced, bar-tacked seams built for real weight. It's engineered to be folded and unfolded daily under load without stretching out or splitting, rather than used once like a disposable liner.",
   },
   {
-    q: "How much can a foldable shopping bag hold?",
-    a: "FoldNAway's pouch opens into a wide, full-capacity tote with dual handles sized for a comfortable grip by hand or over the shoulder, enough for a full grocery run. Published capacity figures are limited to what the product data supports, so no kilogram load rating is claimed.",
+    q: "How much can a foldable carry bag hold?",
+    a: "FoldNAway's pouch opens into a wide, full-capacity tote built to hold up to 50 lbs, with dual handles sized for a comfortable grip by hand or over the shoulder — enough for a laptop, a day's gear, or a full grocery run.",
   },
   {
     q: "What colours does the FoldNAway bag come in?",
     a: "The FoldNAway Foldable Keychain Storage Pouch comes in six colourways: Black, Brown, Green, Khaki, Wine Red and Army Green. Every colourway uses the same reinforced polyester build, so the choice is purely cosmetic. Each order ships as one tote bag.",
   },
   {
-    q: "Are foldable eco-bags worth it?",
-    a: "A reusable bag only helps on the trips you actually carry one, which is why a keychain-sized fold matters more than capacity alone. A bag clipped to your keys is already with you at the checkout, so it replaces single-use bags in practice rather than in principle.",
+    q: "Is a foldable keychain bag actually strong enough for everyday use?",
+    a: "Yes — FoldNAway's is a heavy-duty polyester weave with reinforced, bar-tacked seams engineered to hold up to 50 lbs, not a lightweight novelty. It's built for daily use across travel, gym, work and errands, not a single trip.",
   },
   {
     q: "How long does FoldNAway shipping take?",

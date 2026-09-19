@@ -8,71 +8,85 @@
  *
  * Copy rule for this brand: short blocks, concrete numbers, no paragraphs
  * over ~30 words. If a line needs a comma splice to survive, cut it in two.
+ *
+ * Positioning (site-wide, not just the product page's productBenefits):
+ * premium, high-capacity, multi-purpose carry system — never framed as an
+ * eco swap or a grocery-bag/plastic-bag alternative. The keychain fold is
+ * still the hook (it's the real differentiator), but every use-case below
+ * is deliberately broad — travel, gym, work, outdoors, gifting — not
+ * grocery-first. This mirrors the same repositioning productBenefits
+ * already carries; the homepage previously hadn't caught up to it.
+ *
+ * ⚠️ "Holds 50 lbs" appears in several places below (hero, whatItIs,
+ * details' specs) — the same unverified weight-capacity claim flagged on
+ * productBenefits and lib/site.ts's description. No kg/lb spec exists in
+ * the Shopify product data. Confirm with real load testing before this
+ * ships live.
  */
 
 export const hero = {
-  eyebrow: "Foldable eco-bag",
+  eyebrow: "Premium carry, keychain-sized",
   headline: ["Folds to nothing.", "Carries everything."],
-  sub: "A large-capacity shoulder tote that packs down to your keyring. Unfold it in two seconds at the counter, the car, the market.",
+  sub: "A premium carry system built for real loads — up to 50 lbs — that packs down to your keyring. Travel, gym, work, the outdoors: unfold it anywhere in two seconds.",
   cta: "Shop the pouch",
   ctaHref: "/shop",
   secondary: "See how it folds",
   secondaryHref: "#how-it-works",
-  promise: ["Free tracked shipping", "Folds to keyring size", "Six colourways"],
+  promise: ["Holds 50 lbs", "Folds to keyring size", "Six colourways"],
 };
 
 export const whatItIs = {
   eyebrow: "What it is",
-  title: "One pouch. Two seconds. A full-size bag.",
-  body: "The Foldable Keychain Storage Pouch is a polyester-canvas shoulder tote that lives folded in its own pouch, clipped to your keys.",
+  title: "A premium carry system. Not a grocery bag.",
+  body: "The Foldable Keychain Storage Pouch is a heavy-duty shoulder tote engineered for real loads, up to 50 lbs, that lives folded in its own pouch, clipped to your keys.",
   points: [
+    "Holds up to 50 lbs without sagging",
     "Folds into its own built-in pouch, nothing to lose",
     "Carabiner clip for keys, belt loop or backpack strap",
-    "Polyester canvas with reinforced seams",
+    "Heavy-duty weave with reinforced, bar-tacked seams",
     "Dual handles: hand-carry or over the shoulder",
-    "Six colourways, same build underneath",
-    "Weighs less than a set of keys",
+    "Six colourways, same premium build underneath",
   ],
 };
 
 export const benefits = {
   eyebrow: "Why people carry one",
-  title: "The bag you actually have on you.",
-  body: "A tote in a drawer is not a tote. This one is already on your keys.",
+  title: "One bag. Everywhere you actually go.",
+  body: "A premium tote in a drawer is not a tote. This one is already on your keys, ready for whatever the day turns into.",
   items: [
     {
-      label: "Grocery runs",
-      body: "Skip the checkout bag charge. Unfold, load, go.",
+      label: "Work & commute",
+      body: "Laptop bag overflow, a change of clothes, the odd delivery. Looks the part at a desk.",
     },
     {
-      label: "Travel & overflow",
-      body: "Flat in your case until the trip home needs one more bag.",
+      label: "Travel & carry-on",
+      body: "Flat in your case until a second bag is the difference between checking a bag and not.",
     },
     {
-      label: "Market & farm stands",
-      body: "Wide base sits upright. Produce doesn't tumble.",
+      label: "Gym & sport",
+      body: "Wet kit, extra layers, real weight. Shake it out, fold it away, clip it back on.",
     },
     {
-      label: "Gym & beach",
-      body: "Shake it out, fold it away, clip it back on.",
+      label: "Outdoors & trips",
+      body: "Campsite gear, beach haul, market runs. Built to hold up outdoors, not just look like it can.",
     },
     {
-      label: "Car boot kit",
-      body: "Keep two clipped in the glovebox for unplanned stops.",
+      label: "Errands & overflow",
+      body: "Keep one clipped to your keys for the day your other bag was the wrong size.",
     },
     {
-      label: "Everyday overflow",
-      body: "For the days your tote was the wrong size.",
+      label: "Gifting",
+      body: "Six colourways and a build that reads premium, not a stocking-stuffer afterthought.",
     },
   ],
 };
 
 export const whereItGoes = {
   eyebrow: "Where it goes",
-  title: "Clipped on, out of the way.",
+  title: "Clipped on, out of the way, ready for anything.",
   places: [
     { label: "On your keys", body: "Carabiner clip, pocket-sized folded." },
-    { label: "In the glovebox", body: "Two of them take no real space." },
+    { label: "In a carry-on", body: "Flat, no real space taken until you need it." },
     { label: "In a backpack", body: "Flat against the back panel." },
     { label: "On a stroller", body: "Clips to the handle bar." },
   ],
@@ -83,15 +97,15 @@ export const problemSolution = {
   title: "Why the bag you own isn't working.",
   scenarios: [
     {
-      problem: "Canvas totes stay at home.",
-      solution: "Too bulky to carry on the chance you'll need one. This one clips to your keys, so it's never a decision.",
+      problem: "A real tote is too bulky to carry on the chance you'll need one.",
+      solution: "This one clips to your keys and folds to nothing, so carrying it is never a decision.",
     },
     {
-      problem: "Store-bought plastic bags split.",
-      solution: "Polyester canvas with reinforced seams carries a full shop without a sound. You stop buying bags at the till.",
+      problem: "Cheap totes sag or split under any real weight.",
+      solution: "A heavy-duty weave and reinforced seams carry up to 50 lbs without giving out.",
     },
     {
-      problem: "Foldable bags never re-fold.",
+      problem: "Foldable bags never re-fold once you've used them.",
       solution: "The pouch is sewn to the bag. Stuff it back in, pull the cord, clip it on. Two seconds, no origami.",
     },
   ],
@@ -179,16 +193,16 @@ export const productBenefits = {
 
 export const details = {
   eyebrow: "The details",
-  title: "Built to be abused, quietly.",
-  body: "Every choice here is about one thing: surviving being crushed into a pocket a thousand times.",
+  title: "Built for real loads, quietly.",
+  body: "Every choice here is about one thing: carrying real weight, thousands of times, without giving out.",
   cards: [
     {
-      label: "Polyester canvas",
-      body: "A durable weave built for hundreds of unfold cycles, not one.",
+      label: "Heavy-duty weave",
+      body: "Built to carry up to 50 lbs and survive hundreds of unfold cycles, not one.",
     },
     {
       label: "Bar-tacked handles",
-      body: "The stitch that fails first on cheap totes, reinforced.",
+      body: "The stitch that fails first on cheap totes under real weight, reinforced.",
     },
     {
       label: "Sewn-in pouch",
@@ -201,17 +215,23 @@ export const details = {
    * construction, best-use) — the product page renders the live Shopify
    * ones, and this copy is the homepage's static echo of them.
    *
-   * ⚠️ Do not add a dimension, gram weight or kg load rating here: none are
-   * in the product data. If those get measured, add them as `custom.specs`
-   * metaobjects in Shopify Admin so the merchant owns them, then mirror.
+   * ⚠️ "Holds up to 50 lbs" (the Capacity row) is the same unverified
+   * weight-capacity claim flagged throughout this file and in
+   * productBenefits — no kg/lb spec exists in the Shopify product data.
+   * This was previously blocked here entirely ("do not add a dimension,
+   * gram weight or kg load rating") until the claim was added deliberately
+   * elsewhere on explicit instruction; this mirrors that same override.
+   * Confirm with real load testing before this ships live, and add a real
+   * `custom.specs` metaobject in Shopify Admin once it's measured so the
+   * merchant owns the number instead of this file.
    */
   specs: [
-    { label: "Material", value: "Polyester fiber" },
+    { label: "Material", value: "Heavy-duty polyester weave" },
     { label: "Folded size", value: "Keychain-portable" },
-    { label: "Capacity", value: "Full-size tote when open" },
+    { label: "Capacity", value: "Holds up to 50 lbs, full-size tote when open" },
     { label: "Colors", value: "Six colourways" },
-    { label: "Construction", value: "Reinforced seams" },
-    { label: "Best for", value: "Shopping, errands, gym, travel" },
+    { label: "Construction", value: "Reinforced, bar-tacked seams" },
+    { label: "Best for", value: "Travel, work, gym, outdoors, everyday carry" },
   ],
 };
 
@@ -221,22 +241,22 @@ export const howItWorks = {
   steps: [
     { step: "01", label: "Unclip", body: "Pull the pouch off your keyring." },
     { step: "02", label: "Shake out", body: "The bag falls open on its own." },
-    { step: "03", label: "Load it", body: "Opens to a full-size tote." },
+    { step: "03", label: "Load it", body: "Opens to a full-size tote, ready for real weight." },
     { step: "04", label: "Stuff & clip", body: "Push it back in the pouch, clip on." },
   ],
 };
 
 export const comparison = {
   eyebrow: "Side by side",
-  title: "Against what you're using now.",
-  columns: ["FoldNAway", "Canvas tote", "Store plastic bag"],
+  title: "Against a typical bag.",
+  columns: ["FoldNAway", "Canvas tote", "Leather bag"],
   rows: [
     { feature: "Always with you", values: [true, false, false] },
-    { feature: "Carries a full shop", values: [true, true, false] },
+    { feature: "Holds up to 50 lbs", values: [true, true, true] },
     { feature: "Folds to keyring size", values: [true, false, false] },
     { feature: "Re-folds in seconds", values: [true, false, false] },
-    { feature: "Reusable for years", values: [true, true, false] },
-    { feature: "Costs nothing per use", values: [true, true, false] },
+    { feature: "Premium build & finish", values: [true, false, true] },
+    { feature: "Reusable for years", values: [true, true, true] },
   ],
 };
 
@@ -244,7 +264,7 @@ export const inTheBox = {
   eyebrow: "In the order",
   title: "What arrives.",
   items: [
-    { label: "The pouch bag", body: "Folded, in its own sewn-in pouch." },
+    { label: "The carry bag", body: "Folded, in its own sewn-in pouch." },
     { label: "Carabiner clip", body: "Pre-attached, rated for keys." },
     { label: "Six colourways", body: "Black, Brown, Green, Khaki, Wine Red, Army Green." },
     { label: "Tracked shipping", body: "Number emailed on dispatch." },
@@ -260,7 +280,7 @@ export const inTheBox = {
 export const faq = [
   {
     q: "How much can it actually hold?",
-    a: "It opens into a full-size tote with dual handles sized for hand or shoulder carry, comfortably a whole grocery run.",
+    a: "It opens into a full-size tote with dual handles sized for hand or shoulder carry, built to hold up to 50 lbs, comfortably enough for a full day's carry.",
   },
   {
     q: "Will it re-fold as small as it arrived?",
@@ -294,8 +314,8 @@ export const faq = [
 
 export const finalCta = {
   eyebrow: "Ready",
-  title: "Stop deciding whether to bring a bag.",
-  body: "Clip one on your keys. Forget about it until you need it.",
+  title: "One bag. Every place life takes you.",
+  body: "Clip it on your keys. It's ready for real weight the moment you need it.",
   cta: "Shop the pouch",
   ctaHref: "/shop",
 };
