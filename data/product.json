@@ -1,6 +1,6 @@
 {
   "version": 8,
-  "syncedAt": "2026-09-19T14:44:55.966Z",
+  "syncedAt": "2026-09-19T15:13:15.346Z",
   "shop": {
     "domain": "trackify-com.myshopify.com",
     "name": "Trackify",
@@ -33,30 +33,30 @@
           "availableForSale": true,
           "stockQuantity": 9000,
           "pricesByMarket": {
-            "AU": {
-              "amount": 48,
-              "compareAtAmount": null,
-              "currencyCode": "AUD"
-            },
             "CA": {
               "amount": 47,
               "compareAtAmount": null,
               "currencyCode": "CAD"
+            },
+            "AU": {
+              "amount": 48,
+              "compareAtAmount": null,
+              "currencyCode": "AUD"
             },
             "ZA": {
               "amount": 548,
               "compareAtAmount": null,
               "currencyCode": "ZAR"
             },
-            "US": {
-              "amount": 32.99,
-              "compareAtAmount": null,
-              "currencyCode": "USD"
-            },
             "IN": {
               "amount": 3230.07,
               "compareAtAmount": null,
               "currencyCode": "INR"
+            },
+            "US": {
+              "amount": 32.99,
+              "compareAtAmount": null,
+              "currencyCode": "USD"
             },
             "GB": {
               "amount": 26,
@@ -79,30 +79,30 @@
           "availableForSale": true,
           "stockQuantity": 8946,
           "pricesByMarket": {
-            "AU": {
-              "amount": 48,
-              "compareAtAmount": null,
-              "currencyCode": "AUD"
-            },
             "CA": {
               "amount": 47,
               "compareAtAmount": null,
               "currencyCode": "CAD"
+            },
+            "AU": {
+              "amount": 48,
+              "compareAtAmount": null,
+              "currencyCode": "AUD"
             },
             "ZA": {
               "amount": 548,
               "compareAtAmount": null,
               "currencyCode": "ZAR"
             },
-            "US": {
-              "amount": 32.99,
-              "compareAtAmount": null,
-              "currencyCode": "USD"
-            },
             "IN": {
               "amount": 3230.07,
               "compareAtAmount": null,
               "currencyCode": "INR"
+            },
+            "US": {
+              "amount": 32.99,
+              "compareAtAmount": null,
+              "currencyCode": "USD"
             },
             "GB": {
               "amount": 26,
@@ -125,30 +125,30 @@
           "availableForSale": true,
           "stockQuantity": 9485,
           "pricesByMarket": {
-            "AU": {
-              "amount": 48,
-              "compareAtAmount": null,
-              "currencyCode": "AUD"
-            },
             "CA": {
               "amount": 47,
               "compareAtAmount": null,
               "currencyCode": "CAD"
+            },
+            "AU": {
+              "amount": 48,
+              "compareAtAmount": null,
+              "currencyCode": "AUD"
             },
             "ZA": {
               "amount": 548,
               "compareAtAmount": null,
               "currencyCode": "ZAR"
             },
-            "US": {
-              "amount": 32.99,
-              "compareAtAmount": null,
-              "currencyCode": "USD"
-            },
             "IN": {
               "amount": 3230.07,
               "compareAtAmount": null,
               "currencyCode": "INR"
+            },
+            "US": {
+              "amount": 32.99,
+              "compareAtAmount": null,
+              "currencyCode": "USD"
             },
             "GB": {
               "amount": 26,
@@ -171,30 +171,30 @@
           "availableForSale": true,
           "stockQuantity": 6941,
           "pricesByMarket": {
-            "AU": {
-              "amount": 48,
-              "compareAtAmount": null,
-              "currencyCode": "AUD"
-            },
             "CA": {
               "amount": 47,
               "compareAtAmount": null,
               "currencyCode": "CAD"
+            },
+            "AU": {
+              "amount": 48,
+              "compareAtAmount": null,
+              "currencyCode": "AUD"
             },
             "ZA": {
               "amount": 548,
               "compareAtAmount": null,
               "currencyCode": "ZAR"
             },
-            "US": {
-              "amount": 32.99,
-              "compareAtAmount": null,
-              "currencyCode": "USD"
-            },
             "IN": {
               "amount": 3230.07,
               "compareAtAmount": null,
               "currencyCode": "INR"
+            },
+            "US": {
+              "amount": 32.99,
+              "compareAtAmount": null,
+              "currencyCode": "USD"
             },
             "GB": {
               "amount": 26,
@@ -217,30 +217,30 @@
           "availableForSale": true,
           "stockQuantity": 7928,
           "pricesByMarket": {
-            "AU": {
-              "amount": 48,
-              "compareAtAmount": null,
-              "currencyCode": "AUD"
-            },
             "CA": {
               "amount": 47,
               "compareAtAmount": null,
               "currencyCode": "CAD"
+            },
+            "AU": {
+              "amount": 48,
+              "compareAtAmount": null,
+              "currencyCode": "AUD"
             },
             "ZA": {
               "amount": 548,
               "compareAtAmount": null,
               "currencyCode": "ZAR"
             },
-            "US": {
-              "amount": 32.99,
-              "compareAtAmount": null,
-              "currencyCode": "USD"
-            },
             "IN": {
               "amount": 3230.07,
               "compareAtAmount": null,
               "currencyCode": "INR"
+            },
+            "US": {
+              "amount": 32.99,
+              "compareAtAmount": null,
+              "currencyCode": "USD"
             },
             "GB": {
               "amount": 26,
@@ -263,30 +263,30 @@
           "availableForSale": true,
           "stockQuantity": 7894,
           "pricesByMarket": {
-            "AU": {
-              "amount": 48,
-              "compareAtAmount": null,
-              "currencyCode": "AUD"
-            },
             "CA": {
               "amount": 47,
               "compareAtAmount": null,
               "currencyCode": "CAD"
+            },
+            "AU": {
+              "amount": 48,
+              "compareAtAmount": null,
+              "currencyCode": "AUD"
             },
             "ZA": {
               "amount": 548,
               "compareAtAmount": null,
               "currencyCode": "ZAR"
             },
-            "US": {
-              "amount": 32.99,
-              "compareAtAmount": null,
-              "currencyCode": "USD"
-            },
             "IN": {
               "amount": 3230.07,
               "compareAtAmount": null,
               "currencyCode": "INR"
+            },
+            "US": {
+              "amount": 32.99,
+              "compareAtAmount": null,
+              "currencyCode": "USD"
             },
             "GB": {
               "amount": 26,

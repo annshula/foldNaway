@@ -11,13 +11,18 @@ import { hero } from "@/content/copy";
 const promiseIcons = ["truck", "fold", "leaf"] as const;
 
 /**
- * Hero — full-bleed background photograph, with copy set to the left so the
- * product stays fully visible on the right with no scrim over it.
+ * Hero — full-bleed background photograph, copy set to the left on desktop.
  *
- * The source photo (public/hero/foldnaway-hero.*) holds the bag on its
+ * Desktop: the photo (public/hero/foldnaway-hero.*) holds the bag on its
  * right side, so left-aligned type sits over the clearer left portion of the
- * frame. No gradient/scrim sits over the image — legibility comes from the
- * text column's own width and left alignment, not from darkening the photo.
+ * frame. No gradient/scrim on desktop — legibility comes from the text
+ * column's own width and left alignment, not from darkening the photo.
+ *
+ * Mobile: a flat espresso/40 scrim sits over the (warm, light) mobile crop,
+ * with the eyebrow/h1/subhead switched to light text to read against it —
+ * see the scrim div and its own comment, right after the backdrop
+ * <picture>. Desktop is untouched by this; the scrim and light text are
+ * both `md:hidden`/reverted at `md:`.
  *
  * ── Requirement 1: the navbar shares the hero's background ──
  * The section pulls itself up under the sticky bar with `-mt-(--nav-h)`, so
@@ -109,6 +114,23 @@ export default function Hero() {
         </picture>
       </motion.div>
 
+      {/* Mobile-only scrim: the mobile crop is warm cream/beige (see
+          foldnaway-hero-mobile.jpg), so the original espresso-toned text
+          sat directly on light fabric with no darkening — legible, but the
+          request was a real black backdrop specifically on mobile. A flat
+          espresso/28 layer over the photo (dropped from an initial /40,
+          which read too heavy), `md:hidden` so desktop's crop and
+          left-aligned text (already legible without one, per the section's
+          own top-of-file note) are untouched. The eyebrow/h1/subhead below
+          switch to light text on mobile to read against this scrim; the
+          buttons/promise row already had their own light-on-mobile colours
+          from an earlier pass (see their own comments) and don't need to
+          change again. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10 bg-espresso/28 md:hidden"
+      />
+
       {/* ----------------------------- content ---------------------------- */}
       {/* Mobile and desktop use genuinely different layout strategies here,
           not just different alignment:
@@ -136,17 +158,17 @@ export default function Hero() {
         style={{ y: contentY, opacity: contentOpacity }}
         className="relative z-10 mx-auto flex w-full max-w-310 flex-col items-center pt-28 pb-14 text-center md:flex-1 md:items-start md:justify-center md:pt-0 md:pb-0 md:text-left"
       >
-        <p className="font-label text-[0.68rem] font-semibold tracking-[0.26em] text-sage-deep uppercase">
+        <p className="font-label text-[0.68rem] font-semibold tracking-[0.26em] text-sage-soft uppercase md:text-sage-deep">
           {hero.eyebrow}
         </p>
 
-        <h1 className="font-display mt-6 w-full max-w-[14ch] text-[clamp(2.25rem,5.5vw,4rem)] leading-[1.05] font-medium tracking-[-0.03em] text-espresso text-balance">
+        <h1 className="font-display mt-6 w-full max-w-[14ch] text-[clamp(2.25rem,5.5vw,4rem)] leading-[1.05] font-medium tracking-[-0.03em] text-oat text-balance md:text-espresso">
           {hero.headline[0]}
           <br />
           {hero.headline[1]}
         </h1>
 
-        <p className="mt-6 max-w-[48ch] text-[clamp(1rem,1.5vw,1.12rem)] leading-[1.65] text-espresso-soft text-pretty">
+        <p className="mt-6 max-w-[48ch] text-[clamp(1rem,1.5vw,1.12rem)] leading-[1.65] text-oat text-pretty md:text-espresso-soft">
           {hero.sub}
         </p>
 

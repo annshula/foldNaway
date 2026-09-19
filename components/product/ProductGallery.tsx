@@ -83,7 +83,15 @@ export function ProductGallery({
     // instead of inheriting the tallest sibling's height.
     <div className="flex flex-col-reverse gap-3 sm:flex-row sm:items-start">
       {media.length > 1 && (
-        <ul className="scrollbar-none flex shrink-0 gap-2 overflow-x-auto sm:max-h-115 sm:w-19 sm:flex-col sm:overflow-x-visible sm:overflow-y-auto">
+        // p-1: the selected thumbnail's ring-offset-2 extends its visible
+        // highlight outside the <button>'s own box — with no padding here,
+        // this <ul>'s own overflow-x-auto/overflow-y-auto (needed so the
+        // rail scrolls instead of growing the page) clips that ring flush
+        // against the container edge, cutting the highlight down on
+        // whichever thumbnail sits nearest the boundary. The padding gives
+        // the ring room to render in full before the scroll container's
+        // own edge does any clipping.
+        <ul className="scrollbar-none flex shrink-0 gap-2 overflow-x-auto p-1 sm:max-h-115 sm:w-19 sm:flex-col sm:overflow-x-visible sm:overflow-y-auto">
           {media.map((item, i) => (
             <li key={thumbSrc(item)} className="shrink-0">
               <button

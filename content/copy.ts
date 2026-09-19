@@ -27,7 +27,7 @@
 export const hero = {
   eyebrow: "Premium carry, keychain-sized",
   headline: ["Folds to nothing.", "Carries everything."],
-  sub: "A premium carry system built for real loads — up to 50 lbs — that packs down to your keyring. Travel, gym, work, the outdoors: unfold it anywhere in two seconds.",
+  sub: "A premium carry system built for real loads, up to 50 lbs, that packs down to your keyring. Travel, gym, work, the outdoors: unfold it anywhere in two seconds.",
   cta: "Shop the pouch",
   ctaHref: "/shop",
   secondary: "See how it folds",

@@ -23,42 +23,46 @@ const links = [
 ];
 
 /** Shared look for every circular header icon, so the cluster reads as one
-    family: no border, just a tint that appears on hover. */
-function iconButtonClass(solid: boolean, className = "") {
+    family: no border, just a tint that appears on hover.
+    `lightMobile` mirrors Logo.tsx's own variant: only true on the homepage
+    while unscrolled, the one state where these icons sit over Hero.tsx's
+    mobile-only dark scrim instead of the normal light header — everywhere
+    else stays the plain espresso icon regardless of `solid`. */
+function iconButtonClass(lightMobile: boolean, className = "") {
   return cn(
     "relative grid size-11 place-items-center rounded-full transition-colors duration-300",
-    solid
-      ? "text-espresso hover:bg-espresso/[0.07]"
+    lightMobile
+      ? "text-oat hover:bg-oat/10 md:text-espresso md:hover:bg-espresso/[0.07]"
       : "text-espresso hover:bg-espresso/[0.07]",
     className,
   );
 }
 
 function IconButton({
-  solid,
+  lightMobile,
   className = "",
   ...rest
-}: { solid: boolean; className?: string } & ButtonHTMLAttributes<HTMLButtonElement>) {
+}: { lightMobile: boolean; className?: string } & ButtonHTMLAttributes<HTMLButtonElement>) {
   return (
     <button
       type="button"
-      className={iconButtonClass(solid, className)}
+      className={iconButtonClass(lightMobile, className)}
       {...rest}
     />
   );
 }
 
 function CartButton({
-  solid,
+  lightMobile,
   onOpen,
 }: {
-  solid: boolean;
+  lightMobile: boolean;
   onOpen?: () => void;
 }) {
   const { itemCount, open } = useCart();
   return (
     <IconButton
-      solid={solid}
+      lightMobile={lightMobile}
       onClick={() => {
         onOpen?.();
         open();
@@ -102,6 +106,11 @@ export default function Nav() {
   useScrollLock(menuOpen);
 
   const solid = scrolled;
+  // Only true on the homepage while unscrolled — the one state where the
+  // transparent header sits over Hero.tsx's mobile-only dark scrim. Drives
+  // the logo's "N" and the cart/menu icons; every other page/state stays
+  // the plain espresso look regardless of `solid`.
+  const lightMobile = pathname === "/" && !solid;
 
   useEffect(() => {
     // 24px of travel is enough to read as "the page has moved" without the
@@ -139,7 +148,7 @@ export default function Nav() {
         style={{ height: "var(--nav-h)" }}
       >
         <nav className="mx-auto flex h-full max-w-310 items-center justify-between gap-4 sm:gap-6">
-          <Logo variant="dark" />
+          <Logo variant={lightMobile ? "light-mobile" : "dark"} />
 
           <ul className="hidden items-center gap-9 lg:flex">
             {links.map((l) => {
@@ -171,7 +180,7 @@ export default function Nav() {
           </ul>
 
           <div className="flex items-center justify-end gap-1.5 sm:gap-2">
-            <CartButton solid={solid} onOpen={() => setMenuOpen(false)} />
+            <CartButton lightMobile={lightMobile} onOpen={() => setMenuOpen(false)} />
             <span className="ml-1 hidden sm:block">
               <Button href="/shop" size="sm">
                 Shop now
@@ -179,7 +188,7 @@ export default function Nav() {
             </span>
 
             <IconButton
-              solid={solid}
+              lightMobile={lightMobile}
               className="lg:hidden"
               onClick={() => setMenuOpen(true)}
               aria-label="Open menu"

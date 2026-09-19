@@ -51,7 +51,7 @@ export const quickAnswers: QuickAnswer[] = [
   },
   {
     q: "How much can a foldable carry bag hold?",
-    a: "FoldNAway's pouch opens into a wide, full-capacity tote built to hold up to 50 lbs, with dual handles sized for a comfortable grip by hand or over the shoulder — enough for a laptop, a day's gear, or a full grocery run.",
+    a: "FoldNAway's pouch opens into a wide, full-capacity tote built to hold up to 50 lbs, with dual handles sized for a comfortable grip by hand or over the shoulder, enough for a laptop, a day's gear, or a full grocery run.",
   },
   {
     q: "What colours does the FoldNAway bag come in?",
@@ -59,7 +59,7 @@ export const quickAnswers: QuickAnswer[] = [
   },
   {
     q: "Is a foldable keychain bag actually strong enough for everyday use?",
-    a: "Yes — FoldNAway's is a heavy-duty polyester weave with reinforced, bar-tacked seams engineered to hold up to 50 lbs, not a lightweight novelty. It's built for daily use across travel, gym, work and errands, not a single trip.",
+    a: "Yes. FoldNAway's is a heavy-duty polyester weave with reinforced, bar-tacked seams engineered to hold up to 50 lbs, not a lightweight novelty. It's built for daily use across travel, gym, work and errands, not a single trip.",
   },
   {
     q: "How long does FoldNAway shipping take?",
