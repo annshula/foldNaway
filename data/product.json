@@ -1,6 +1,6 @@
 {
   "version": 8,
-  "syncedAt": "2026-09-19T15:13:15.346Z",
+  "syncedAt": "2026-09-19T16:04:43.627Z",
   "shop": {
     "domain": "trackify-com.myshopify.com",
     "name": "Trackify",
@@ -33,30 +33,30 @@
           "availableForSale": true,
           "stockQuantity": 9000,
           "pricesByMarket": {
-            "CA": {
-              "amount": 47,
+            "US": {
+              "amount": 32.99,
               "compareAtAmount": null,
-              "currencyCode": "CAD"
-            },
-            "AU": {
-              "amount": 48,
-              "compareAtAmount": null,
-              "currencyCode": "AUD"
-            },
-            "ZA": {
-              "amount": 548,
-              "compareAtAmount": null,
-              "currencyCode": "ZAR"
+              "currencyCode": "USD"
             },
             "IN": {
               "amount": 3230.07,
               "compareAtAmount": null,
               "currencyCode": "INR"
             },
-            "US": {
-              "amount": 32.99,
+            "ZA": {
+              "amount": 548,
               "compareAtAmount": null,
-              "currencyCode": "USD"
+              "currencyCode": "ZAR"
+            },
+            "AU": {
+              "amount": 48,
+              "compareAtAmount": null,
+              "currencyCode": "AUD"
+            },
+            "CA": {
+              "amount": 47,
+              "compareAtAmount": null,
+              "currencyCode": "CAD"
             },
             "GB": {
               "amount": 26,
@@ -79,30 +79,30 @@
           "availableForSale": true,
           "stockQuantity": 8946,
           "pricesByMarket": {
-            "CA": {
-              "amount": 47,
+            "US": {
+              "amount": 32.99,
               "compareAtAmount": null,
-              "currencyCode": "CAD"
-            },
-            "AU": {
-              "amount": 48,
-              "compareAtAmount": null,
-              "currencyCode": "AUD"
-            },
-            "ZA": {
-              "amount": 548,
-              "compareAtAmount": null,
-              "currencyCode": "ZAR"
+              "currencyCode": "USD"
             },
             "IN": {
               "amount": 3230.07,
               "compareAtAmount": null,
               "currencyCode": "INR"
             },
-            "US": {
-              "amount": 32.99,
+            "ZA": {
+              "amount": 548,
               "compareAtAmount": null,
-              "currencyCode": "USD"
+              "currencyCode": "ZAR"
+            },
+            "AU": {
+              "amount": 48,
+              "compareAtAmount": null,
+              "currencyCode": "AUD"
+            },
+            "CA": {
+              "amount": 47,
+              "compareAtAmount": null,
+              "currencyCode": "CAD"
             },
             "GB": {
               "amount": 26,
@@ -125,30 +125,30 @@
           "availableForSale": true,
           "stockQuantity": 9485,
           "pricesByMarket": {
-            "CA": {
-              "amount": 47,
+            "US": {
+              "amount": 32.99,
               "compareAtAmount": null,
-              "currencyCode": "CAD"
-            },
-            "AU": {
-              "amount": 48,
-              "compareAtAmount": null,
-              "currencyCode": "AUD"
-            },
-            "ZA": {
-              "amount": 548,
-              "compareAtAmount": null,
-              "currencyCode": "ZAR"
+              "currencyCode": "USD"
             },
             "IN": {
               "amount": 3230.07,
               "compareAtAmount": null,
               "currencyCode": "INR"
             },
-            "US": {
-              "amount": 32.99,
+            "ZA": {
+              "amount": 548,
               "compareAtAmount": null,
-              "currencyCode": "USD"
+              "currencyCode": "ZAR"
+            },
+            "AU": {
+              "amount": 48,
+              "compareAtAmount": null,
+              "currencyCode": "AUD"
+            },
+            "CA": {
+              "amount": 47,
+              "compareAtAmount": null,
+              "currencyCode": "CAD"
             },
             "GB": {
               "amount": 26,
@@ -171,30 +171,30 @@
           "availableForSale": true,
           "stockQuantity": 6941,
           "pricesByMarket": {
-            "CA": {
-              "amount": 47,
+            "US": {
+              "amount": 32.99,
               "compareAtAmount": null,
-              "currencyCode": "CAD"
-            },
-            "AU": {
-              "amount": 48,
-              "compareAtAmount": null,
-              "currencyCode": "AUD"
-            },
-            "ZA": {
-              "amount": 548,
-              "compareAtAmount": null,
-              "currencyCode": "ZAR"
+              "currencyCode": "USD"
             },
             "IN": {
               "amount": 3230.07,
               "compareAtAmount": null,
               "currencyCode": "INR"
             },
-            "US": {
-              "amount": 32.99,
+            "ZA": {
+              "amount": 548,
               "compareAtAmount": null,
-              "currencyCode": "USD"
+              "currencyCode": "ZAR"
+            },
+            "AU": {
+              "amount": 48,
+              "compareAtAmount": null,
+              "currencyCode": "AUD"
+            },
+            "CA": {
+              "amount": 47,
+              "compareAtAmount": null,
+              "currencyCode": "CAD"
             },
             "GB": {
               "amount": 26,
@@ -217,30 +217,30 @@
           "availableForSale": true,
           "stockQuantity": 7928,
           "pricesByMarket": {
-            "CA": {
-              "amount": 47,
+            "US": {
+              "amount": 32.99,
               "compareAtAmount": null,
-              "currencyCode": "CAD"
-            },
-            "AU": {
-              "amount": 48,
-              "compareAtAmount": null,
-              "currencyCode": "AUD"
-            },
-            "ZA": {
-              "amount": 548,
-              "compareAtAmount": null,
-              "currencyCode": "ZAR"
+              "currencyCode": "USD"
             },
             "IN": {
               "amount": 3230.07,
               "compareAtAmount": null,
               "currencyCode": "INR"
             },
-            "US": {
-              "amount": 32.99,
+            "ZA": {
+              "amount": 548,
               "compareAtAmount": null,
-              "currencyCode": "USD"
+              "currencyCode": "ZAR"
+            },
+            "AU": {
+              "amount": 48,
+              "compareAtAmount": null,
+              "currencyCode": "AUD"
+            },
+            "CA": {
+              "amount": 47,
+              "compareAtAmount": null,
+              "currencyCode": "CAD"
             },
             "GB": {
               "amount": 26,
@@ -263,30 +263,30 @@
           "availableForSale": true,
           "stockQuantity": 7894,
           "pricesByMarket": {
-            "CA": {
-              "amount": 47,
+            "US": {
+              "amount": 32.99,
               "compareAtAmount": null,
-              "currencyCode": "CAD"
-            },
-            "AU": {
-              "amount": 48,
-              "compareAtAmount": null,
-              "currencyCode": "AUD"
-            },
-            "ZA": {
-              "amount": 548,
-              "compareAtAmount": null,
-              "currencyCode": "ZAR"
+              "currencyCode": "USD"
             },
             "IN": {
               "amount": 3230.07,
               "compareAtAmount": null,
               "currencyCode": "INR"
             },
-            "US": {
-              "amount": 32.99,
+            "ZA": {
+              "amount": 548,
               "compareAtAmount": null,
-              "currencyCode": "USD"
+              "currencyCode": "ZAR"
+            },
+            "AU": {
+              "amount": 48,
+              "compareAtAmount": null,
+              "currencyCode": "AUD"
+            },
+            "CA": {
+              "amount": 47,
+              "compareAtAmount": null,
+              "currencyCode": "CAD"
             },
             "GB": {
               "amount": 26,
@@ -385,18 +385,36 @@
         },
         {
           "kind": "video",
-          "poster": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/preview_images/a3317467203e4a068fc06eb1ed521ab9.thumbnail.0000000000.jpg?v=1789827172",
+          "poster": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/preview_images/43684eaa97654b078f0639ba0edd30f8.thumbnail.0000000000.jpg?v=1789828402",
           "sources": [
             {
-              "src": "https://cdn.shopify.com/videos/c/vp/a3317467203e4a068fc06eb1ed521ab9/a3317467203e4a068fc06eb1ed521ab9.HD-1080p-2.5Mbps-94932555.mp4",
+              "src": "https://cdn.shopify.com/videos/c/vp/43684eaa97654b078f0639ba0edd30f8/43684eaa97654b078f0639ba0edd30f8.HD-1080p-3.3Mbps-94933372.mp4",
               "type": "video/mp4"
             },
             {
-              "src": "https://cdn.shopify.com/videos/c/vp/a3317467203e4a068fc06eb1ed521ab9/a3317467203e4a068fc06eb1ed521ab9.HD-720p-1.6Mbps-94932555.mp4",
+              "src": "https://cdn.shopify.com/videos/c/vp/43684eaa97654b078f0639ba0edd30f8/43684eaa97654b078f0639ba0edd30f8.HD-720p-2.1Mbps-94933372.mp4",
               "type": "video/mp4"
             },
             {
-              "src": "https://cdn.shopify.com/videos/c/vp/a3317467203e4a068fc06eb1ed521ab9/a3317467203e4a068fc06eb1ed521ab9.SD-480p-0.9Mbps-94932555.mp4",
+              "src": "https://cdn.shopify.com/videos/c/vp/43684eaa97654b078f0639ba0edd30f8/43684eaa97654b078f0639ba0edd30f8.SD-480p-1.0Mbps-94933372.mp4",
+              "type": "video/mp4"
+            }
+          ]
+        },
+        {
+          "kind": "video",
+          "poster": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/preview_images/491736c5c6124f90bc2f4714b1c7a51c.thumbnail.0000000000.jpg?v=1789828397",
+          "sources": [
+            {
+              "src": "https://cdn.shopify.com/videos/c/vp/491736c5c6124f90bc2f4714b1c7a51c/491736c5c6124f90bc2f4714b1c7a51c.HD-1080p-3.3Mbps-94933371.mp4",
+              "type": "video/mp4"
+            },
+            {
+              "src": "https://cdn.shopify.com/videos/c/vp/491736c5c6124f90bc2f4714b1c7a51c/491736c5c6124f90bc2f4714b1c7a51c.HD-720p-2.1Mbps-94933371.mp4",
+              "type": "video/mp4"
+            },
+            {
+              "src": "https://cdn.shopify.com/videos/c/vp/491736c5c6124f90bc2f4714b1c7a51c/491736c5c6124f90bc2f4714b1c7a51c.SD-480p-1.0Mbps-94933371.mp4",
               "type": "video/mp4"
             }
           ]
