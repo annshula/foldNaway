@@ -1,0 +1,1 @@
+{"nodes": [{"id": "serena_project", "label": "FoldNAway Project Configuration", "file_type": "code", "source_file": ".serena/project.yml"}], "edges": [{"source": "serena_project", "target": "public_well_known_ai", "relation": "conceptually_related_to", "confidence": "INFERRED", "confidence_score": 0.6, "source_file": ".serena/project.yml"}], "hyperedges": []}

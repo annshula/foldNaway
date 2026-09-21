@@ -1,0 +1,1 @@
+{"nodes": [{"id": "app_opengraph_image", "label": "OpenGraph Social Preview", "file_type": "image", "source_file": "app/opengraph-image.jpg"}], "edges": [{"source": "app_opengraph_image", "target": "public_brand_logo_dark", "relation": "semantically_similar_to", "confidence": "INFERRED", "confidence_score": 0.8, "source_file": "app/opengraph-image.jpg"}], "hyperedges": []}
