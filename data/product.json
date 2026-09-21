@@ -1,6 +1,6 @@
 {
   "version": 8,
-  "syncedAt": "2026-09-21T14:52:04.607Z",
+  "syncedAt": "2026-09-21T16:33:45.963Z",
   "shop": {
     "domain": "trackify-com.myshopify.com",
     "name": "Trackify",
@@ -18,7 +18,7 @@
     {
       "id": "gid://shopify/Product/9680566649059",
       "handle": "foldable-keychain-storage-pouch-large-capacity-portable-handheld-shoulder-eco-bag",
-      "title": "FoldNAway Foldable Keychain Storage",
+      "title": "FoldNAway Foldable Keychain Bag",
       "price": 32.99,
       "compareAtPrice": 48.67,
       "currencyCode": "USD",
@@ -33,15 +33,20 @@
           "availableForSale": true,
           "stockQuantity": 9000,
           "pricesByMarket": {
+            "AU": {
+              "amount": 48,
+              "compareAtAmount": 70,
+              "currencyCode": "AUD"
+            },
             "CA": {
               "amount": 47,
               "compareAtAmount": 69,
               "currencyCode": "CAD"
             },
-            "AU": {
-              "amount": 48,
-              "compareAtAmount": 70,
-              "currencyCode": "AUD"
+            "ZA": {
+              "amount": 547,
+              "compareAtAmount": 807,
+              "currencyCode": "ZAR"
             },
             "GB": {
               "amount": 26,
@@ -49,14 +54,9 @@
               "currencyCode": "GBP"
             },
             "IN": {
-              "amount": 3223.8,
-              "compareAtAmount": 4756.06,
+              "amount": 3222.66,
+              "compareAtAmount": 4754.38,
               "currencyCode": "INR"
-            },
-            "ZA": {
-              "amount": 548,
-              "compareAtAmount": 808,
-              "currencyCode": "ZAR"
             },
             "US": {
               "amount": 32.99,
@@ -79,15 +79,20 @@
           "availableForSale": true,
           "stockQuantity": 8946,
           "pricesByMarket": {
+            "AU": {
+              "amount": 48,
+              "compareAtAmount": 70,
+              "currencyCode": "AUD"
+            },
             "CA": {
               "amount": 47,
               "compareAtAmount": 69,
               "currencyCode": "CAD"
             },
-            "AU": {
-              "amount": 48,
-              "compareAtAmount": 70,
-              "currencyCode": "AUD"
+            "ZA": {
+              "amount": 547,
+              "compareAtAmount": 807,
+              "currencyCode": "ZAR"
             },
             "GB": {
               "amount": 26,
@@ -95,14 +100,9 @@
               "currencyCode": "GBP"
             },
             "IN": {
-              "amount": 3223.8,
-              "compareAtAmount": 4756.06,
+              "amount": 3222.66,
+              "compareAtAmount": 4754.38,
               "currencyCode": "INR"
-            },
-            "ZA": {
-              "amount": 548,
-              "compareAtAmount": 808,
-              "currencyCode": "ZAR"
             },
             "US": {
               "amount": 32.99,
@@ -125,15 +125,20 @@
           "availableForSale": true,
           "stockQuantity": 9485,
           "pricesByMarket": {
+            "AU": {
+              "amount": 48,
+              "compareAtAmount": 70,
+              "currencyCode": "AUD"
+            },
             "CA": {
               "amount": 47,
               "compareAtAmount": 69,
               "currencyCode": "CAD"
             },
-            "AU": {
-              "amount": 48,
-              "compareAtAmount": 70,
-              "currencyCode": "AUD"
+            "ZA": {
+              "amount": 547,
+              "compareAtAmount": 807,
+              "currencyCode": "ZAR"
             },
             "GB": {
               "amount": 26,
@@ -141,14 +146,9 @@
               "currencyCode": "GBP"
             },
             "IN": {
-              "amount": 3223.8,
-              "compareAtAmount": 4756.06,
+              "amount": 3222.66,
+              "compareAtAmount": 4754.38,
               "currencyCode": "INR"
-            },
-            "ZA": {
-              "amount": 548,
-              "compareAtAmount": 808,
-              "currencyCode": "ZAR"
             },
             "US": {
               "amount": 32.99,
@@ -171,15 +171,20 @@
           "availableForSale": true,
           "stockQuantity": 6941,
           "pricesByMarket": {
+            "AU": {
+              "amount": 48,
+              "compareAtAmount": 70,
+              "currencyCode": "AUD"
+            },
             "CA": {
               "amount": 47,
               "compareAtAmount": 69,
               "currencyCode": "CAD"
             },
-            "AU": {
-              "amount": 48,
-              "compareAtAmount": 70,
-              "currencyCode": "AUD"
+            "ZA": {
+              "amount": 547,
+              "compareAtAmount": 807,
+              "currencyCode": "ZAR"
             },
             "GB": {
               "amount": 26,
@@ -187,14 +192,9 @@
               "currencyCode": "GBP"
             },
             "IN": {
-              "amount": 3223.8,
-              "compareAtAmount": 4756.06,
+              "amount": 3222.66,
+              "compareAtAmount": 4754.38,
               "currencyCode": "INR"
-            },
-            "ZA": {
-              "amount": 548,
-              "compareAtAmount": 808,
-              "currencyCode": "ZAR"
             },
             "US": {
               "amount": 32.99,
@@ -217,15 +217,20 @@
           "availableForSale": true,
           "stockQuantity": 7928,
           "pricesByMarket": {
+            "AU": {
+              "amount": 48,
+              "compareAtAmount": 70,
+              "currencyCode": "AUD"
+            },
             "CA": {
               "amount": 47,
               "compareAtAmount": 69,
               "currencyCode": "CAD"
             },
-            "AU": {
-              "amount": 48,
-              "compareAtAmount": 70,
-              "currencyCode": "AUD"
+            "ZA": {
+              "amount": 547,
+              "compareAtAmount": 807,
+              "currencyCode": "ZAR"
             },
             "GB": {
               "amount": 26,
@@ -233,14 +238,9 @@
               "currencyCode": "GBP"
             },
             "IN": {
-              "amount": 3223.8,
-              "compareAtAmount": 4756.06,
+              "amount": 3222.66,
+              "compareAtAmount": 4754.38,
               "currencyCode": "INR"
-            },
-            "ZA": {
-              "amount": 548,
-              "compareAtAmount": 808,
-              "currencyCode": "ZAR"
             },
             "US": {
               "amount": 32.99,
@@ -263,15 +263,20 @@
           "availableForSale": true,
           "stockQuantity": 7894,
           "pricesByMarket": {
+            "AU": {
+              "amount": 48,
+              "compareAtAmount": 70,
+              "currencyCode": "AUD"
+            },
             "CA": {
               "amount": 47,
               "compareAtAmount": 69,
               "currencyCode": "CAD"
             },
-            "AU": {
-              "amount": 48,
-              "compareAtAmount": 70,
-              "currencyCode": "AUD"
+            "ZA": {
+              "amount": 547,
+              "compareAtAmount": 807,
+              "currencyCode": "ZAR"
             },
             "GB": {
               "amount": 26,
@@ -279,14 +284,9 @@
               "currencyCode": "GBP"
             },
             "IN": {
-              "amount": 3223.8,
-              "compareAtAmount": 4756.06,
+              "amount": 3222.66,
+              "compareAtAmount": 4754.38,
               "currencyCode": "INR"
-            },
-            "ZA": {
-              "amount": 548,
-              "compareAtAmount": 808,
-              "currencyCode": "ZAR"
             },
             "US": {
               "amount": 32.99,
