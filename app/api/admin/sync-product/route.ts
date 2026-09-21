@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { timingSafeEqual } from "node:crypto";
 import { isAuthorizedAdminRequest, unauthorizedResponse } from "@/lib/admin/auth";
 import { syncAllProducts } from "@/lib/shopify/sync-product";
 
@@ -10,19 +11,13 @@ import { syncAllProducts } from "@/lib/shopify/sync-product";
  * images, variants, every curated market's price list), then overwrites the
  * file. Every page reads that file only. Protected by ADMIN_API_KEY (Bearer
  * token).
- *
- * The daily automatic re-sync runs in-process instead (lib/catalog/sync-cron.ts,
- * started from instrumentation.ts on server boot) — this route stays as the
- * manual/on-demand trigger.
  */
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
 
-export async function POST(request: Request): Promise<Response> {
-  if (!isAuthorizedAdminRequest(request)) return unauthorizedResponse();
-
+async function runSync(): Promise<Response> {
   try {
     const record = await syncAllProducts();
     return NextResponse.json(
@@ -50,6 +45,38 @@ export async function POST(request: Request): Promise<Response> {
   }
 }
 
-export async function GET(): Promise<Response> {
-  return NextResponse.json({ error: "Use POST" }, { status: 405 });
+export async function POST(request: Request): Promise<Response> {
+  if (!isAuthorizedAdminRequest(request)) return unauthorizedResponse();
+  return runSync();
+}
+
+/**
+ * Vercel Cron only ever sends GET, with no custom headers of its own — it
+ * authenticates by sending `Authorization: Bearer $CRON_SECRET` itself
+ * (Vercel's own convention, separate from this route's POST/ADMIN_API_KEY
+ * path). Kept as its own check rather than reusing isAuthorizedAdminRequest
+ * so a leaked CRON_SECRET can't be used to hit the POST path or vice versa.
+ * Daily cadence (vercel.json) covers Shopify's normal ~weekly Markets rate
+ * updates with margin for the faster updates that happen during volatility
+ * — Shopify sends no webhook for a currency/rate change at all (confirmed:
+ * community.shopify.dev/t/currency-conversion-rate-changes-do-not-trigger-
+ * product-updates/32309), so a daily poll is the only option.
+ */
+export async function GET(request: Request): Promise<Response> {
+  const expected = process.env.CRON_SECRET;
+  if (!expected) return unauthorizedResponse();
+
+  const header = request.headers.get("authorization") ?? "";
+  const provided = header.startsWith("Bearer ")
+    ? header.slice("Bearer ".length)
+    : "";
+  if (!provided) return unauthorizedResponse();
+
+  const a = Buffer.from(provided);
+  const b = Buffer.from(expected);
+  if (a.length !== b.length || !timingSafeEqual(a, b)) {
+    return unauthorizedResponse();
+  }
+
+  return runSync();
 }
