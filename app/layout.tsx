@@ -151,11 +151,26 @@ export const metadata: Metadata = {
     title,
     description: site.description,
     locale: site.locale,
+    // Explicit alongside the opengraph-image.jpg file convention (Next
+    // resolves that route to this same value automatically) — some
+    // link-preview crawlers (iMessage, WhatsApp, LinkedIn) read metadata's
+    // og:image tag directly and don't reliably re-derive it from the file
+    // convention route, so leaving this unset risks a blank/generic preview
+    // card on exactly the platforms sharing matters most for.
+    images: [
+      {
+        url: "/opengraph-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: title,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title,
     description: site.description,
+    images: ["/opengraph-image.jpg"],
   },
   robots: {
     index: true,

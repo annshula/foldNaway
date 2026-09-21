@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import BreadcrumbSchema from "@/components/BreadcrumbSchema";
+import ItemListSchema from "@/components/ItemListSchema";
 import FinalCta from "@/components/sections/FinalCta";
 import TrustBar from "@/components/sections/TrustBar";
 import { Icon } from "@/components/ui/Icons";
@@ -177,6 +178,13 @@ export default function ShopPage() {
           { name: "Home", path: "/" },
           { name: "Shop", path: "/shop" },
         ]}
+      />
+      <ItemListSchema
+        items={products.map((product) => ({
+          name: product.title,
+          path: pathForHandle(product.handle),
+          image: product.gallery[0]?.src,
+        }))}
       />
     </main>
   );
