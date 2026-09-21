@@ -10,6 +10,10 @@ import { syncAllProducts } from "@/lib/shopify/sync-product";
  * images, variants, every curated market's price list), then overwrites the
  * file. Every page reads that file only. Protected by ADMIN_API_KEY (Bearer
  * token).
+ *
+ * The daily automatic re-sync runs in-process instead (lib/catalog/sync-cron.ts,
+ * started from instrumentation.ts on server boot) — this route stays as the
+ * manual/on-demand trigger.
  */
 
 export const runtime = "nodejs";
