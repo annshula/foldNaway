@@ -8,7 +8,7 @@ export const site = {
   legalName: "FoldNAway",
   tagline: "Folds to nothing. Carries everything.",
   domain: "foldnaway.com",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.foldnaway.com",
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.foldnaway.shop",
   email: "support@foldnaway.com",
   address: "Toronto, Ontario, Canada",
   // ⚠️ "50 lbs" repeats the unverified weight-capacity claim flagged in

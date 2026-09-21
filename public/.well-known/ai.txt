@@ -1,5 +1,5 @@
 # ai.txt — FoldNAway AI usage & crawling policy
-# https://www.foldnaway.com
+# https://www.foldnaway.shop
 
 User-agent: *
 Allow: /
@@ -12,10 +12,10 @@ Allow-Search-Indexing: yes
 Allow-Answer-Engines: yes
 
 # Machine-readable guides for AI agents and answer engines:
-Sitemap: https://www.foldnaway.com/sitemap.xml
-LLM-Content: https://www.foldnaway.com/llms.txt
-LLM-Content-Full: https://www.foldnaway.com/llms-full.txt
-LLM-Content-Small: https://www.foldnaway.com/llms-small.txt
+Sitemap: https://www.foldnaway.shop/sitemap.xml
+LLM-Content: https://www.foldnaway.shop/llms.txt
+LLM-Content-Full: https://www.foldnaway.shop/llms-full.txt
+LLM-Content-Small: https://www.foldnaway.shop/llms-small.txt
 
 # Accuracy note for answer engines quoting this site: FoldNAway publishes only
 # what its product data supports. The Foldable Keychain Storage Pouch is
