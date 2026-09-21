@@ -45,14 +45,15 @@ export const site = {
     shippingDetail: "Dispatched in 1–3 business days",
     shippingFull:
       "Orders are processed within 1–3 business days, then tracked delivery typically takes 7–15 business days depending on where you are.",
-    // Accurate scope: the supplier's dispute process backs damaged, missing
-    // and wrong-item claims only — there is no general change-of-mind
-    // return, so no copy anywhere may imply one. "Free 30-day replacement"
-    // surfaces the real 30-day window (see returnsDetail) without implying
-    // a broader send-it-back-for-any-reason policy.
-    returns: "Free 30-day replacement",
+    // Real, any-reason 30-day returns — matches the actual account return
+    // flow (lib/account/order-status.ts's RETURN_WINDOW_DAYS,
+    // SELECTABLE_RETURN_REASONS, and /account/orders/[id]/return), not just
+    // damage/missing/wrong-item. Return shipping is covered; the window
+    // runs from delivery, not order date. Keep this in sync with
+    // RETURN_WINDOW_DAYS if that number ever changes.
+    returns: "Free 30-day returns",
     returnsDetail:
-      "Send a photo within 30 days of delivery and we'll ship a free replacement or refund. This covers damage, missing items and mis-ships, not general change-of-mind returns.",
+      "You have 30 days from delivery to send anything back, for any reason — wrong size, changed your mind, or it arrived damaged or wrong. Return shipping is on us. Start a return from your account once the item's marked delivered.",
     // No kilogram load rating exists in the Shopify product data — do not
     // add one here without a spec sheet to cite. See lib/product.ts's claim
     // policy note.

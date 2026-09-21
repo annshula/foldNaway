@@ -113,7 +113,7 @@ export const problemSolution = {
 
 export const trustBar = [
   { label: "Free tracked shipping", detail: "Worldwide, no minimum" },
-  { label: "Free 30-day replacement", detail: "Damaged, missing or wrong items" },
+  { label: "Free 30-day returns", detail: "Any reason, shipping covered" },
   { label: "Instant replies", detail: "A person, not a bot" },
 ];
 
@@ -299,8 +299,8 @@ export const faq = [
     a: "Dispatch is 1–3 business days, then tracked delivery is typically 7–15 business days depending on your country. You get the tracking number by email.",
   },
   {
-    q: "What if it arrives damaged or wrong?",
-    a: "Send a photo within 30 days and we'll ship a free replacement or refund you. This covers damage, missing items and mis-ships; it isn't a general change-of-mind return.",
+    q: "What's your return policy?",
+    a: "30 days from delivery, any reason — wrong size, changed your mind, arrived damaged or wrong. Return shipping is on us. Start a return from your account once the order is marked delivered.",
   },
   {
     q: "Does the clip hold on a keyring?",

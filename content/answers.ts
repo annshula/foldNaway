@@ -67,7 +67,7 @@ export const quickAnswers: QuickAnswer[] = [
   },
   {
     q: "What is FoldNAway's return policy?",
-    a: "FoldNAway replaces or refunds items that arrive damaged, missing or incorrect. Send a photo within 30 days of delivery and the fix is free. This covers damage, missing items and mis-ships specifically; it is not a general change-of-mind return policy.",
+    a: "FoldNAway offers free returns within 30 days of delivery, for any reason — wrong size, changed your mind, or arrived damaged or incorrect. Return shipping is covered. Start a return from your account once the order is marked delivered.",
   },
 ];
 

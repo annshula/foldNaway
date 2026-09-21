@@ -117,8 +117,9 @@ export default function ProductSchema({
         hasMerchantReturnPolicy: {
           "@type": "MerchantReturnPolicy",
           applicableCountry: shipsTo,
-          // Scope matters: this covers damaged / missing / wrong items only,
-          // not change of mind — same limit site.promise.returns states.
+          // Real any-reason 30-day return window — matches
+          // site.promise.returnsDetail and the account return flow
+          // (lib/account/order-status.ts's RETURN_WINDOW_DAYS).
           returnPolicyCategory:
             "https://schema.org/MerchantReturnFiniteReturnWindow",
           merchantReturnDays: 30,
