@@ -1,6 +1,6 @@
 {
   "version": 8,
-  "syncedAt": "2026-09-21T16:33:45.963Z",
+  "syncedAt": "2026-09-21T16:43:35.028Z",
   "shop": {
     "domain": "trackify-com.myshopify.com",
     "name": "Trackify",
@@ -33,35 +33,35 @@
           "availableForSale": true,
           "stockQuantity": 9000,
           "pricesByMarket": {
-            "AU": {
-              "amount": 48,
-              "compareAtAmount": 70,
-              "currencyCode": "AUD"
-            },
             "CA": {
               "amount": 47,
               "compareAtAmount": 69,
               "currencyCode": "CAD"
             },
-            "ZA": {
-              "amount": 547,
-              "compareAtAmount": 807,
-              "currencyCode": "ZAR"
-            },
-            "GB": {
-              "amount": 26,
-              "compareAtAmount": 38,
-              "currencyCode": "GBP"
+            "AU": {
+              "amount": 48,
+              "compareAtAmount": 70,
+              "currencyCode": "AUD"
             },
             "IN": {
               "amount": 3222.66,
               "compareAtAmount": 4754.38,
               "currencyCode": "INR"
             },
+            "ZA": {
+              "amount": 547,
+              "compareAtAmount": 807,
+              "currencyCode": "ZAR"
+            },
             "US": {
               "amount": 32.99,
               "compareAtAmount": 48.67,
               "currencyCode": "USD"
+            },
+            "GB": {
+              "amount": 26,
+              "compareAtAmount": 38,
+              "currencyCode": "GBP"
             }
           },
           "image": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/main_1.png?v=1790001353",
@@ -79,35 +79,35 @@
           "availableForSale": true,
           "stockQuantity": 8946,
           "pricesByMarket": {
-            "AU": {
-              "amount": 48,
-              "compareAtAmount": 70,
-              "currencyCode": "AUD"
-            },
             "CA": {
               "amount": 47,
               "compareAtAmount": 69,
               "currencyCode": "CAD"
             },
-            "ZA": {
-              "amount": 547,
-              "compareAtAmount": 807,
-              "currencyCode": "ZAR"
-            },
-            "GB": {
-              "amount": 26,
-              "compareAtAmount": 38,
-              "currencyCode": "GBP"
+            "AU": {
+              "amount": 48,
+              "compareAtAmount": 70,
+              "currencyCode": "AUD"
             },
             "IN": {
               "amount": 3222.66,
               "compareAtAmount": 4754.38,
               "currencyCode": "INR"
             },
+            "ZA": {
+              "amount": 547,
+              "compareAtAmount": 807,
+              "currencyCode": "ZAR"
+            },
             "US": {
               "amount": 32.99,
               "compareAtAmount": 48.67,
               "currencyCode": "USD"
+            },
+            "GB": {
+              "amount": 26,
+              "compareAtAmount": 38,
+              "currencyCode": "GBP"
             }
           },
           "image": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/b21c2d32-6708-4af0-95f3-0d5b5c2deda6.jpg?v=1789758210",
@@ -125,35 +125,35 @@
           "availableForSale": true,
           "stockQuantity": 9485,
           "pricesByMarket": {
-            "AU": {
-              "amount": 48,
-              "compareAtAmount": 70,
-              "currencyCode": "AUD"
-            },
             "CA": {
               "amount": 47,
               "compareAtAmount": 69,
               "currencyCode": "CAD"
             },
-            "ZA": {
-              "amount": 547,
-              "compareAtAmount": 807,
-              "currencyCode": "ZAR"
-            },
-            "GB": {
-              "amount": 26,
-              "compareAtAmount": 38,
-              "currencyCode": "GBP"
+            "AU": {
+              "amount": 48,
+              "compareAtAmount": 70,
+              "currencyCode": "AUD"
             },
             "IN": {
               "amount": 3222.66,
               "compareAtAmount": 4754.38,
               "currencyCode": "INR"
             },
+            "ZA": {
+              "amount": 547,
+              "compareAtAmount": 807,
+              "currencyCode": "ZAR"
+            },
             "US": {
               "amount": 32.99,
               "compareAtAmount": 48.67,
               "currencyCode": "USD"
+            },
+            "GB": {
+              "amount": 26,
+              "compareAtAmount": 38,
+              "currencyCode": "GBP"
             }
           },
           "image": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/brown.png?v=1790002201",
@@ -171,35 +171,35 @@
           "availableForSale": true,
           "stockQuantity": 6941,
           "pricesByMarket": {
-            "AU": {
-              "amount": 48,
-              "compareAtAmount": 70,
-              "currencyCode": "AUD"
-            },
             "CA": {
               "amount": 47,
               "compareAtAmount": 69,
               "currencyCode": "CAD"
             },
-            "ZA": {
-              "amount": 547,
-              "compareAtAmount": 807,
-              "currencyCode": "ZAR"
-            },
-            "GB": {
-              "amount": 26,
-              "compareAtAmount": 38,
-              "currencyCode": "GBP"
+            "AU": {
+              "amount": 48,
+              "compareAtAmount": 70,
+              "currencyCode": "AUD"
             },
             "IN": {
               "amount": 3222.66,
               "compareAtAmount": 4754.38,
               "currencyCode": "INR"
             },
+            "ZA": {
+              "amount": 547,
+              "compareAtAmount": 807,
+              "currencyCode": "ZAR"
+            },
             "US": {
               "amount": 32.99,
               "compareAtAmount": 48.67,
               "currencyCode": "USD"
+            },
+            "GB": {
+              "amount": 26,
+              "compareAtAmount": 38,
+              "currencyCode": "GBP"
             }
           },
           "image": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/green.png?v=1790001539",
@@ -217,35 +217,35 @@
           "availableForSale": true,
           "stockQuantity": 7928,
           "pricesByMarket": {
-            "AU": {
-              "amount": 48,
-              "compareAtAmount": 70,
-              "currencyCode": "AUD"
-            },
             "CA": {
               "amount": 47,
               "compareAtAmount": 69,
               "currencyCode": "CAD"
             },
-            "ZA": {
-              "amount": 547,
-              "compareAtAmount": 807,
-              "currencyCode": "ZAR"
-            },
-            "GB": {
-              "amount": 26,
-              "compareAtAmount": 38,
-              "currencyCode": "GBP"
+            "AU": {
+              "amount": 48,
+              "compareAtAmount": 70,
+              "currencyCode": "AUD"
             },
             "IN": {
               "amount": 3222.66,
               "compareAtAmount": 4754.38,
               "currencyCode": "INR"
             },
+            "ZA": {
+              "amount": 547,
+              "compareAtAmount": 807,
+              "currencyCode": "ZAR"
+            },
             "US": {
               "amount": 32.99,
               "compareAtAmount": 48.67,
               "currencyCode": "USD"
+            },
+            "GB": {
+              "amount": 26,
+              "compareAtAmount": 38,
+              "currencyCode": "GBP"
             }
           },
           "image": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/khaki.png?v=1790001882",
@@ -263,35 +263,35 @@
           "availableForSale": true,
           "stockQuantity": 7894,
           "pricesByMarket": {
-            "AU": {
-              "amount": 48,
-              "compareAtAmount": 70,
-              "currencyCode": "AUD"
-            },
             "CA": {
               "amount": 47,
               "compareAtAmount": 69,
               "currencyCode": "CAD"
             },
-            "ZA": {
-              "amount": 547,
-              "compareAtAmount": 807,
-              "currencyCode": "ZAR"
-            },
-            "GB": {
-              "amount": 26,
-              "compareAtAmount": 38,
-              "currencyCode": "GBP"
+            "AU": {
+              "amount": 48,
+              "compareAtAmount": 70,
+              "currencyCode": "AUD"
             },
             "IN": {
               "amount": 3222.66,
               "compareAtAmount": 4754.38,
               "currencyCode": "INR"
             },
+            "ZA": {
+              "amount": 547,
+              "compareAtAmount": 807,
+              "currencyCode": "ZAR"
+            },
             "US": {
               "amount": 32.99,
               "compareAtAmount": 48.67,
               "currencyCode": "USD"
+            },
+            "GB": {
+              "amount": 26,
+              "compareAtAmount": 38,
+              "currencyCode": "GBP"
             }
           },
           "image": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/wine.png?v=1790001649",
