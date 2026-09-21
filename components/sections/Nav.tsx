@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState, type ButtonHTMLAttributes } from "react";
 
 import { AccountMenu } from "@/components/account/AccountMenu";
-import { CurrencySelector } from "@/components/localization/CurrencySelector";
 import { useCart } from "@/components/providers/CartProvider";
 import Button from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icons";
@@ -182,9 +181,10 @@ export default function Nav() {
           </ul>
 
           <div className="flex items-center justify-end gap-1.5 sm:gap-2">
-            <span className="hidden sm:block">
-              <CurrencySelector lightMobile={lightMobile} />
-            </span>
+            {/* Currency selector hidden from the UI — pricing still
+                localizes automatically via geo-IP (LocalizationProvider's
+                own defaultCountry, from /api/localization's edge
+                geolocation), just with no manual override control shown. */}
             <span className="hidden sm:block">
               <AccountMenu variant="dropdown" lightMobile={lightMobile} />
             </span>
@@ -285,7 +285,8 @@ export default function Nav() {
                 transition={{ duration: 0.4, delay: 0.32, ease: easeOut }}
               >
                 <div className="flex items-center justify-center gap-3">
-                  <CurrencySelector variant="drawer" dark />
+                  {/* Currency selector hidden — see the desktop header's
+                      own note above. */}
                   <AccountMenu variant="list" dark />
                   <button
                     type="button"

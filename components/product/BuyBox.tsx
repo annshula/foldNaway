@@ -396,26 +396,25 @@ export function BuyBox({
 
           Shows the TOTAL for the selected pack (qty = packSize), not a
           per-unit price — what the shopper is about to pay, matching the
-          "Add to bag" button right below it. The compare-at reference sits
-          on its own line underneath, also scaled to the same qty (qty ×
-          compareAt), so both the real price and the crossed-out reference
-          are totals and stay apples-to-apples — the bigger absolute
-          crossed-out number is the point, for conversion. No quantity
-          stepper here — the pack tiles above are the only quantity control. */}
-      <div className="mt-7 flex flex-col gap-1">
-        <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-          <span className="font-display text-[2rem] leading-none font-semibold text-espresso tabular-nums">
-            {formatMoney(packTotalCents / 100, currency)}
-          </span>
-          {totalSavingsPercent > 0 && (
-            <span className="font-label rounded-full bg-terracotta-soft px-2.5 py-1 text-[0.65rem] font-bold tracking-widest text-terracotta uppercase">
-              Save {totalSavingsPercent}%
-            </span>
-          )}
-        </div>
+          "Add to bag" button right below it. The compare-at reference leads
+          the same row (was → now → save%, the standard markdown read: the
+          anchor price sets up the number that beats it), scaled to the same
+          qty (qty × compareAt) so both numbers stay apples-to-apples — the
+          bigger absolute crossed-out number is the point, for conversion.
+          No quantity stepper here — the pack tiles above are the only
+          quantity control. */}
+      <div className="mt-7 flex flex-wrap items-baseline gap-x-3 gap-y-1">
         {hasMarkdown && (
-          <span className="text-[0.9rem] text-espresso-mute line-through tabular-nums">
+          <span className="text-[1.35rem] text-espresso-mute line-through tabular-nums">
             {formatMoney(compareAt * qty, currency)}
+          </span>
+        )}
+        <span className="font-display text-[2rem] leading-none font-semibold text-espresso tabular-nums">
+          {formatMoney(packTotalCents / 100, currency)}
+        </span>
+        {totalSavingsPercent > 0 && (
+          <span className="font-label rounded-full bg-terracotta-soft px-2.5 py-1 text-[0.65rem] font-bold tracking-widest text-terracotta uppercase">
+            Save {totalSavingsPercent}%
           </span>
         )}
       </div>
