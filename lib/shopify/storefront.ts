@@ -54,7 +54,10 @@ export async function getCart(cartId: string): Promise<Cart | null> {
 
 /* ── Mutations ─────────────────────────────────────────────────────────── */
 
-export async function createCart(lines: CartLineInput[]): Promise<Cart> {
+export async function createCart(
+  lines: CartLineInput[],
+  country?: string | null,
+): Promise<Cart> {
   const data = await graphqlRequest<{
     cartCreate: {
       cart: Cart | null;
@@ -63,7 +66,12 @@ export async function createCart(lines: CartLineInput[]): Promise<Cart> {
   }>({
     endpoint: storefrontEndpoint(),
     query: CART_CREATE_MUTATION,
-    variables: { input: { lines } },
+    // country: prices the cart in the shopper's own market so the automatic
+    // pack discount applies to the same base price the page displayed —
+    // omitting it (previous behavior) let the cart default to the shop's
+    // base market, which is how the checkout total could drift from the
+    // on-page pack price. See CART_CREATE_MUTATION's doc comment.
+    variables: { input: { lines }, country: country?.toUpperCase() ?? null },
     storefrontToken: token(),
     retries: 1,
     // A shopper is watching "Taking you to checkout…" for this one, unlike
@@ -82,6 +90,7 @@ export async function createCart(lines: CartLineInput[]): Promise<Cart> {
 export async function addCartLines(
   cartId: string,
   lines: CartLineInput[],
+  country?: string | null,
 ): Promise<Cart> {
   const data = await graphqlRequest<{
     cartLinesAdd: {
@@ -91,7 +100,7 @@ export async function addCartLines(
   }>({
     endpoint: storefrontEndpoint(),
     query: CART_LINES_ADD_MUTATION,
-    variables: { cartId, lines },
+    variables: { cartId, lines, country: country?.toUpperCase() ?? null },
     storefrontToken: token(),
     retries: 1,
   });
@@ -104,6 +113,7 @@ export async function addCartLines(
 export async function updateCartLines(
   cartId: string,
   lines: Array<{ id: string; quantity: number }>,
+  country?: string | null,
 ): Promise<Cart> {
   const data = await graphqlRequest<{
     cartLinesUpdate: {
@@ -113,7 +123,7 @@ export async function updateCartLines(
   }>({
     endpoint: storefrontEndpoint(),
     query: CART_LINES_UPDATE_MUTATION,
-    variables: { cartId, lines },
+    variables: { cartId, lines, country: country?.toUpperCase() ?? null },
     storefrontToken: token(),
     retries: 1,
   });

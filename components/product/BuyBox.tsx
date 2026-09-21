@@ -4,7 +4,10 @@ import { useRef, useState } from "react";
 import { toast } from "sonner";
 
 import { useCart } from "@/components/providers/CartProvider";
-import { useLocalizedAmount } from "@/components/providers/LocalizationProvider";
+import {
+  useLocalization,
+  useLocalizedAmount,
+} from "@/components/providers/LocalizationProvider";
 import { DeliveryPincodeCheck } from "@/components/product/DeliveryPincodeCheck";
 import Button from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icons";
@@ -54,6 +57,11 @@ export function BuyBox({
   const [buyError, setBuyError] = useState<string | null>(null);
   const slowTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const { add } = useCart();
+  // Same resolution CartProvider uses for its own lines, so the market
+  // Shopify prices the checkout cart in is exactly the one this page's
+  // price came from — see shopifyCheckout's country param doc comment.
+  const { country, defaultCountry } = useLocalization();
+  const effectiveCountry = country ?? defaultCountry?.isoCode ?? null;
 
   // No separate quantity stepper — the cart-line quantity IS the chosen pack
   // size (1/2/3). applyPackDiscount(unitCents, qty) resolves its discount
@@ -128,6 +136,7 @@ export function BuyBox({
         },
       ],
       currency,
+      effectiveCountry,
     );
     if (slowTimerRef.current) clearTimeout(slowTimerRef.current);
     if (result.ok) {

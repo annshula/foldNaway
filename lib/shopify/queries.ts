@@ -88,8 +88,16 @@ const CART_LINE_FRAGMENT = /* GraphQL */ `
   }
 `;
 
+// @inContext(country:) matters here specifically: the product page shows a
+// price already localized to the shopper's market (lib/catalog.ts's synced
+// pricesByMarket), and the pack-tier automatic discount in Shopify Admin is
+// a percentage OFF that market's price. Creating the cart with no country
+// context prices it in the shop's default market instead — a different base
+// price than what was on screen — which is why the checkout total could
+// diverge from the pack price the shopper picked.
 export const CART_CREATE_MUTATION = /* GraphQL */ `
-  mutation CartCreate($input: CartInput!) {
+  mutation CartCreate($input: CartInput!, $country: CountryCode)
+  @inContext(country: $country) {
     cartCreate(input: $input) {
       cart {
         ...CartFragment
@@ -164,7 +172,11 @@ export const CART_QUERY = /* GraphQL */ `
 `;
 
 export const CART_LINES_ADD_MUTATION = /* GraphQL */ `
-  mutation CartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!) {
+  mutation CartLinesAdd(
+    $cartId: ID!
+    $lines: [CartLineInput!]!
+    $country: CountryCode
+  ) @inContext(country: $country) {
     cartLinesAdd(cartId: $cartId, lines: $lines) {
       cart {
         ...CartFragment
@@ -204,7 +216,11 @@ export const CART_LINES_ADD_MUTATION = /* GraphQL */ `
 `;
 
 export const CART_LINES_UPDATE_MUTATION = /* GraphQL */ `
-  mutation CartLinesUpdate($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
+  mutation CartLinesUpdate(
+    $cartId: ID!
+    $lines: [CartLineUpdateInput!]!
+    $country: CountryCode
+  ) @inContext(country: $country) {
     cartLinesUpdate(cartId: $cartId, lines: $lines) {
       cart {
         ...CartFragment

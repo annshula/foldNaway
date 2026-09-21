@@ -8,6 +8,7 @@ export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
 type CartLine = { variantId?: string; qty?: number };
+type CartRequestBody = { lines?: CartLine[]; country?: string };
 
 /**
  * Builds a Shopify Storefront cart from the current bag lines and returns the
@@ -22,10 +23,18 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const body = (await request.json().catch(() => null)) as {
-    lines?: CartLine[];
-  } | null;
+  const body = (await request.json().catch(
+    () => null,
+  )) as CartRequestBody | null;
   const lines = Array.isArray(body?.lines) ? body.lines : [];
+  // Only ever the 2-letter ISO code LocalizationProvider already resolved
+  // client-side (see lib/localization/country.ts) — never trusted beyond
+  // shape-checking, since it only selects which market Shopify prices the
+  // cart in, nothing security-sensitive.
+  const country =
+    typeof body?.country === "string" && /^[A-Za-z]{2}$/.test(body.country)
+      ? body.country.toUpperCase()
+      : null;
   if (lines.length === 0) {
     return NextResponse.json(
       { ok: false, error: "Your bag is empty." },
@@ -56,7 +65,7 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const cart = await createCart(cartLines);
+    const cart = await createCart(cartLines, country);
     // After a successful payment Shopify redirects the shopper back here,
     // where the local bag is cleared (see /checkout/confirmation).
     const returnTo = `${shopifyConfig().siteUrl}/checkout/confirmation`;

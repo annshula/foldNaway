@@ -19,6 +19,13 @@ export type ShopifyCheckoutResult =
 export async function shopifyCheckout(
   lines: Array<{ variantId: string; qty: number; priceCents?: number }>,
   currency = "USD",
+  // The shopper's resolved market (LocalizationProvider's `country`, ISO-2)
+  // — forwarded so the API route can create the Shopify cart with the same
+  // @inContext(country:) the page's own price came from. Without this the
+  // cart prices in Shopify's default market, which can be a different
+  // currency entirely than what the pack price on screen just showed
+  // (e.g. INR on the page, USD at checkout).
+  country?: string | null,
 ): Promise<ShopifyCheckoutResult> {
   try {
     const res = await fetch("/api/shopify/cart", {
@@ -26,6 +33,7 @@ export async function shopifyCheckout(
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         lines: lines.map(({ variantId, qty }) => ({ variantId, qty })),
+        country: country ?? undefined,
       }),
     });
     const data = (await res.json()) as {

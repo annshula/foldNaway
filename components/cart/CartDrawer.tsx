@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 import { useCart } from "@/components/providers/CartProvider";
+import { useLocalization } from "@/components/providers/LocalizationProvider";
 import Button from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icons";
 import Image from "@/components/ui/Image";
@@ -24,6 +25,11 @@ import { cn } from "@/lib/utils";
 export function CartDrawer() {
   const { lines, count, subtotalCents, currencyCode, isOpen, close, remove } =
     useCart();
+  // Same market CartProvider itself priced these lines in — forwarded so
+  // Shopify creates the checkout cart in that market too, instead of its
+  // default one. See shopifyCheckout's country param doc comment.
+  const { country, defaultCountry } = useLocalization();
+  const effectiveCountry = country ?? defaultCountry?.isoCode ?? null;
   const [checkingOut, setCheckingOut] = useState(false);
   const [checkoutError, setCheckoutError] = useState<string | null>(null);
 
@@ -38,6 +44,7 @@ export function CartDrawer() {
         priceCents: l.unitPriceCents,
       })),
       currencyCode,
+      effectiveCountry,
     );
     if (result.ok) {
       window.location.href = result.checkoutUrl;
