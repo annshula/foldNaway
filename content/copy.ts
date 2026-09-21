@@ -113,7 +113,7 @@ export const problemSolution = {
 
 export const trustBar = [
   { label: "Free tracked shipping", detail: "Worldwide, no minimum" },
-  { label: "Free fix", detail: "Damaged, missing or wrong items" },
+  { label: "Free 30-day replacement", detail: "Damaged, missing or wrong items" },
   { label: "Instant replies", detail: "A person, not a bot" },
 ];
 

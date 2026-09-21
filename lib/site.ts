@@ -47,8 +47,10 @@ export const site = {
       "Orders are processed within 1–3 business days, then tracked delivery typically takes 7–15 business days depending on where you are.",
     // Accurate scope: the supplier's dispute process backs damaged, missing
     // and wrong-item claims only — there is no general change-of-mind
-    // return, so no copy anywhere may imply one.
-    returns: "Free fix for damaged, missing, or wrong items",
+    // return, so no copy anywhere may imply one. "Free 30-day replacement"
+    // surfaces the real 30-day window (see returnsDetail) without implying
+    // a broader send-it-back-for-any-reason policy.
+    returns: "Free 30-day replacement",
     returnsDetail:
       "Send a photo within 30 days of delivery and we'll ship a free replacement or refund. This covers damage, missing items and mis-ships, not general change-of-mind returns.",
     // No kilogram load rating exists in the Shopify product data — do not
