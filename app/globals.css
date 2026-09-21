@@ -137,8 +137,21 @@
   --nav-h: 72px;
 }
 
-* {
-  border-color: var(--color-line);
+/* Tailwind v4 dropped Preflight's old default gray border colour, so any
+   element with only `border-width` set (no explicit border-* colour
+   utility) would render its border in `currentColor` without this — the
+   idiomatic v4 fix is exactly this default, scoped inside @layer base so
+   it sits BELOW @layer utilities in the cascade. Un-layered (as this was
+   before), a plain `* { border-color }` rule outranks every `border-*`
+   utility class regardless of specificity — cascade layers always beat
+   specificity — which silently broke every border-color utility site-wide
+   (e.g. the selected colourway swatch's `border-sage` ring never showed;
+   it lost to this rule's `--color-line`, which happens to equal `--color-
+   sand`, so the "selected" state was invisible against the unselected one). */
+@layer base {
+  * {
+    border-color: var(--color-line);
+  }
 }
 
 /* Browsers only give <a href> a pointer cursor; every control here is a real
