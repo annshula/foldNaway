@@ -66,6 +66,12 @@ export async function createCart(lines: CartLineInput[]): Promise<Cart> {
     variables: { input: { lines } },
     storefrontToken: token(),
     retries: 1,
+    // A shopper is watching "Taking you to checkout…" for this one, unlike
+    // background cart reads — the default 15s x 2 attempts (client.ts) could
+    // hold the button for ~30s on a slow network before failing. 8s keeps
+    // the one retry's total wait under the ~10s a person tolerates on a
+    // click-to-navigate action, per the reported slow/never-opens redirect.
+    timeoutMs: 8_000,
   });
   const error = userError(data.cartCreate?.userErrors);
   if (!data.cartCreate?.cart)

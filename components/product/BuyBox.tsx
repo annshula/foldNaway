@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { toast } from "sonner";
 
 import { useCart } from "@/components/providers/CartProvider";
@@ -50,7 +50,9 @@ export function BuyBox({
   rating?: { average: number; count: number };
 }) {
   const [buying, setBuying] = useState(false);
+  const [buySlow, setBuySlow] = useState(false);
   const [buyError, setBuyError] = useState<string | null>(null);
+  const slowTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const { add } = useCart();
 
   // No separate quantity stepper — the cart-line quantity IS the chosen pack
@@ -109,6 +111,14 @@ export function BuyBox({
     if (buying) return;
     setBuying(true);
     setBuyError(null);
+    setBuySlow(false);
+    // On a slow/flaky network the request itself can take several seconds
+    // (see lib/shopify/client.ts's timeout+retry) before it either succeeds
+    // or errors — with no signal in between, "Taking you to checkout…"
+    // reads as frozen rather than working. This swaps the label once we've
+    // clearly exceeded the fast-network case, so the shopper knows it's
+    // still in flight instead of assuming the button is dead.
+    slowTimerRef.current = setTimeout(() => setBuySlow(true), 5_000);
     const result = await shopifyCheckout(
       [
         {
@@ -119,12 +129,14 @@ export function BuyBox({
       ],
       currency,
     );
+    if (slowTimerRef.current) clearTimeout(slowTimerRef.current);
     if (result.ok) {
       window.location.href = result.checkoutUrl;
       return;
     }
     setBuyError(result.error);
     setBuying(false);
+    setBuySlow(false);
   };
 
   return (
@@ -439,7 +451,11 @@ export function BuyBox({
           disabled={!selected.availableForSale || buying}
           className="w-full sm:flex-1"
         >
-          {buying ? "Taking you to checkout…" : "Buy it now"}
+          {buying
+            ? buySlow
+              ? "Still connecting…"
+              : "Taking you to checkout…"
+            : "Buy it now"}
         </Button>
       </div>
 

@@ -44,6 +44,9 @@ export async function graphqlRequest<T>(
     timeoutMs = 15_000,
     retries = 2,
   } = options;
+  // Operation name (first word after "query"/"mutation" in the doc) purely
+  // for diagnostic logs below — never sent to Shopify, never includes tokens.
+  const opName = query.match(/(?:query|mutation)\s+(\w+)/)?.[1] ?? "anonymous";
 
   const requestHeaders: Record<string, string> = {
     "Content-Type": "application/json",
@@ -121,9 +124,16 @@ export async function graphqlRequest<T>(
           throw error;
       } else if (error instanceof DOMException && error.name === "AbortError") {
         lastError = new ShopifyGraphQLError("Shopify request timed out", 408);
+        // Timeouts are the one failure mode that never shows up in Shopify's
+        // own error body (there isn't one) — log which op, which attempt,
+        // and after how long, so a "slow on some networks" report can be
+        // told apart from a real Shopify-side outage instead of guessed at.
+        console.error(
+          `[shopify] ${opName} timed out after ${timeoutMs}ms (attempt ${attempt + 1}/${retries + 1})`,
+        );
       }
       if (attempt < retries) {
-        await sleep(500 * (attempt + 1) + Math.random() * 500);
+        await sleep(300 * (attempt + 1) + Math.random() * 300);
       }
     }
   }
