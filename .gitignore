@@ -10,3 +10,4 @@ reference
 reference2
 package-lock.json
 .gstack/
+.serena
