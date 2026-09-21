@@ -324,7 +324,7 @@ const PHOTO_REVIEWS: {
   {
     rating: 5,
     photo: "photo-12.webp",
-    colorway: "Army Green",
+    colorway: "Black",
     text: "Keep one in the glovebox and one on my keys. Both get used.",
   },
 ];
