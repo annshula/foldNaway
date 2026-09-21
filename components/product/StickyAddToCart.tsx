@@ -1,12 +1,14 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
 import { useCart } from "@/components/providers/CartProvider";
+import { useLocalizedAmount } from "@/components/providers/LocalizationProvider";
 import Image from "@/components/ui/Image";
 import { formatMoney } from "@/lib/money";
 import type { Product } from "@/lib/product";
+import { applyPackDiscount, getPackTier, type PackTier } from "@/lib/site";
+import { useScrollPastElement } from "@/lib/use-scroll-past-element";
 import { cn } from "@/lib/utils";
 
 /**
@@ -25,37 +27,41 @@ import { cn } from "@/lib/utils";
 export function StickyAddToCart({
   product,
   selectedId,
+  packSize,
   watchRef,
 }: {
   product: Product;
   selectedId: string;
+  /** The pack size picked in BuyBox — quick-add here adds the same tier, not always a plain 1-pack. */
+  packSize: PackTier["size"];
   /** The BuyBox wrapper — the bar shows once this leaves the viewport. */
   watchRef: React.RefObject<HTMLElement | null>;
 }) {
-  const [visible, setVisible] = useState(false);
+  const visible = useScrollPastElement(watchRef);
   const { add, open } = useCart();
-  const barRef = useRef<HTMLDivElement>(null);
 
   const selected =
     product.variants.find((v) => v.id === selectedId) ?? product.variants[0];
 
-  useEffect(() => {
-    const target = watchRef.current;
-    if (!target) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        // Show only when the BuyBox has scrolled off the TOP — not when the
-        // shopper is still above it near the page header.
-        setVisible(!entry.isIntersecting && entry.boundingClientRect.top < 0);
-      },
-      { threshold: 0 },
-    );
-    observer.observe(target);
-    return () => observer.disconnect();
-  }, [watchRef]);
+  const {
+    amount: price,
+    currencyCode: currency,
+  } = useLocalizedAmount(
+    selected.id,
+    selected.price.amount,
+    selected.price.currencyCode,
+    selected.compareAtPrice?.amount ?? null,
+  );
+
+  const qty = packSize;
+  const { unitPriceCents, lineTotalCents } = applyPackDiscount(
+    Math.round(price * 100),
+    qty,
+  );
+  const tier = getPackTier(packSize);
 
   const handleAdd = () => {
-    add(selected.id, 1, Math.round(selected.price.amount * 100), selected.price.currencyCode);
+    add(selected.id, qty, unitPriceCents, currency);
     toast.success("Added to your bag", {
       description: `${product.title}, ${selected.title}`,
     });
@@ -64,7 +70,6 @@ export function StickyAddToCart({
 
   return (
     <div
-      ref={barRef}
       aria-hidden={!visible}
       inert={!visible}
       className={cn(
@@ -90,9 +95,12 @@ export function StickyAddToCart({
         <div className="min-w-0 flex-1">
           <p className="truncate text-[0.8rem] font-medium text-espresso">
             {selected.title}
+            {packSize > 1 && (
+              <span className="text-espresso-mute"> · {tier.label}</span>
+            )}
           </p>
           <p className="text-[0.92rem] font-semibold text-espresso tabular-nums">
-            {formatMoney(selected.price.amount, selected.price.currencyCode)}
+            {formatMoney(lineTotalCents / 100, currency)}
           </p>
         </div>
 

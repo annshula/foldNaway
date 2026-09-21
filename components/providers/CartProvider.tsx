@@ -11,8 +11,11 @@ import {
   type ReactNode,
 } from "react";
 
+import { useLocalization } from "@/components/providers/LocalizationProvider";
 import { resolveCartLine } from "@/lib/cart-catalog";
+import { priceForMarket } from "@/lib/catalog";
 import { trackAddToCart } from "@/lib/analytics";
+import { applyPackDiscount } from "@/lib/site";
 import { useScrollLock } from "@/lib/scroll-lock";
 
 const STORAGE_KEY = "fna.cart.v1";
@@ -67,7 +70,13 @@ function reducer(state: CartLine[], action: Action): CartLine[] {
 export type ResolvedLine = CartLine & {
   name: string;
   image: string;
+  /** The shopper's currently localized currency (lib/catalog.ts's priceForMarket) — every amount below is in this currency. */
+  currencyCode: string;
+  /** Catalog base price for the shopper's market — pre-pack-discount. Shown struck through once qty > 1. */
+  baseUnitPriceCents: number;
+  /** Pack-discounted per-unit price at this line's qty (see lib/site.ts's applyPackDiscount). */
   unitPriceCents: number;
+  /** Pack-discounted line total — what checkout actually charges via the matching Shopify automatic discount. */
   lineTotalCents: number;
 };
 
@@ -78,6 +87,8 @@ interface CartContextValue {
   /** Distinct products in the bag, regardless of quantity — used for the nav badge. */
   itemCount: number;
   subtotalCents: number;
+  /** The shopper's currently localized currency — matches every line's own currencyCode. Falls back to "USD" on an empty bag. */
+  currencyCode: string;
   isOpen: boolean;
   open: () => void;
   close: () => void;
@@ -102,6 +113,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [raw, dispatch] = useReducer(reducer, [] as CartLine[]);
   const [isOpen, setOpen] = useState(false);
   const [hydrated, setHydrated] = useState(false);
+  const { country, defaultCountry } = useLocalization();
+  const effectiveCountry = country ?? defaultCountry?.isoCode ?? null;
 
   /* Restore once on mount. Reading in an effect (not during render) keeps the
      server and first client paint identical, so there is no hydration flash. */
@@ -154,17 +167,31 @@ export function CartProvider({ children }: { children: ReactNode }) {
       raw.flatMap((line) => {
         const entry = resolveCartLine(line.variantId);
         if (!entry) return [];
+        // The shopper's localized market price (lib/catalog.ts's
+        // priceForMarket) — it already falls back to the catalog's own base
+        // USD price when `effectiveCountry` is null, same as
+        // useLocalizedAmount, so a cart line never shows a different
+        // currency than the PDP price it was added from before localization
+        // resolves.
+        const market = priceForMarket(line.variantId, effectiveCountry);
+        const baseUnitPriceCents = Math.round(market.amount * 100);
+        const { unitPriceCents, lineTotalCents } = applyPackDiscount(
+          baseUnitPriceCents,
+          line.qty,
+        );
         return [
           {
             ...line,
             name: entry.name,
             image: entry.image,
-            unitPriceCents: entry.unitPriceCents,
-            lineTotalCents: entry.unitPriceCents * line.qty,
+            currencyCode: market.currencyCode,
+            baseUnitPriceCents,
+            unitPriceCents,
+            lineTotalCents,
           },
         ];
       }),
-    [raw],
+    [raw, effectiveCountry],
   );
 
   const add = useCallback(
@@ -206,6 +233,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       count: lines.reduce((n, l) => n + l.qty, 0),
       itemCount: lines.length,
       subtotalCents: lines.reduce((n, l) => n + l.lineTotalCents, 0),
+      currencyCode: lines[0]?.currencyCode ?? "USD",
       isOpen,
       open: () => setOpen(true),
       close: () => setOpen(false),

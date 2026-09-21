@@ -27,8 +27,9 @@
  *
  * REAL PHOTOS: drop the customer images into
  * `public/reviews/foldable-keychain-storage-pouch/` and list their filenames
- * in PHOTO_REVIEWS below. Until a file exists there, that entry simply
- * renders without a photo — nothing breaks.
+ * in PHOTO_REVIEWS below. PHOTO_REVIEWS is kept in sync with what's actually
+ * on disk — an entry is added only once its file is really there, so the
+ * review feed never claims a photo it can't show.
  */
 
 export type ProductReview = {
@@ -246,8 +247,11 @@ const TEXT_4 = [
  *
  * ⚠️ REAL IMAGES GO HERE. Save each file into
  * `public/reviews/foldable-keychain-storage-pouch/` and put its filename in
- * `photo`. An entry whose file is missing still renders — just without the
- * image — so this list can be filled in as the photos arrive.
+ * `photo`. This list is deliberately kept in sync with what's actually on
+ * disk — only add an entry once its file is really there (currently
+ * photo-01/04/07/12.webp), so the review feed never claims more photo
+ * reviews than it can show. `photoPositions` below must have exactly as
+ * many slots as this array has entries.
  */
 const PHOTO_REVIEWS: {
   rating: 4 | 5;
@@ -262,18 +266,6 @@ const PHOTO_REVIEWS: {
     text: "Folded it back into the pouch first try. Clips straight onto my keys and arrived in 8 days to Germany.",
   },
   {
-    rating: 5,
-    photo: "photo-02.webp",
-    colorway: "Army Green",
-    text: "Using it daily since it arrived. Full shop in it twice a week and the seams are holding fine.",
-  },
-  {
-    rating: 5,
-    photo: "photo-03.webp",
-    colorway: "Khaki",
-    text: "Bigger than I expected when it opens out. The colour is a nice soft khaki, not bright.",
-  },
-  {
     rating: 4,
     photo: "photo-04.webp",
     colorway: "Brown",
@@ -281,45 +273,9 @@ const PHOTO_REVIEWS: {
   },
   {
     rating: 5,
-    photo: "photo-05.webp",
-    colorway: "Wine Red",
-    text: "The fabric feels dense and the stitching around the handles looks properly done. No faults on mine.",
-  },
-  {
-    rating: 5,
-    photo: "photo-06.webp",
-    colorway: "Green",
-    text: "Keep it clipped to my bag strap. Someone at work asked where I got it.",
-  },
-  {
-    rating: 5,
     photo: "photo-07.webp",
     colorway: "Black",
     text: "Packs completely flat in the pouch. Genuinely fits in a jacket pocket.",
-  },
-  {
-    rating: 5,
-    photo: "photo-08.webp",
-    colorway: "Green",
-    text: "Took it to the market and it carried everything in one trip. Handles are a good length.",
-  },
-  {
-    rating: 4,
-    photo: "photo-09.webp",
-    colorway: "Khaki",
-    text: "Good bag. Took me a couple of goes to fold it back as neatly as it came.",
-  },
-  {
-    rating: 5,
-    photo: "photo-10.webp",
-    colorway: "Brown",
-    text: "Lightweight but doesn't feel cheap. Been in my bag a month now.",
-  },
-  {
-    rating: 5,
-    photo: "photo-11.webp",
-    colorway: "Wine Red",
-    text: "Lovely deep colour. Bought it for my mum and she's already asked for another.",
   },
   {
     rating: 5,
@@ -540,7 +496,10 @@ function buildReviews(): ProductReview[] {
   type Slot = { rating: 4 | 5; photo?: string; text?: string; colorway?: string };
   const slots: Slot[] = [];
   const photoQueue = shuffle(PHOTO_REVIEWS, rng);
-  const photoPositions = [0, 7, 16, 27, 40, 55, 72, 91, 113, 138, 166, 197];
+  // One position per real photo in PHOTO_REVIEWS (4), spread near the top —
+  // recent customers post photos more often, so photo reviews cluster in the
+  // first couple of pages rather than being spaced evenly across all 2,434.
+  const photoPositions = [0, 7, 16, 27];
   const at = new Set(photoPositions);
 
   let ratingIdx = 0;

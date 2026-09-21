@@ -1,0 +1,259 @@
+/**
+ * CJDropshipping tracking adapter. Set the two env vars below and
+ * `getFreightEstimate()`/`getTracking()` start calling the real API; until
+ * then they return an honest "not connected yet" result instead of throwing
+ * or faking data.
+ *
+ *   CJ_API_EMAIL=...
+ *   CJ_API_KEY=...
+ *
+ * ⚠️ Endpoint shapes below follow CJDropshipping's published API v2
+ * (developers.cjdropshipping.com) as of this writing — verify against their
+ * current docs before relying on this in production; dropshipping platform
+ * APIs change their contracts without much notice.
+ */
+
+const EMAIL = process.env.CJ_API_EMAIL;
+const KEY = process.env.CJ_API_KEY;
+const API_BASE = "https://developers.cjdropshipping.com/api2.0/v1";
+
+export const cjEnabled = Boolean(EMAIL && KEY);
+
+export type TrackingStepState = "done" | "current" | "pending";
+
+export type TrackingStep = {
+  label: string;
+  description?: string;
+  location?: string;
+  at?: string;
+  state: TrackingStepState;
+};
+
+export type TrackingResult =
+  | {
+      ok: true;
+      trackingNumber: string;
+      carrier?: string;
+      steps: TrackingStep[];
+    }
+  | { ok: false; reason: string };
+
+let cachedToken: { token: string; expiresAt: number } | null = null;
+
+async function getAccessToken(): Promise<string | null> {
+  if (cachedToken && cachedToken.expiresAt > Date.now()) return cachedToken.token;
+  if (!EMAIL || !KEY) return null;
+
+  try {
+    const res = await fetch(`${API_BASE}/authentication/getAccessToken`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: EMAIL, password: KEY }),
+      // Tokens are short-lived on CJ's side; never let Next cache this call.
+      cache: "no-store",
+    });
+    if (!res.ok) return null;
+    const data = (await res.json()) as {
+      data?: { accessToken?: string; accessTokenExpiryDate?: string };
+      result?: boolean;
+    };
+    const token = data.data?.accessToken;
+    if (!token) return null;
+
+    cachedToken = {
+      token,
+      // Refresh 5 minutes early rather than riding the token to the wire.
+      expiresAt: data.data?.accessTokenExpiryDate
+        ? new Date(data.data.accessTokenExpiryDate).getTime() - 5 * 60_000
+        : Date.now() + 55 * 60_000,
+    };
+    return token;
+  } catch (err) {
+    console.error("CJ auth failed", err);
+    return null;
+  }
+}
+
+const NOT_CONNECTED =
+  "Order tracking isn't connected yet. Email us the order number and we'll check it by hand.";
+
+export type FreightEstimate = {
+  /** Fastest reasonably-priced courier's transit window — never the courier name itself, kept out of anything shown to a shopper. */
+  minDays: number;
+  maxDays: number;
+};
+
+export type FreightResult =
+  | { ok: true; estimate: FreightEstimate }
+  | { ok: false; reason: string };
+
+const FREIGHT_NOT_CONNECTED =
+  "Delivery estimates aren't connected yet. Standard shipping still applies — see our shipping page for typical timelines.";
+
+/**
+ * Live pincode-level delivery estimate for one variant. Picks the fastest
+ * option CJ returns that isn't wildly more expensive than the rest — CJ
+ * occasionally flags its own "recommended" option
+ * (`compositeRecommendSort`); that pick is used when present. Always
+ * resolves — never throws.
+ */
+export async function getFreightEstimate(params: {
+  variantId: string;
+  endCountryCode: string;
+  zip: string;
+  quantity?: number;
+}): Promise<FreightResult> {
+  const zip = params.zip.trim();
+  if (!zip) return { ok: false, reason: "Enter a delivery pincode." };
+  const country = params.endCountryCode.trim().toUpperCase();
+  if (!/^[A-Z]{2}$/.test(country)) {
+    return { ok: false, reason: "Enter a valid destination country." };
+  }
+
+  if (!cjEnabled) return { ok: false, reason: FREIGHT_NOT_CONNECTED };
+
+  const token = await getAccessToken();
+  if (!token) return { ok: false, reason: FREIGHT_NOT_CONNECTED };
+
+  try {
+    const res = await fetch(`${API_BASE}/logistic/freightCalculate`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "CJ-Access-Token": token,
+      },
+      body: JSON.stringify({
+        startCountryCode: "CN",
+        endCountryCode: country,
+        zip,
+        products: [{ vid: params.variantId, quantity: params.quantity ?? 1 }],
+      }),
+      cache: "no-store",
+    });
+
+    if (!res.ok) {
+      return {
+        ok: false,
+        reason: "We couldn't check delivery for that pincode. Double-check it and try again.",
+      };
+    }
+
+    const data = (await res.json()) as {
+      data?: {
+        logisticAging?: string;
+        compositeRecommendSort?: number | null;
+        timePrioritySort?: number | null;
+        totalPostageFee?: number;
+      }[];
+    };
+
+    const options = (data.data ?? []).filter((o) => o.logisticAging);
+    if (options.length === 0) {
+      return {
+        ok: false,
+        reason: "No delivery options found for that pincode — try a nearby one, or check the general shipping timelines instead.",
+      };
+    }
+
+    // CJ's own flagged pick first; otherwise the option with the tightest
+    // (fastest) upper bound among those not wildly pricier than the cheapest.
+    const parsed = options.map((o) => {
+      const [minStr, maxStr] = (o.logisticAging ?? "").split("-");
+      return {
+        ...o,
+        minDays: Number(minStr),
+        maxDays: Number(maxStr ?? minStr),
+      };
+    });
+    const cheapest = Math.min(...parsed.map((o) => o.totalPostageFee ?? Infinity));
+    const recommended = parsed.find(
+      (o) => o.compositeRecommendSort === 0 || o.timePrioritySort === 0,
+    );
+    const best =
+      recommended ??
+      parsed
+        .filter((o) => (o.totalPostageFee ?? Infinity) <= cheapest * 2)
+        .sort((a, b) => a.maxDays - b.maxDays)[0] ??
+      parsed[0];
+
+    return {
+      ok: true,
+      estimate: { minDays: best.minDays, maxDays: best.maxDays },
+    };
+  } catch (err) {
+    console.error("CJ freight lookup failed", err);
+    return {
+      ok: false,
+      reason: "We couldn't reach delivery estimates right now. Please try again shortly.",
+    };
+  }
+}
+
+/** Looks up a tracking or order number. Always resolves — never throws. */
+export async function getTracking(trackingNumber: string): Promise<TrackingResult> {
+  const clean = trackingNumber.trim();
+  if (!clean) return { ok: false, reason: "Enter an order or tracking number." };
+
+  if (!cjEnabled) {
+    return { ok: false, reason: NOT_CONNECTED };
+  }
+
+  const token = await getAccessToken();
+  if (!token) {
+    return { ok: false, reason: NOT_CONNECTED };
+  }
+
+  try {
+    const res = await fetch(
+      `${API_BASE}/logistic/trackInfo?trackNumber=${encodeURIComponent(clean)}`,
+      {
+        headers: { "CJ-Access-Token": token },
+        cache: "no-store",
+      },
+    );
+
+    if (!res.ok) {
+      return {
+        ok: false,
+        reason: "We couldn't find that number. Double-check it and try again.",
+      };
+    }
+
+    const data = (await res.json()) as {
+      data?: {
+        logisticCompanyEn?: string;
+        days?: { location?: string; description?: string; time?: string }[];
+      };
+    };
+
+    const days = data.data?.days ?? [];
+    if (days.length === 0) {
+      return {
+        ok: false,
+        reason: "No tracking events yet — check back once it ships.",
+      };
+    }
+
+    // CJ returns newest-first; the timeline reads oldest-to-newest.
+    const ordered = [...days].reverse();
+    const steps: TrackingStep[] = ordered.map((d, i) => ({
+      label: d.description ?? "Update",
+      location: d.location,
+      at: d.time,
+      state: i === ordered.length - 1 ? "current" : "done",
+    }));
+
+    return {
+      ok: true,
+      trackingNumber: clean,
+      carrier: data.data?.logisticCompanyEn,
+      steps,
+    };
+  } catch (err) {
+    console.error("CJ tracking lookup failed", err);
+    return {
+      ok: false,
+      reason: "We couldn't reach tracking right now. Please try again shortly.",
+    };
+  }
+}

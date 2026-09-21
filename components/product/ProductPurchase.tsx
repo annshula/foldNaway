@@ -5,8 +5,10 @@ import { useRef, useState } from "react";
 import { ProductViewTracker } from "@/components/analytics/ProductViewTracker";
 import { BuyBox } from "@/components/product/BuyBox";
 import { ProductGallery } from "@/components/product/ProductGallery";
+import { ScrollToTop } from "@/components/product/ScrollToTop";
 import { StickyAddToCart } from "@/components/product/StickyAddToCart";
 import type { Product } from "@/lib/product";
+import type { PackTier } from "@/lib/site";
 
 /**
  * Owns the one piece of state the gallery and the buy box must agree on: the
@@ -26,7 +28,18 @@ export function ProductPurchase({
   const firstAvailable =
     product.variants.find((v) => v.availableForSale) ?? product.variants[0];
   const [selectedId, setSelectedId] = useState(firstAvailable.id);
+  // Owned here (not inside BuyBox) so StickyAddToCart's mobile quick-add can
+  // add the bag at the same pack size the shopper already picked, instead of
+  // always defaulting back to a plain 1-pack once the real BuyBox scrolls
+  // out of view. No separate quantity stepper — packSize IS the cart qty.
+  const [packSize, setPackSize] = useState<PackTier["size"]>(1);
   const buyBoxRef = useRef<HTMLDivElement>(null);
+  // The Add to bag / Buy it now row specifically — StickyAddToCart and
+  // ScrollToTop watch this, not the whole (much taller) buyBoxRef wrapper,
+  // so they appear the moment the real CTA scrolls out of view rather than
+  // only once the entire buy box (badges, price, delivery widget, promises)
+  // has scrolled past.
+  const ctaRef = useRef<HTMLDivElement>(null);
 
   const selected =
     product.variants.find((v) => v.id === selectedId) ?? firstAvailable;
@@ -50,6 +63,9 @@ export function ProductPurchase({
               product={product}
               selectedId={selectedId}
               onSelectId={setSelectedId}
+              packSize={packSize}
+              onSelectPackSize={setPackSize}
+              ctaRef={ctaRef}
               rating={rating}
             />
           </div>
@@ -59,8 +75,11 @@ export function ProductPurchase({
       <StickyAddToCart
         product={product}
         selectedId={selectedId}
-        watchRef={buyBoxRef}
+        packSize={packSize}
+        watchRef={ctaRef}
       />
+
+      <ScrollToTop watchRef={ctaRef} />
 
       <ProductViewTracker
         variantId={selected.id}

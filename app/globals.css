@@ -215,6 +215,14 @@ body {
   outline: none;
 }
 
+/* The delivery-pincode input already shows focus via its own bottom-border
+   colour change (DeliveryPincodeCheck.tsx) — the global :focus-visible ring
+   above is an unlayered rule that outranks any Tailwind focus-visible:
+   utility regardless of specificity, so it has to be suppressed here. */
+.delivery-pincode-input:focus-visible {
+  outline: none;
+}
+
 /* ------------------------------- typography ------------------------------- */
 
 /* Fraunces, the wordmark's own font — never used for anything but the

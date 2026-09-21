@@ -15,6 +15,7 @@ import { MetaPixel } from "@/components/analytics/MetaPixel";
 import { TikTokPixel } from "@/components/analytics/TikTokPixel";
 import { CartDrawer } from "@/components/cart/CartDrawer";
 import { CartProvider } from "@/components/providers/CartProvider";
+import { LocalizationProvider } from "@/components/providers/LocalizationProvider";
 import Footer from "@/components/sections/Footer";
 import Nav from "@/components/sections/Nav";
 import { site } from "@/lib/site";
@@ -235,12 +236,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           Skip to content
         </a>
 
-        <CartProvider>
-          <Nav />
-          {children}
-          <Footer />
-          <CartDrawer />
-        </CartProvider>
+        <LocalizationProvider>
+          <CartProvider>
+            <Nav />
+            {children}
+            <Footer />
+            <CartDrawer />
+          </CartProvider>
+        </LocalizationProvider>
 
         <Toaster
           position="bottom-center"

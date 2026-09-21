@@ -7,5 +7,6 @@ out
 *.tsbuildinfo
 next-env.d.ts
 reference
+reference2
 package-lock.json
 .gstack/

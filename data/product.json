@@ -1,6 +1,6 @@
 {
   "version": 8,
-  "syncedAt": "2026-09-19T16:04:43.627Z",
+  "syncedAt": "2026-09-21T11:45:28.647Z",
   "shop": {
     "domain": "trackify-com.myshopify.com",
     "name": "Trackify",
@@ -18,7 +18,7 @@
     {
       "id": "gid://shopify/Product/9680566649059",
       "handle": "foldable-keychain-storage-pouch-large-capacity-portable-handheld-shoulder-eco-bag",
-      "title": "Foldable Keychain Storage Pouch Large-Capacity Portable Handheld Shoulder Eco-Bag",
+      "title": "FoldNAway Foldable Keychain Storage",
       "price": 32.99,
       "compareAtPrice": null,
       "currencyCode": "USD",
@@ -38,8 +38,18 @@
               "compareAtAmount": null,
               "currencyCode": "USD"
             },
+            "AU": {
+              "amount": 48,
+              "compareAtAmount": null,
+              "currencyCode": "AUD"
+            },
+            "GB": {
+              "amount": 26,
+              "compareAtAmount": null,
+              "currencyCode": "GBP"
+            },
             "IN": {
-              "amount": 3230.07,
+              "amount": 3223.26,
               "compareAtAmount": null,
               "currencyCode": "INR"
             },
@@ -48,20 +58,10 @@
               "compareAtAmount": null,
               "currencyCode": "ZAR"
             },
-            "AU": {
-              "amount": 48,
-              "compareAtAmount": null,
-              "currencyCode": "AUD"
-            },
             "CA": {
               "amount": 47,
               "compareAtAmount": null,
               "currencyCode": "CAD"
-            },
-            "GB": {
-              "amount": 26,
-              "compareAtAmount": null,
-              "currencyCode": "GBP"
             }
           },
           "image": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/62b8d984-6d11-4f7c-8340-5050d9972e05.jpg?v=1789758210",
@@ -84,8 +84,18 @@
               "compareAtAmount": null,
               "currencyCode": "USD"
             },
+            "AU": {
+              "amount": 48,
+              "compareAtAmount": null,
+              "currencyCode": "AUD"
+            },
+            "GB": {
+              "amount": 26,
+              "compareAtAmount": null,
+              "currencyCode": "GBP"
+            },
             "IN": {
-              "amount": 3230.07,
+              "amount": 3223.26,
               "compareAtAmount": null,
               "currencyCode": "INR"
             },
@@ -94,20 +104,10 @@
               "compareAtAmount": null,
               "currencyCode": "ZAR"
             },
-            "AU": {
-              "amount": 48,
-              "compareAtAmount": null,
-              "currencyCode": "AUD"
-            },
             "CA": {
               "amount": 47,
               "compareAtAmount": null,
               "currencyCode": "CAD"
-            },
-            "GB": {
-              "amount": 26,
-              "compareAtAmount": null,
-              "currencyCode": "GBP"
             }
           },
           "image": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/b21c2d32-6708-4af0-95f3-0d5b5c2deda6.jpg?v=1789758210",
@@ -130,8 +130,18 @@
               "compareAtAmount": null,
               "currencyCode": "USD"
             },
+            "AU": {
+              "amount": 48,
+              "compareAtAmount": null,
+              "currencyCode": "AUD"
+            },
+            "GB": {
+              "amount": 26,
+              "compareAtAmount": null,
+              "currencyCode": "GBP"
+            },
             "IN": {
-              "amount": 3230.07,
+              "amount": 3223.26,
               "compareAtAmount": null,
               "currencyCode": "INR"
             },
@@ -140,20 +150,10 @@
               "compareAtAmount": null,
               "currencyCode": "ZAR"
             },
-            "AU": {
-              "amount": 48,
-              "compareAtAmount": null,
-              "currencyCode": "AUD"
-            },
             "CA": {
               "amount": 47,
               "compareAtAmount": null,
               "currencyCode": "CAD"
-            },
-            "GB": {
-              "amount": 26,
-              "compareAtAmount": null,
-              "currencyCode": "GBP"
             }
           },
           "image": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/27d75e64-e063-4ed4-83ef-638f78504635.jpg?v=1789758210",
@@ -176,8 +176,18 @@
               "compareAtAmount": null,
               "currencyCode": "USD"
             },
+            "AU": {
+              "amount": 48,
+              "compareAtAmount": null,
+              "currencyCode": "AUD"
+            },
+            "GB": {
+              "amount": 26,
+              "compareAtAmount": null,
+              "currencyCode": "GBP"
+            },
             "IN": {
-              "amount": 3230.07,
+              "amount": 3223.26,
               "compareAtAmount": null,
               "currencyCode": "INR"
             },
@@ -186,20 +196,10 @@
               "compareAtAmount": null,
               "currencyCode": "ZAR"
             },
-            "AU": {
-              "amount": 48,
-              "compareAtAmount": null,
-              "currencyCode": "AUD"
-            },
             "CA": {
               "amount": 47,
               "compareAtAmount": null,
               "currencyCode": "CAD"
-            },
-            "GB": {
-              "amount": 26,
-              "compareAtAmount": null,
-              "currencyCode": "GBP"
             }
           },
           "image": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/3dfe6cf7-08f2-4281-ad33-a640970eb033.jpg?v=1789758210",
@@ -222,8 +222,18 @@
               "compareAtAmount": null,
               "currencyCode": "USD"
             },
+            "AU": {
+              "amount": 48,
+              "compareAtAmount": null,
+              "currencyCode": "AUD"
+            },
+            "GB": {
+              "amount": 26,
+              "compareAtAmount": null,
+              "currencyCode": "GBP"
+            },
             "IN": {
-              "amount": 3230.07,
+              "amount": 3223.26,
               "compareAtAmount": null,
               "currencyCode": "INR"
             },
@@ -232,20 +242,10 @@
               "compareAtAmount": null,
               "currencyCode": "ZAR"
             },
-            "AU": {
-              "amount": 48,
-              "compareAtAmount": null,
-              "currencyCode": "AUD"
-            },
             "CA": {
               "amount": 47,
               "compareAtAmount": null,
               "currencyCode": "CAD"
-            },
-            "GB": {
-              "amount": 26,
-              "compareAtAmount": null,
-              "currencyCode": "GBP"
             }
           },
           "image": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/c9381bbd-62d4-4a7f-bb24-f1c506ccf275.jpg?v=1789758210",
@@ -268,8 +268,18 @@
               "compareAtAmount": null,
               "currencyCode": "USD"
             },
+            "AU": {
+              "amount": 48,
+              "compareAtAmount": null,
+              "currencyCode": "AUD"
+            },
+            "GB": {
+              "amount": 26,
+              "compareAtAmount": null,
+              "currencyCode": "GBP"
+            },
             "IN": {
-              "amount": 3230.07,
+              "amount": 3223.26,
               "compareAtAmount": null,
               "currencyCode": "INR"
             },
@@ -278,20 +288,10 @@
               "compareAtAmount": null,
               "currencyCode": "ZAR"
             },
-            "AU": {
-              "amount": 48,
-              "compareAtAmount": null,
-              "currencyCode": "AUD"
-            },
             "CA": {
               "amount": 47,
               "compareAtAmount": null,
               "currencyCode": "CAD"
-            },
-            "GB": {
-              "amount": 26,
-              "compareAtAmount": null,
-              "currencyCode": "GBP"
             }
           },
           "image": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/54339bf2-9641-41d4-9690-1688accf2dfa.jpg?v=1789758210",

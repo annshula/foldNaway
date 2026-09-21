@@ -1,0 +1,135 @@
+"use client";
+
+import { AnimatePresence, motion } from "motion/react";
+import { useState } from "react";
+
+import { Icon } from "@/components/ui/Icons";
+import { easeOut } from "@/components/ui/Motion";
+import type { FreightResult } from "@/lib/cj";
+
+type State =
+  | { kind: "idle" }
+  | { kind: "loading" }
+  | { kind: "result"; result: FreightResult; forPincode: string };
+
+/**
+ * A self-contained pincode check on the product page — separate from the
+ * pack-size picker in BuyBox on purpose: transit time barely moves between
+ * pack sizes, so this always checks against the default single-unit variant
+ * rather than needing to track BuyBox's pack/quantity selection.
+ *
+ * Calls POST /api/shipping-estimate — a live CJDropshipping lookup for this
+ * exact pincode, not a country-level range.
+ */
+export function DeliveryPincodeCheck({ sku }: { sku?: string }) {
+  const [pincode, setPincode] = useState("");
+  const [state, setState] = useState<State>({ kind: "idle" });
+
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const trimmed = pincode.trim();
+    if (!trimmed || state.kind === "loading") return;
+    setState({ kind: "loading" });
+    try {
+      const res = await fetch("/api/shipping-estimate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ pincode: trimmed, sku }),
+      });
+      const result = (await res.json()) as FreightResult;
+      setState({ kind: "result", result, forPincode: trimmed });
+    } catch {
+      setState({
+        kind: "result",
+        result: { ok: false, reason: "We couldn't check delivery right now. Please try again." },
+        forPincode: trimmed,
+      });
+    }
+  };
+
+  const trimmedPincode = pincode.trim();
+  // Once a result is showing, re-checking the exact same pincode again is
+  // pointless — disable until they actually change it, same as a form that
+  // won't resubmit unless something about the input changed.
+  const alreadyChecked =
+    state.kind === "result" && state.forPincode === trimmedPincode;
+
+  return (
+    <div className="rounded-xl border border-sand bg-paper px-4 py-3.5">
+      <form onSubmit={onSubmit} className="flex items-center gap-2.5">
+        <span
+          aria-hidden
+          className="grid size-9 shrink-0 place-items-center rounded-full bg-sage-soft text-sage-deep"
+        >
+          <Icon name="truck" className="size-4" />
+        </span>
+
+        <div className="min-w-0 flex-1">
+          <label
+            htmlFor="delivery-pincode"
+            className="font-label block text-[0.66rem] font-bold tracking-widest text-espresso-mute uppercase"
+          >
+            Delivery estimate
+          </label>
+          <input
+            id="delivery-pincode"
+            value={pincode}
+            onChange={(e) => setPincode(e.target.value)}
+            placeholder="Enter your pincode"
+            inputMode="text"
+            className="delivery-pincode-input w-full border-b border-sand bg-transparent pb-1 text-[0.88rem] text-espresso placeholder:text-espresso-mute focus:border-espresso/40 focus:outline-none"
+          />
+        </div>
+
+        <button
+          type="submit"
+          disabled={!trimmedPincode || state.kind === "loading" || alreadyChecked}
+          className="font-label inline-flex h-9 shrink-0 items-center gap-1.5 rounded-full bg-sage px-3.5 text-[0.68rem] font-bold tracking-widest text-white uppercase transition-colors duration-300 hover:bg-sage-hot disabled:opacity-50"
+        >
+          {state.kind === "loading" && (
+            <span
+              aria-hidden="true"
+              className="size-3.5 animate-spin rounded-full border-2 border-white/40 border-t-white"
+            />
+          )}
+          {state.kind === "loading" ? "Checking" : "Check"}
+        </button>
+      </form>
+
+      <AnimatePresence>
+        {state.kind === "result" && (
+          <motion.div
+            key={state.forPincode}
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.35, ease: easeOut }}
+            className="overflow-hidden"
+          >
+            <p
+              className={`flex items-start gap-2 pt-3 text-[0.8rem] ${
+                state.result.ok ? "text-espresso-soft" : "text-espresso-mute"
+              }`}
+            >
+              {state.result.ok ? (
+                <>
+                  <span className="mt-0.5 grid size-4 shrink-0 place-items-center rounded-full bg-sage text-white">
+                    <Icon name="check" className="size-2.5" />
+                  </span>
+                  <span>
+                    <span className="font-semibold text-espresso">
+                      Arrives in {state.result.estimate.minDays}–{state.result.estimate.maxDays} business days
+                    </span>{" "}
+                    to that pincode.
+                  </span>
+                </>
+              ) : (
+                state.result.reason
+              )}
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}

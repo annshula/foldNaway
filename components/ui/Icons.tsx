@@ -139,6 +139,34 @@ const paths = {
       <ellipse cx="12" cy="12" rx="4.1" ry="9" {...stroke} opacity={0.6} />
     </>
   ),
+  "trending-up": (
+    <>
+      <path d="M4 16l6-6 4 4 6-8" {...stroke} />
+      <path d="M15 6h5v5" {...stroke} />
+    </>
+  ),
+  award: (
+    <>
+      <circle cx="12" cy="8.5" r="5.2" {...stroke} />
+      <path d="M9 13l-1.8 7L12 18l4.8 2-1.8-7" {...stroke} />
+    </>
+  ),
+  /** Filled, not stroked — a hairline star reads too faint at badge-row
+      size (14–16px); solid currentColor matches RatingStars' own fill. */
+  star: (
+    <path
+      d="M12 3.5l2.5 5.6 6 .6-4.5 4.1 1.3 6-5.3-3.2-5.3 3.2 1.3-6L3.5 9.7l6-.6z"
+      fill="currentColor"
+      stroke="none"
+    />
+  ),
+  trash: (
+    <>
+      <path d="M5 7h14M9 7V5.5a1.5 1.5 0 0 1 1.5-1.5h3A1.5 1.5 0 0 1 15 5.5V7" {...stroke} />
+      <path d="M7 7v12a1.5 1.5 0 0 0 1.5 1.5h7A1.5 1.5 0 0 0 17 19V7" {...stroke} />
+      <path d="M10 11v6M14 11v6" {...stroke} />
+    </>
+  ),
 } as const;
 
 export type IconName = keyof typeof paths;

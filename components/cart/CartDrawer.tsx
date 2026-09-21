@@ -8,7 +8,7 @@ import { Icon } from "@/components/ui/Icons";
 import Image from "@/components/ui/Image";
 import { formatMoney } from "@/lib/money";
 import { shopifyCheckout } from "@/lib/shopify-checkout";
-import { site } from "@/lib/site";
+import { getDisplayPackTier, site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 /**
@@ -22,7 +22,7 @@ import { cn } from "@/lib/utils";
  * from a new call site, or that event will be missed.
  */
 export function CartDrawer() {
-  const { lines, count, subtotalCents, isOpen, close, setQty, remove } =
+  const { lines, count, subtotalCents, currencyCode, isOpen, close, remove } =
     useCart();
   const [checkingOut, setCheckingOut] = useState(false);
   const [checkoutError, setCheckoutError] = useState<string | null>(null);
@@ -37,7 +37,7 @@ export function CartDrawer() {
         qty: l.qty,
         priceCents: l.unitPriceCents,
       })),
-      site.currency,
+      currencyCode,
     );
     if (result.ok) {
       window.location.href = result.checkoutUrl;
@@ -119,49 +119,67 @@ export function CartDrawer() {
                   </div>
 
                   <div className="flex min-w-0 flex-1 flex-col">
-                    <p className="text-[0.92rem] leading-snug font-medium text-espresso">
-                      {line.name}
-                    </p>
-                    <p className="mt-1 text-[0.85rem] text-espresso-mute tabular-nums">
-                      {formatMoney(line.unitPriceCents / 100, site.currency)}
-                    </p>
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <p className="text-[0.92rem] leading-snug font-medium text-espresso">
+                          {line.name}
+                        </p>
 
-                    <div className="mt-auto flex items-center justify-between gap-3 pt-3">
-                      <div className="flex items-center rounded-full border border-sand">
-                        <button
-                          type="button"
-                          onClick={() => setQty(line.variantId, line.qty - 1)}
-                          aria-label={`Decrease quantity of ${line.name}`}
-                          className="grid size-8 place-items-center rounded-full text-espresso-soft transition-colors duration-200 hover:text-espresso"
-                        >
-                          <Icon name="minus" className="size-3.5" />
-                        </button>
-                        <span className="min-w-7 text-center text-[0.85rem] font-semibold text-espresso tabular-nums">
-                          {line.qty}
-                        </span>
-                        <button
-                          type="button"
-                          onClick={() => setQty(line.variantId, line.qty + 1)}
-                          aria-label={`Increase quantity of ${line.name}`}
-                          className="grid size-8 place-items-center rounded-full text-espresso-soft transition-colors duration-200 hover:text-espresso"
-                        >
-                          <Icon name="plus" className="size-3.5" />
-                        </button>
+                        {(() => {
+                          const tier = getDisplayPackTier(line.qty);
+                          return tier.size > 1 ? (
+                            <span className="mt-1 flex flex-wrap items-center gap-1.5">
+                              <span className="font-label rounded-full bg-sage-soft px-2 py-0.5 text-[0.62rem] font-bold tracking-widest text-sage-deep uppercase">
+                                {tier.label} · Save {tier.discountPercent}%
+                              </span>
+                            </span>
+                          ) : null;
+                        })()}
                       </div>
 
+                      {/* Rightmost on the row, a trash icon rather than a
+                          text link — matches the delete affordance used
+                          elsewhere (account addresses, etc.) and keeps the
+                          row's right edge reserved for one clear action. */}
                       <button
                         type="button"
                         onClick={() => remove(line.variantId)}
-                        className="text-[0.78rem] text-espresso-mute underline decoration-sand-strong underline-offset-3 transition-colors duration-200 hover:text-terracotta"
+                        aria-label={`Remove ${line.name}`}
+                        className="shrink-0 text-espresso-mute transition-colors duration-200 hover:text-terracotta"
                       >
-                        Remove
+                        <Icon name="trash" className="size-4" />
                       </button>
                     </div>
-                  </div>
 
-                  <p className="shrink-0 text-[0.92rem] font-semibold text-espresso tabular-nums">
-                    {formatMoney(line.lineTotalCents / 100, site.currency)}
-                  </p>
+                    <p className="mt-1 flex items-baseline gap-1.5 text-[0.85rem] text-espresso-mute tabular-nums">
+                      <span>
+                        {formatMoney(line.unitPriceCents / 100, line.currencyCode)}
+                      </span>
+                      {line.unitPriceCents < line.baseUnitPriceCents && (
+                        <span className="text-[0.78rem] text-espresso-mute/70 line-through">
+                          {formatMoney(
+                            line.baseUnitPriceCents / 100,
+                            line.currencyCode,
+                          )}
+                        </span>
+                      )}
+                      <span className="text-espresso-mute/70">/unit</span>
+                    </p>
+
+                    <div className="mt-auto flex items-center justify-between gap-3 pt-3">
+                      {/* Read-only — no per-line qty stepper. Quantity is
+                          fixed by the pack size chosen on the product page;
+                          changing it means picking a different pack there,
+                          not nudging a number here. */}
+                      <span className="text-[0.85rem] text-espresso-mute">
+                        Qty {line.qty}
+                      </span>
+
+                      <p className="text-[0.92rem] font-semibold text-espresso tabular-nums">
+                        {formatMoney(line.lineTotalCents / 100, line.currencyCode)}
+                      </p>
+                    </div>
+                  </div>
                 </li>
               ))}
             </ul>
@@ -172,7 +190,7 @@ export function CartDrawer() {
                   Subtotal
                 </span>
                 <span className="font-display text-[1.3rem] font-semibold text-espresso tabular-nums">
-                  {formatMoney(subtotalCents / 100, site.currency)}
+                  {formatMoney(subtotalCents / 100, currencyCode)}
                 </span>
               </div>
               <p className="mt-1.5 text-[0.78rem] text-espresso-mute">

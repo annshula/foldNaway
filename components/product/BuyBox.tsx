@@ -4,6 +4,8 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 import { useCart } from "@/components/providers/CartProvider";
+import { useLocalizedAmount } from "@/components/providers/LocalizationProvider";
+import { DeliveryPincodeCheck } from "@/components/product/DeliveryPincodeCheck";
 import Button from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icons";
 import Image from "@/components/ui/Image";
@@ -12,13 +14,11 @@ import { quality } from "@/content/quality";
 import { formatMoney } from "@/lib/money";
 import type { Product } from "@/lib/product";
 import { shopifyCheckout } from "@/lib/shopify-checkout";
-import { site } from "@/lib/site";
+import { applyPackDiscount, packTiers, site, type PackTier } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
-const MAX_QTY = 10;
-
 /**
- * The purchase surface: price, colourway swatches, quantity, and the two
+ * The purchase surface: price, colourway swatches, pack size, and the two
  * ways to check out. The gallery sits beside this in ProductPurchase.
  *
  * `selectedId` / `onSelectId` are controlled by the parent rather than owned
@@ -34,31 +34,68 @@ export function BuyBox({
   product,
   selectedId,
   onSelectId,
+  packSize,
+  onSelectPackSize,
+  ctaRef,
   rating,
 }: {
   product: Product;
   selectedId: string;
   onSelectId: (id: string) => void;
+  /** Controlled by ProductPurchase, not owned here — StickyAddToCart needs the same value. */
+  packSize: PackTier["size"];
+  onSelectPackSize: (size: PackTier["size"]) => void;
+  /** Attached to the Add to bag / Buy it now row — StickyAddToCart and ScrollToTop watch this specifically, not the whole BuyBox, so they appear the moment the real CTA scrolls out of view, not only once the entire (much taller) buy box does. */
+  ctaRef?: React.RefObject<HTMLDivElement | null>;
   rating?: { average: number; count: number };
 }) {
-  const [quantity, setQuantity] = useState(1);
   const [buying, setBuying] = useState(false);
   const [buyError, setBuyError] = useState<string | null>(null);
   const { add, open } = useCart();
 
+  // No separate quantity stepper — the cart-line quantity IS the chosen pack
+  // size (1/2/3). applyPackDiscount(unitCents, qty) resolves its discount
+  // tier from this directly.
+  const qty = packSize;
+
   const selected =
     product.variants.find((v) => v.id === selectedId) ?? product.variants[0];
 
-  const price = selected.price.amount;
-  const currency = selected.price.currencyCode;
-  const compareAt = selected.compareAtPrice?.amount ?? null;
-  const savings =
-    compareAt && compareAt > price
-      ? Math.round((1 - price / compareAt) * 100)
+  // The synced catalog's real per-market price for the shopper's country
+  // (lib/catalog.ts's priceForMarket via LocalizationProvider) when known,
+  // falling back to this variant's own build-time USD price until
+  // localization resolves — see useLocalizedAmount's own doc comment for why
+  // the price shown is never blank while that resolves.
+  const {
+    amount: price,
+    currencyCode: currency,
+    compareAtAmount: compareAt,
+  } = useLocalizedAmount(
+    selected.id,
+    selected.price.amount,
+    selected.price.currencyCode,
+    selected.compareAtPrice?.amount ?? null,
+  );
+  const hasMarkdown = compareAt != null && compareAt > price;
+
+  // Pack-discount math on top of whatever markdown the variant already has —
+  // the same formula CartProvider and the cart drawer use, so the price
+  // shown here can never round to a different cent than the bag total.
+  const { unitPriceCents: packUnitPriceCents, lineTotalCents: packTotalCents } =
+    applyPackDiscount(Math.round(price * 100), qty);
+
+  // Combined savings vs. the reference price (the markdown's compare-at when
+  // there is one, otherwise the plain 1-pack price) — so the badge always
+  // reflects both the variant's own markdown AND the pack discount together,
+  // never just one of the two.
+  const referenceCents = Math.round((hasMarkdown ? compareAt! : price) * 100);
+  const totalSavingsPercent =
+    referenceCents > 0
+      ? Math.round((1 - packUnitPriceCents / referenceCents) * 100)
       : 0;
 
   const handleAdd = () => {
-    add(selected.id, quantity, Math.round(price * 100), currency);
+    add(selected.id, qty, packUnitPriceCents, currency);
     toast.success("Added to your bag", {
       description: `${product.title}, ${selected.title}`,
     });
@@ -73,8 +110,8 @@ export function BuyBox({
       [
         {
           variantId: selected.id,
-          qty: quantity,
-          priceCents: Math.round(price * 100),
+          qty,
+          priceCents: packUnitPriceCents,
         },
       ],
       currency,
@@ -89,6 +126,36 @@ export function BuyBox({
 
   return (
     <div className="flex flex-col">
+      {/* ⚠️ PLACEHOLDER SOCIAL PROOF — "17k+ sold", "Best Seller 2026" and
+          "Highest rated" are marketing copy with no figure behind them yet
+          (no sales-count field exists anywhere in the synced Shopify data or
+          site.metrics). Same policy as the "50 lbs" claim below and
+          site.metrics's own ⚠️ note: replace with real, evidenceable numbers
+          before this ships live — fabricated sales/ranking claims are an FTC
+          problem. Plain badge chips (not schema.org markup), so nothing here
+          is machine-read as verified fact. Wraps naturally on narrow screens
+          — no separate mobile markup needed, same pattern as the feature-chip
+          row below. */}
+      <ul className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
+        {[
+          { icon: "trending-up" as const, label: "17k+ sold in the last 5 months" },
+          { icon: "award" as const, label: "Best Seller 2026" },
+          { icon: "star" as const, label: "Highest rated seller" },
+        ].map((f) => (
+          <li
+            key={f.label}
+            className="inline-flex items-center gap-1.5 text-[0.78rem] font-semibold text-terracotta"
+          >
+            <Icon name={f.icon} className="size-3.5 shrink-0" />
+            {f.label}
+          </li>
+        ))}
+      </ul>
+
+      <h1 className="font-display mt-3 text-[clamp(1.6rem,3vw,2.3rem)] leading-[1.15] font-medium tracking-[-0.02em] text-espresso text-balance">
+        {product.title}
+      </h1>
+
       {/* Static feature callouts, not `product.subtitle` (Shopify's
           custom.subtitle field) — deliberately overridden here rather than
           edited in Shopify, same as the "50 lbs" claim in content/copy.ts's
@@ -102,7 +169,7 @@ export function BuyBox({
           pairs an icon with its own short label at normal tracking/case,
           which is what actually reads as "minimal and modern" instead of
           "loud all-caps banner". */}
-      <ul className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
+      <ul className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5">
         {[
           { icon: "weight" as const, label: "Holds 50 lbs" },
           { icon: "fold" as const, label: "Folds to keychain size" },
@@ -117,10 +184,6 @@ export function BuyBox({
           </li>
         ))}
       </ul>
-
-      <h1 className="font-display mt-3 text-[clamp(1.6rem,3vw,2.3rem)] leading-[1.15] font-medium tracking-[-0.02em] text-espresso text-balance">
-        {product.title}
-      </h1>
 
       {/* Rating (jumps to #reviews) and the "checks passed" proof link
           (jumps to "Put to the test") sit side by side in one row — both
@@ -171,30 +234,6 @@ export function BuyBox({
           />
         </a>
       </div>
-
-      {/* ------------------------------ price ------------------------------ */}
-      {/* The price is a hero moment on a product page, not a spec value —
-          it stays in the display serif (Fraunces) with tabular-nums for
-          alignment, rather than the mono/grotesk voice reserved for actual
-          data rows (specs, step counters, the quantity stepper). */}
-      <div className="mt-6 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-        <span className="font-display text-[2rem] leading-none font-semibold text-espresso tabular-nums">
-          {formatMoney(price, currency)}
-        </span>
-        {compareAt && compareAt > price && (
-          <>
-            <span className="text-[1rem] text-espresso-mute line-through tabular-nums">
-              {formatMoney(compareAt, currency)}
-            </span>
-            <span className="font-label rounded-full bg-terracotta-soft px-2.5 py-1 text-[0.65rem] font-bold tracking-widest text-terracotta uppercase">
-              Save {savings}%
-            </span>
-          </>
-        )}
-      </div>
-      <p className="mt-1.5 text-[0.8rem] text-espresso-mute">
-        {site.promise.shipping}.
-      </p>
 
       {/* ---------------------------- colourway ---------------------------- */}
       <fieldset className="mt-8">
@@ -256,43 +295,135 @@ export function BuyBox({
         )}
       </fieldset>
 
-      {/* ---------------------------- quantity ----------------------------- */}
-      <div className="mt-7 flex items-center gap-4">
-        <span className="font-label text-[0.68rem] font-bold tracking-widest text-espresso uppercase">
-          Qty
-        </span>
-        <div className="flex items-center rounded-full border border-sand bg-paper">
-          <button
-            type="button"
-            onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-            disabled={quantity <= 1}
-            aria-label="Decrease quantity"
-            className="grid size-10 place-items-center rounded-full text-espresso-soft transition-colors duration-200 hover:text-espresso disabled:opacity-35"
-          >
-            <Icon name="minus" className="size-3.5" />
-          </button>
-          <span
-            aria-live="polite"
-            className="font-mono min-w-8 text-center text-[0.92rem] font-semibold text-espresso"
-          >
-            {quantity}
-          </span>
-          <button
-            type="button"
-            onClick={() => setQuantity((q) => Math.min(MAX_QTY, q + 1))}
-            disabled={quantity >= MAX_QTY}
-            aria-label="Increase quantity"
-            className="grid size-10 place-items-center rounded-full text-espresso-soft transition-colors duration-200 hover:text-espresso disabled:opacity-35"
-          >
-            <Icon name="plus" className="size-3.5" />
-          </button>
+      {/* ---------------------------- pack size ----------------------------- */}
+      {/* Picks the discount tier AND the cart-line quantity in one control —
+          not a separate SKU or flag (see lib/site.ts's packTiers doc
+          comment). qty = packSize directly, no separate stepper. Each tile
+          shows the price at its own size (1×/2×/3×), priced by the shared
+          applyPackDiscount so this can never drift from what the cart
+          drawer or Shopify checkout charges. */}
+      <fieldset className="mt-7">
+        <legend className="font-label text-[0.68rem] font-bold tracking-widest text-espresso uppercase">
+          Choose your pack
+        </legend>
+
+        <div
+          role="radiogroup"
+          aria-label="Pack size"
+          className="mt-3 grid gap-2.5 sm:grid-cols-3"
+        >
+          {packTiers.map((tier) => {
+            const isSelected = tier.size === packSize;
+            const { unitPriceCents: tierUnitCents } = applyPackDiscount(
+              Math.round(price * 100),
+              tier.size,
+            );
+
+            return (
+              <button
+                key={tier.size}
+                type="button"
+                role="radio"
+                aria-checked={isSelected}
+                onClick={() => onSelectPackSize(tier.size)}
+                className={cn(
+                  "relative flex flex-col items-start gap-1 rounded-xl border-2 px-3.5 py-3 text-left transition-colors duration-200",
+                  isSelected
+                    ? "border-sage bg-sage-soft"
+                    : "border-sand bg-paper hover:border-espresso/30",
+                )}
+              >
+                {tier.badge && (
+                  <span
+                    className={cn(
+                      "font-label absolute -top-2.5 left-3 rounded-full px-2 py-0.5 text-[0.58rem] font-bold tracking-widest uppercase",
+                      isSelected
+                        ? "bg-sage text-white"
+                        : "bg-espresso text-cream",
+                    )}
+                  >
+                    {tier.badge}
+                  </span>
+                )}
+
+                <span className="flex w-full items-center justify-between gap-2">
+                  <span className="text-[0.9rem] font-semibold text-espresso">
+                    {tier.label}
+                  </span>
+                  <span
+                    aria-hidden="true"
+                    className={cn(
+                      "grid size-4.5 shrink-0 place-items-center rounded-full border-2 transition-colors duration-200",
+                      isSelected ? "border-sage bg-sage" : "border-sand",
+                    )}
+                  >
+                    {isSelected && (
+                      <Icon name="check" className="size-2.5 text-white" />
+                    )}
+                  </span>
+                </span>
+
+                <span className="text-[0.76rem] text-espresso-mute">
+                  {tier.blurb}
+                </span>
+
+                <span className="mt-1 font-semibold text-espresso tabular-nums">
+                  {formatMoney(tierUnitCents / 100, currency)}
+                  <span className="ml-1 text-[0.72rem] font-normal text-espresso-mute">
+                    /unit
+                  </span>
+                </span>
+
+                {tier.discountPercent > 0 && (
+                  <span className="font-label text-[0.66rem] font-bold tracking-widest text-terracotta uppercase">
+                    Save {tier.discountPercent}%
+                  </span>
+                )}
+              </button>
+            );
+          })}
         </div>
+      </fieldset>
+
+      {/* ------------------------------ price ------------------------------ */}
+      {/* The price is a hero moment on a product page, not a spec value —
+          it stays in the display serif (Fraunces) with tabular-nums for
+          alignment, rather than the mono/grotesk voice reserved for actual
+          data rows.
+
+          Shows the TOTAL for the selected pack (qty = packSize), not a
+          per-unit price — what the shopper is about to pay, matching the
+          "Add to bag" button right below it. The compare-at reference sits
+          on its own line underneath, also scaled to the same qty (qty ×
+          compareAt), so both the real price and the crossed-out reference
+          are totals and stay apples-to-apples — the bigger absolute
+          crossed-out number is the point, for conversion. No quantity
+          stepper here — the pack tiles above are the only quantity control. */}
+      <div className="mt-7 flex flex-col gap-1">
+        <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+          <span className="font-display text-[2rem] leading-none font-semibold text-espresso tabular-nums">
+            {formatMoney(packTotalCents / 100, currency)}
+          </span>
+          {totalSavingsPercent > 0 && (
+            <span className="font-label rounded-full bg-terracotta-soft px-2.5 py-1 text-[0.65rem] font-bold tracking-widest text-terracotta uppercase">
+              Save {totalSavingsPercent}%
+            </span>
+          )}
+        </div>
+        {hasMarkdown && (
+          <span className="text-[0.9rem] text-espresso-mute line-through tabular-nums">
+            {formatMoney(compareAt * qty, currency)}
+          </span>
+        )}
       </div>
+      <p className="mt-1.5 text-[0.8rem] text-espresso-mute">
+        {site.promise.shipping}.
+      </p>
 
       {/* ------------------------------ buy -------------------------------- */}
       {/* Stacked on narrow screens (a half-width button is too tight once
           "Taking you to checkout…" has to fit), side by side from `sm:` up. */}
-      <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+      <div ref={ctaRef} className="mt-4 flex flex-col gap-3 sm:flex-row">
         <Button
           variant="outline-primary"
           onClick={handleAdd}
@@ -318,6 +449,14 @@ export function BuyBox({
           {buyError}
         </p>
       )}
+
+      {/* ------------------------- delivery estimate ------------------------ */}
+      {/* Checked against `selected` (the current colourway) — transit time
+          barely moves between colourways of the same physical item, so this
+          doesn't need to track the pack/quantity picker above it. */}
+      <div className="mt-4">
+        <DeliveryPincodeCheck sku={selected.sku} />
+      </div>
 
       {/* ---------------------------- promises ----------------------------- */}
       <ul className="mt-8 grid gap-3 border-t border-sand/70 pt-6">
