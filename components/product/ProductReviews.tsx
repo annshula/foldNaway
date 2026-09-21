@@ -190,7 +190,7 @@ export default function ProductReviews({
                     : "border-sand bg-paper text-espresso-soft hover:border-line-strong",
                 )}
               >
-                <Icon name="check" className="size-4 text-sage-deep" />
+                <Icon name="camera" className="size-4 text-sage-deep" />
                 <span className="font-medium">
                   With photos ({summary.withPhotos})
                 </span>
@@ -220,7 +220,7 @@ export default function ProductReviews({
                 >
                   {chip.icon ? (
                     <>
-                      <Icon name="check" className="size-4" aria-hidden />
+                      <Icon name="camera" className="size-4" aria-hidden />
                       <span className="sr-only">Reviews with photos</span>
                       <span className="tabular-nums">{chip.count}</span>
                     </>
