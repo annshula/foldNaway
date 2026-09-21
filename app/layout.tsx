@@ -246,13 +246,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </LocalizationProvider>
 
         <Toaster
-          position="bottom-center"
+          position="top-right"
           toastOptions={{
             unstyled: true,
             classNames: {
               toast:
                 "flex max-w-[min(92vw,21rem)] items-center gap-3 rounded-2xl bg-bark px-4 py-3.5 shadow-(--shadow-lift)",
-              icon: "m-0 shrink-0",
+              icon: "m-0 shrink-0 text-sage",
               content: "min-w-0 flex-1",
               title: "block truncate text-[0.82rem] font-semibold text-oat",
               // NOTE: no `block` utility here — it would override

@@ -21,7 +21,7 @@ export default function TrustBar() {
           <StaggerItem
             as="li"
             key={t.label}
-            className="flex flex-col items-center gap-2 text-center sm:flex-row sm:items-center sm:gap-3 sm:text-left"
+            className="flex flex-col items-center gap-2 text-center sm:flex-row sm:justify-center sm:gap-3 sm:text-left"
           >
             <Icon name={icons[i]} className="size-5 shrink-0 text-sage-deep" />
             <span>

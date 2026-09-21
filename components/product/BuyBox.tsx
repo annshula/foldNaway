@@ -51,7 +51,7 @@ export function BuyBox({
 }) {
   const [buying, setBuying] = useState(false);
   const [buyError, setBuyError] = useState<string | null>(null);
-  const { add, open } = useCart();
+  const { add } = useCart();
 
   // No separate quantity stepper — the cart-line quantity IS the chosen pack
   // size (1/2/3). applyPackDiscount(unitCents, qty) resolves its discount
@@ -96,10 +96,13 @@ export function BuyBox({
 
   const handleAdd = () => {
     add(selected.id, qty, packUnitPriceCents, currency);
+    // No cart drawer here — a top-right toast (see app/layout.tsx's Toaster)
+    // confirms the add without pulling the shopper into a full panel every
+    // time, matching reference2's ToastProvider pattern. The drawer's own
+    // cart icon in the header still opens it if they want to check the bag.
     toast.success("Added to your bag", {
       description: `${product.title}, ${selected.title}`,
     });
-    open();
   };
 
   const handleBuyNow = async () => {

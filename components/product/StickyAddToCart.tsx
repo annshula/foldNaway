@@ -38,7 +38,7 @@ export function StickyAddToCart({
   watchRef: React.RefObject<HTMLElement | null>;
 }) {
   const visible = useScrollPastElement(watchRef);
-  const { add, open } = useCart();
+  const { add } = useCart();
 
   const selected =
     product.variants.find((v) => v.id === selectedId) ?? product.variants[0];
@@ -62,10 +62,11 @@ export function StickyAddToCart({
 
   const handleAdd = () => {
     add(selected.id, qty, unitPriceCents, currency);
+    // No cart drawer here — a top-right toast (see app/layout.tsx's Toaster)
+    // confirms the add without pulling the shopper into a full panel.
     toast.success("Added to your bag", {
       description: `${product.title}, ${selected.title}`,
     });
-    open();
   };
 
   return (
