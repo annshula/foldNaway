@@ -15,11 +15,10 @@ import { cn } from "@/lib/utils";
  * of view scrolling down, hidden the instant it's back in view) rather than
  * a separately-tuned scroll threshold that could drift out of sync with it.
  *
- * StickyAddToCart is a full-width bar on mobile (not confined to one
- * corner), so avoiding it there means stacking above it: this button sits at
- * a fixed offset tall enough to clear the bar's stacked mobile height, then
- * drops back to a normal corner offset from `lg` up, where StickyAddToCart
- * is hidden (the real BuyBox sits beside the gallery there instead).
+ * StickyAddToCart is a full-width bar docked to the bottom on mobile, but a
+ * compact card floating bottom-center from `lg` up — clear of this button's
+ * own bottom-right corner there, so only the mobile offset needs to clear
+ * it; the `lg` offset is just this button's normal resting position.
  * Portalled to `document.body` so it never scopes to a clipped/transformed
  * ancestor.
  */
