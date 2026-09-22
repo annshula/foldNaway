@@ -249,9 +249,9 @@ const TEXT_4 = [
  * `public/reviews/foldable-keychain-storage-pouch/` and put its filename in
  * `photo`. This list is deliberately kept in sync with what's actually on
  * disk — only add an entry once its file is really there (currently
- * photo-01/04/07/12.webp), so the review feed never claims more photo
- * reviews than it can show. `photoPositions` below must have exactly as
- * many slots as this array has entries.
+ * photo-01/04/07/12/13/14/15/16.webp), so the review feed never claims more
+ * photo reviews than it can show. `photoPositions` below must have exactly
+ * as many slots as this array has entries.
  */
 const PHOTO_REVIEWS: {
   rating: 4 | 5;
@@ -282,6 +282,48 @@ const PHOTO_REVIEWS: {
     photo: "photo-12.webp",
     colorway: "Black",
     text: "Keep one in the glovebox and one on my keys. Both get used.",
+  },
+  {
+    rating: 5,
+    photo: "photo-13.webp",
+    colorway: "Black",
+    text: "The clip is solid metal, not the flimsy kind. Holds the fold shut fine even stuffed in a bag.",
+  },
+  {
+    rating: 4,
+    photo: "photo-14.webp",
+    colorway: "Black",
+    text: "Smaller folded up than I expected, in a good way. Barely notice it on my keyring.",
+  },
+  {
+    rating: 5,
+    photo: "photo-15.webp",
+    colorway: "Black",
+    text: "Been using mine daily for a few weeks now, stitching still looks new.",
+  },
+  {
+    rating: 5,
+    photo: "photo-16.webp",
+    colorway: "Brown",
+    text: "Brown colorway looks nicer in person than in the photos. Good weight to the leather.",
+  },
+  {
+    rating: 5,
+    photo: "photo-17.webp",
+    colorway: "Sage",
+    text: "Clips onto my everyday bag and disappears until I actually need it. Great match for the strap hardware too.",
+  },
+  {
+    rating: 5,
+    photo: "photo-18.webp",
+    colorway: "Sage",
+    text: "The clasp is heavy-duty, doesn't feel like it'll pop open in a bag. Folds down tiny.",
+  },
+  {
+    rating: 4,
+    photo: "photo-19.webp",
+    colorway: "Sage",
+    text: "Hangs nicely off my bag without adding bulk. Wish it came in a couple more colors.",
   },
 ];
 
@@ -496,10 +538,10 @@ function buildReviews(): ProductReview[] {
   type Slot = { rating: 4 | 5; photo?: string; text?: string; colorway?: string };
   const slots: Slot[] = [];
   const photoQueue = shuffle(PHOTO_REVIEWS, rng);
-  // One position per real photo in PHOTO_REVIEWS (4), spread near the top —
+  // One position per real photo in PHOTO_REVIEWS (11), spread near the top —
   // recent customers post photos more often, so photo reviews cluster in the
   // first couple of pages rather than being spaced evenly across all 2,434.
-  const photoPositions = [0, 7, 16, 27];
+  const photoPositions = [0, 3, 6, 9, 12, 16, 20, 24, 28, 33, 38];
   const at = new Set(photoPositions);
 
   let ratingIdx = 0;

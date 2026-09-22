@@ -1,9 +1,9 @@
 # Customer review photos
 
 Currently on disk: `photo-01.webp`, `photo-04.webp`, `photo-07.webp`,
-`photo-12.webp` — 4 real photos. `data/reviews.ts` → `PHOTO_REVIEWS` is kept
-in sync with exactly these 4; don't add an entry there until its file is
-actually here.
+`photo-12.webp` through `photo-19.webp` — 11 real photos. `data/reviews.ts`
+→ `PHOTO_REVIEWS` is kept in sync with exactly these 11; don't add an entry
+there until its file is actually here.
 
 Drop new review images here as WebP, max ~1200px on the long edge, named the
 next free `photo-NN.webp`, then add a matching entry to `PHOTO_REVIEWS` with
