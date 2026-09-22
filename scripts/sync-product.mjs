@@ -9,7 +9,10 @@
  * data/product.json by hand first (Shopify Admin holds everything else now);
  * the next sync fills in the rest. If Shopify no longer has one of the known
  * ids (deleted upstream), that product is dropped and the run says so loudly
- * rather than leaving a phantom listing in the file forever.
+ * rather than leaving a phantom listing in the file forever. Same treatment
+ * for status: only a product Shopify calls ACTIVE stays in the file — a
+ * merchant switching one to DRAFT or ARCHIVED in Admin removes it from the
+ * site on the next sync, no code change needed.
  *
  * Everything in a product/variant record is Shopify-sourced and overwritten
  * every run: title, descriptionHtml, subtitle (custom.subtitle metafield),
@@ -178,6 +181,7 @@ query ProductsByIds($ids: [ID!]!) {
       id
       handle
       title
+      status
       descriptionHtml
       subtitleField: metafield(namespace: "custom", key: "subtitle") { value }
       materialField: metafield(namespace: "custom", key: "material") { value }
@@ -415,13 +419,29 @@ async function main() {
   ]);
   const currency = shopData?.shop?.currencyCode || existing.shop?.currencyCode || "USD";
 
-  const freshById = new Map(
+  const existingById = new Map(existing.products.map((p) => [p.id, p]));
+  const fetchedById = new Map(
     (fresh.nodes ?? []).filter(Boolean).map((p) => [p.id, p]),
   );
-  const existingById = new Map(existing.products.map((p) => [p.id, p]));
+
+  // Only products Shopify calls ACTIVE are eligible to sync — a DRAFT or
+  // ARCHIVED product is filtered out here, before anything downstream
+  // (variant collection, market pricing, the product loop) ever sees it, and
+  // dropped from data/product.json exactly like a deleted one so a paused
+  // listing can't linger live on the site.
+  const freshById = new Map();
+  for (const p of fetchedById.values()) {
+    if (p.status !== "ACTIVE") {
+      console.error(
+        `  ✖ product ${p.id} (${p.handle}) is ${p.status} on Shopify, not ACTIVE — dropping it from data/product.json`,
+      );
+      continue;
+    }
+    freshById.set(p.id, p);
+  }
 
   for (const id of knownIds) {
-    if (!freshById.has(id)) {
+    if (!fetchedById.has(id)) {
       console.error(
         `  ✖ product ${id} (${existingById.get(id)?.handle}) no longer exists on Shopify — dropping it from data/product.json`,
       );

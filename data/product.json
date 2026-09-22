@@ -1,6 +1,6 @@
 {
   "version": 8,
-  "syncedAt": "2026-09-21T16:43:35.028Z",
+  "syncedAt": "2026-09-22T06:20:37.919Z",
   "shop": {
     "domain": "trackify-com.myshopify.com",
     "name": "Trackify",
@@ -17,8 +17,8 @@
   "products": [
     {
       "id": "gid://shopify/Product/9680566649059",
-      "handle": "foldable-keychain-storage-pouch-large-capacity-portable-handheld-shoulder-eco-bag",
-      "title": "FoldNAway Foldable Keychain Bag",
+      "handle": "keychain-storage-bag",
+      "title": "FoldNaway Foldable Keychain Bag",
       "price": 32.99,
       "compareAtPrice": 48.67,
       "currencyCode": "USD",
@@ -43,25 +43,25 @@
               "compareAtAmount": 70,
               "currencyCode": "AUD"
             },
-            "IN": {
-              "amount": 3222.66,
-              "compareAtAmount": 4754.38,
-              "currencyCode": "INR"
-            },
             "ZA": {
-              "amount": 547,
-              "compareAtAmount": 807,
+              "amount": 548,
+              "compareAtAmount": 808,
               "currencyCode": "ZAR"
             },
-            "US": {
-              "amount": 32.99,
-              "compareAtAmount": 48.67,
-              "currencyCode": "USD"
+            "IN": {
+              "amount": 3223.03,
+              "compareAtAmount": 4754.92,
+              "currencyCode": "INR"
             },
             "GB": {
               "amount": 26,
               "compareAtAmount": 38,
               "currencyCode": "GBP"
+            },
+            "US": {
+              "amount": 32.99,
+              "compareAtAmount": 48.67,
+              "currencyCode": "USD"
             }
           },
           "image": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/main_1.png?v=1790001353",
@@ -89,25 +89,25 @@
               "compareAtAmount": 70,
               "currencyCode": "AUD"
             },
-            "IN": {
-              "amount": 3222.66,
-              "compareAtAmount": 4754.38,
-              "currencyCode": "INR"
-            },
             "ZA": {
-              "amount": 547,
-              "compareAtAmount": 807,
+              "amount": 548,
+              "compareAtAmount": 808,
               "currencyCode": "ZAR"
             },
-            "US": {
-              "amount": 32.99,
-              "compareAtAmount": 48.67,
-              "currencyCode": "USD"
+            "IN": {
+              "amount": 3223.03,
+              "compareAtAmount": 4754.92,
+              "currencyCode": "INR"
             },
             "GB": {
               "amount": 26,
               "compareAtAmount": 38,
               "currencyCode": "GBP"
+            },
+            "US": {
+              "amount": 32.99,
+              "compareAtAmount": 48.67,
+              "currencyCode": "USD"
             }
           },
           "image": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/b21c2d32-6708-4af0-95f3-0d5b5c2deda6.jpg?v=1789758210",
@@ -135,25 +135,25 @@
               "compareAtAmount": 70,
               "currencyCode": "AUD"
             },
-            "IN": {
-              "amount": 3222.66,
-              "compareAtAmount": 4754.38,
-              "currencyCode": "INR"
-            },
             "ZA": {
-              "amount": 547,
-              "compareAtAmount": 807,
+              "amount": 548,
+              "compareAtAmount": 808,
               "currencyCode": "ZAR"
             },
-            "US": {
-              "amount": 32.99,
-              "compareAtAmount": 48.67,
-              "currencyCode": "USD"
+            "IN": {
+              "amount": 3223.03,
+              "compareAtAmount": 4754.92,
+              "currencyCode": "INR"
             },
             "GB": {
               "amount": 26,
               "compareAtAmount": 38,
               "currencyCode": "GBP"
+            },
+            "US": {
+              "amount": 32.99,
+              "compareAtAmount": 48.67,
+              "currencyCode": "USD"
             }
           },
           "image": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/brown.png?v=1790002201",
@@ -181,25 +181,25 @@
               "compareAtAmount": 70,
               "currencyCode": "AUD"
             },
-            "IN": {
-              "amount": 3222.66,
-              "compareAtAmount": 4754.38,
-              "currencyCode": "INR"
-            },
             "ZA": {
-              "amount": 547,
-              "compareAtAmount": 807,
+              "amount": 548,
+              "compareAtAmount": 808,
               "currencyCode": "ZAR"
             },
-            "US": {
-              "amount": 32.99,
-              "compareAtAmount": 48.67,
-              "currencyCode": "USD"
+            "IN": {
+              "amount": 3223.03,
+              "compareAtAmount": 4754.92,
+              "currencyCode": "INR"
             },
             "GB": {
               "amount": 26,
               "compareAtAmount": 38,
               "currencyCode": "GBP"
+            },
+            "US": {
+              "amount": 32.99,
+              "compareAtAmount": 48.67,
+              "currencyCode": "USD"
             }
           },
           "image": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/green.png?v=1790001539",
@@ -227,25 +227,25 @@
               "compareAtAmount": 70,
               "currencyCode": "AUD"
             },
-            "IN": {
-              "amount": 3222.66,
-              "compareAtAmount": 4754.38,
-              "currencyCode": "INR"
-            },
             "ZA": {
-              "amount": 547,
-              "compareAtAmount": 807,
+              "amount": 548,
+              "compareAtAmount": 808,
               "currencyCode": "ZAR"
             },
-            "US": {
-              "amount": 32.99,
-              "compareAtAmount": 48.67,
-              "currencyCode": "USD"
+            "IN": {
+              "amount": 3223.03,
+              "compareAtAmount": 4754.92,
+              "currencyCode": "INR"
             },
             "GB": {
               "amount": 26,
               "compareAtAmount": 38,
               "currencyCode": "GBP"
+            },
+            "US": {
+              "amount": 32.99,
+              "compareAtAmount": 48.67,
+              "currencyCode": "USD"
             }
           },
           "image": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/khaki.png?v=1790001882",
@@ -273,25 +273,25 @@
               "compareAtAmount": 70,
               "currencyCode": "AUD"
             },
-            "IN": {
-              "amount": 3222.66,
-              "compareAtAmount": 4754.38,
-              "currencyCode": "INR"
-            },
             "ZA": {
-              "amount": 547,
-              "compareAtAmount": 807,
+              "amount": 548,
+              "compareAtAmount": 808,
               "currencyCode": "ZAR"
             },
-            "US": {
-              "amount": 32.99,
-              "compareAtAmount": 48.67,
-              "currencyCode": "USD"
+            "IN": {
+              "amount": 3223.03,
+              "compareAtAmount": 4754.92,
+              "currencyCode": "INR"
             },
             "GB": {
               "amount": 26,
               "compareAtAmount": 38,
               "currencyCode": "GBP"
+            },
+            "US": {
+              "amount": 32.99,
+              "compareAtAmount": 48.67,
+              "currencyCode": "USD"
             }
           },
           "image": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/wine.png?v=1790001649",

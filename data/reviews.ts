@@ -61,8 +61,12 @@ export type ReviewSummary = {
   distribution: { stars: number; count: number; percent: number }[];
 };
 
-export const POUCH_REVIEWS_HANDLE =
-  "foldable-keychain-storage-pouch-large-capacity-portable-handheld-shoulder-eco-bag";
+// Must match the real Shopify handle in data/product.json — the handle
+// changed upstream since this constant was first written, which silently
+// dropped reviews (and the rating link in BuyBox.tsx) off the live product
+// page: reviewSetForHandle() below returns null on any mismatch rather than
+// erroring, so a stale value here fails silent, not loud.
+export const POUCH_REVIEWS_HANDLE = "keychain-storage-bag";
 
 /** The real supplied figures for this listing. */
 const REVIEW_COUNT = 2434;
