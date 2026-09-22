@@ -2,12 +2,19 @@ import { faq } from "@/content/copy";
 import { Reveal } from "@/components/ui/Motion";
 import { Section, SectionHeading } from "@/components/ui/Section";
 
+type QA = { q: string; a: string };
+
 /**
  * FAQ accordion, built on native <details>. The answers stay in the DOM for
  * crawlers, it needs no JavaScript, and the open/close height animation is
  * the CSS grid-template-rows trick in globals.css (`.faq-item`).
+ *
+ * `items` defaults to the standalone `faq` list, but callers that used to
+ * render QuickAnswers as a separate section above this one (e.g. the product
+ * page) pass `[...quickAnswers, ...faq]` so there's a single Questions
+ * section instead of two overlapping ones.
  */
-export default function Faq() {
+export default function Faq({ items = faq }: { items?: QA[] }) {
   return (
     <Section id="faq" className="bg-cream-deep">
       <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
@@ -18,7 +25,7 @@ export default function Faq() {
         />
 
         <Reveal className="divide-y divide-sand/80 border-y border-sand/80">
-          {faq.map((item) => (
+          {items.map((item) => (
             <details key={item.q} className="faq-item group py-1">
               <summary className="flex items-start justify-between gap-6 py-5 text-left">
                 <span className="font-display text-[1.05rem] leading-snug font-medium text-espresso transition-colors duration-300 group-hover:text-sage-deep">

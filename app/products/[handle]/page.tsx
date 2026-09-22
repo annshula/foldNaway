@@ -12,7 +12,6 @@ import QualityTests from "@/components/product/QualityTests";
 import Faq from "@/components/sections/Faq";
 import FinalCta from "@/components/sections/FinalCta";
 import HowItWorks from "@/components/sections/HowItWorks";
-import QuickAnswers from "@/components/sections/QuickAnswers";
 import TrustBar from "@/components/sections/TrustBar";
 import { quickAnswers } from "@/content/answers";
 import { faq } from "@/content/copy";
@@ -99,12 +98,11 @@ export default async function ProductPage({
           summary={reviewSet.summary}
         />
       )}
-      <QuickAnswers />
-      <Faq />
+      <Faq items={[...quickAnswers, ...faq]} />
       <FinalCta />
       <ProductSchema product={product} rating={rating} />
-      {/* Mirrors the QuickAnswers + Faq sections rendered above — every
-          answer marked up here is visible on this page. */}
+      {/* Mirrors the Questions section rendered above — every answer
+          marked up here is visible on this page. */}
       <FaqSchema
         id={`${absoluteUrl(pathForHandle(product.handle))}/#faq`}
         items={[...quickAnswers, ...faq]}
