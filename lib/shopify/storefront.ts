@@ -16,7 +16,7 @@ import {
   CART_LINES_UPDATE_MUTATION,
   CART_QUERY,
 } from "@/lib/shopify/queries";
-import type { Cart, CartLineInput } from "@/lib/shopify/types";
+import type { Cart, CartAttributeInput, CartLineInput } from "@/lib/shopify/types";
 
 export class CartServiceError extends Error {
   constructor(message: string) {
@@ -57,6 +57,11 @@ export async function getCart(cartId: string): Promise<Cart | null> {
 export async function createCart(
   lines: CartLineInput[],
   country?: string | null,
+  // Ad-platform identity (fbp/fbc/external_id) — becomes note_attributes on
+  // the resulting order, for the orders/paid webhook's Meta CAPI Purchase
+  // call. See lib/ad-identity.ts for why this can't just be read at webhook
+  // time instead.
+  attributes?: CartAttributeInput[],
 ): Promise<Cart> {
   const data = await graphqlRequest<{
     cartCreate: {
@@ -71,7 +76,13 @@ export async function createCart(
     // omitting it (previous behavior) let the cart default to the shop's
     // base market, which is how the checkout total could drift from the
     // on-page pack price. See CART_CREATE_MUTATION's doc comment.
-    variables: { input: { lines }, country: country?.toUpperCase() ?? null },
+    variables: {
+      input: {
+        lines,
+        ...(attributes?.length ? { attributes } : {}),
+      },
+      country: country?.toUpperCase() ?? null,
+    },
     storefrontToken: token(),
     retries: 1,
     // A shopper is watching "Taking you to checkout…" for this one, unlike

@@ -9,6 +9,7 @@
  * or double-fired by two of them tracking the same checkout separately.
  */
 
+import { getExternalId, getFacebookBrowserIds } from "@/lib/ad-identity";
 import { resolveCartLine } from "@/lib/cart-catalog";
 import { trackInitiateCheckout } from "@/lib/analytics";
 
@@ -28,12 +29,19 @@ export async function shopifyCheckout(
   country?: string | null,
 ): Promise<ShopifyCheckoutResult> {
   try {
+    // Read at checkout time (not earlier) so the freshest _fbp/_fbc cookie
+    // values ride on this order — Meta's own guidance calls these "subject
+    // to change" and recommends refreshing rather than caching them.
+    const { fbp, fbc } = getFacebookBrowserIds();
+    const externalId = getExternalId();
+
     const res = await fetch("/api/shopify/cart", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         lines: lines.map(({ variantId, qty }) => ({ variantId, qty })),
         country: country ?? undefined,
+        adIdentity: { fbp, fbc, externalId },
       }),
     });
     const data = (await res.json()) as {

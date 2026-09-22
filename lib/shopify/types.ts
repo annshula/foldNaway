@@ -33,6 +33,12 @@ export type Cart = {
 
 export type CartLineInput = { merchandiseId: string; quantity: number };
 
+/** Shopify's `AttributeInput` — becomes an order's `note_attributes` once the
+ *  cart converts. Used to carry ad-platform identity (see lib/ad-identity.ts)
+ *  through checkout to the `orders/paid` webhook, which has no cookies of
+ *  its own to read them from directly. */
+export type CartAttributeInput = { key: string; value: string };
+
 /* ── Customer Account ──────────────────────────────────────────────────── */
 
 export type CustomerAddress = {

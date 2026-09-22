@@ -3,12 +3,29 @@ import { NextRequest, NextResponse } from "next/server";
 import { getVariantById } from "@/lib/catalog";
 import { isStorefrontConfigured, shopifyConfig } from "@/lib/shopify/config";
 import { createCart } from "@/lib/shopify/storefront";
+import type { CartAttributeInput } from "@/lib/shopify/types";
+
+/** Cart attribute keys the `orders/paid` webhook reads back out of
+ *  note_attributes — keep these two files in sync (see that route's
+ *  AD_IDENTITY_ATTRIBUTE_KEYS-equivalent parsing). Namespaced so they never
+ *  collide with an attribute a checkout extension or another app sets. */
+const AD_IDENTITY_KEYS = {
+  fbp: "foldnaway_fbp",
+  fbc: "foldnaway_fbc",
+  externalId: "foldnaway_external_id",
+} as const;
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
 type CartLine = { variantId?: string; qty?: number };
-type CartRequestBody = { lines?: CartLine[]; country?: string };
+type CartRequestBody = {
+  lines?: CartLine[];
+  country?: string;
+  /** fbp/fbc/external_id from lib/ad-identity.ts — see createCart's doc
+   *  comment for why these ride on the order instead of being read later. */
+  adIdentity?: { fbp?: string | null; fbc?: string | null; externalId?: string | null };
+};
 
 /**
  * Builds a Shopify Storefront cart from the current bag lines and returns the
@@ -64,8 +81,23 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  const attributes: CartAttributeInput[] = [];
+  const identity = body?.adIdentity;
+  if (typeof identity?.fbp === "string" && identity.fbp) {
+    attributes.push({ key: AD_IDENTITY_KEYS.fbp, value: identity.fbp });
+  }
+  if (typeof identity?.fbc === "string" && identity.fbc) {
+    attributes.push({ key: AD_IDENTITY_KEYS.fbc, value: identity.fbc });
+  }
+  if (typeof identity?.externalId === "string" && identity.externalId) {
+    attributes.push({
+      key: AD_IDENTITY_KEYS.externalId,
+      value: identity.externalId,
+    });
+  }
+
   try {
-    const cart = await createCart(cartLines, country);
+    const cart = await createCart(cartLines, country, attributes);
     // After a successful payment Shopify redirects the shopper back here,
     // where the local bag is cleared (see /checkout/confirmation).
     const returnTo = `${shopifyConfig().siteUrl}/checkout/confirmation`;

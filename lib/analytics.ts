@@ -38,9 +38,18 @@ export type AnalyticsItem = {
   quantity?: number;
 };
 
-function fbq(event: string, data?: Record<string, unknown>) {
+/**
+ * `eventID` (note the capital ID — Meta's own casing) is the Pixel's 4th
+ * `fbq('track', ...)` argument, used to deduplicate a browser-fired event
+ * against the same event fired again server-side via the Conversions API
+ * within a 48h window. Purchase is CAPI-only here (no client-side pixel
+ * fire — see this file's own header comment), so there's nothing to dedupe
+ * against yet, but ViewContent/AddToCart/InitiateCheckout carry one anyway:
+ * it's free, and matches Meta's own recommendation to always set it.
+ */
+function fbq(event: string, data?: Record<string, unknown>, eventId?: string) {
   if (typeof window === "undefined") return;
-  window.fbq?.("track", event, data);
+  window.fbq?.("track", event, data, eventId ? { eventID: eventId } : undefined);
 }
 
 function gtag(event: string, params?: Record<string, unknown>) {
@@ -71,13 +80,18 @@ function toGtagItems(items: AnalyticsItem[]) {
 /** Product page view — Meta `ViewContent`, GA4 `view_item`. */
 export function trackViewContent(item: AnalyticsItem, currency: string) {
   const value = lineValue(item);
-  fbq("ViewContent", {
-    content_type: "product",
-    content_ids: [item.slug],
-    content_name: item.name,
-    currency,
-    value,
-  });
+  fbq(
+    "ViewContent",
+    {
+      content_type: "product",
+      content_ids: [item.slug],
+      content_name: item.name,
+      contents: [{ id: item.slug, quantity: item.quantity ?? 1 }],
+      currency,
+      value,
+    },
+    crypto.randomUUID(),
+  );
   gtag("view_item", {
     currency,
     value,
@@ -100,13 +114,18 @@ export function trackViewContent(item: AnalyticsItem, currency: string) {
 /** Item added to the bag — Meta `AddToCart`, GA4 `add_to_cart`. */
 export function trackAddToCart(item: AnalyticsItem, currency: string) {
   const value = lineValue(item);
-  fbq("AddToCart", {
-    content_type: "product",
-    content_ids: [item.slug],
-    content_name: item.name,
-    currency,
-    value,
-  });
+  fbq(
+    "AddToCart",
+    {
+      content_type: "product",
+      content_ids: [item.slug],
+      content_name: item.name,
+      contents: [{ id: item.slug, quantity: item.quantity ?? 1 }],
+      currency,
+      value,
+    },
+    crypto.randomUUID(),
+  );
   gtag("add_to_cart", {
     currency,
     value,
@@ -131,13 +150,21 @@ export function trackInitiateCheckout(
   currency: string,
 ) {
   const value = items.reduce((sum, item) => sum + lineValue(item), 0);
-  fbq("InitiateCheckout", {
-    content_type: "product",
-    content_ids: items.map((item) => item.slug),
-    num_items: items.reduce((sum, item) => sum + (item.quantity ?? 1), 0),
-    currency,
-    value,
-  });
+  fbq(
+    "InitiateCheckout",
+    {
+      content_type: "product",
+      content_ids: items.map((item) => item.slug),
+      contents: items.map((item) => ({
+        id: item.slug,
+        quantity: item.quantity ?? 1,
+      })),
+      num_items: items.reduce((sum, item) => sum + (item.quantity ?? 1), 0),
+      currency,
+      value,
+    },
+    crypto.randomUUID(),
+  );
   gtag("begin_checkout", {
     currency,
     value,

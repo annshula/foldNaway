@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { NextRequest, NextResponse } from "next/server";
 
 import { syncedProducts } from "@/lib/catalog";
+import { shopifyConfig } from "@/lib/shopify/config";
 import {
   isDuplicateWebhook,
   verifyWebhookSignature,
@@ -55,7 +56,32 @@ type ShopifyOrder = {
   phone?: string | null;
   customer?: { email?: string | null; phone?: string | null } | null;
   billing_address?: ShopifyAddress | null;
+  note_attributes?: { name?: string; value?: string }[];
+  order_status_url?: string | null;
 };
+
+/** Mirrors AD_IDENTITY_KEYS in app/api/shopify/cart/route.ts — the note
+ *  attribute names that route writes onto the cart at checkout. */
+const AD_IDENTITY_ATTRIBUTE_KEYS = {
+  fbp: "foldnaway_fbp",
+  fbc: "foldnaway_fbc",
+  externalId: "foldnaway_external_id",
+} as const;
+
+/** Reads back the fbp/fbc/external_id lib/ad-identity.ts put on the cart at
+ *  checkout (see app/api/shopify/cart/route.ts) — this webhook has no
+ *  cookies of its own, so note_attributes is the only way these values
+ *  survive from the shopper's browser to this server-to-server call. */
+function adIdentityFromOrder(order: ShopifyOrder) {
+  const byName = new Map(
+    (order.note_attributes ?? []).map((a) => [a.name, a.value]),
+  );
+  return {
+    fbp: byName.get(AD_IDENTITY_ATTRIBUTE_KEYS.fbp) || undefined,
+    fbc: byName.get(AD_IDENTITY_ATTRIBUTE_KEYS.fbc) || undefined,
+    externalId: byName.get(AD_IDENTITY_ATTRIBUTE_KEYS.externalId) || undefined,
+  };
+}
 
 /** Meta/TikTok require PII lowercased + trimmed, then SHA-256 hex — never send it raw. */
 function sha256(value: string): string {
@@ -144,6 +170,13 @@ async function sendMetaPurchase(
   // strongest signals in Event Match Quality — stronger than IP/UA/fbp/fbc
   // combined — and each takes an array of hashed values per Meta's spec.
   const match = customerMatchData(order);
+  // fbp/fbc/external_id: read back from the cart's note_attributes (see
+  // adIdentityFromOrder above) — the only way this server-to-server call
+  // can see the browser's own identifiers, since the shopper pays on
+  // Shopify's domain and never returns to a page here with cookies to read.
+  // external_id isn't hashed: it's a random per-browser UUID with no
+  // personal meaning (see lib/ad-identity.ts), not PII like em/ph.
+  const adIdentity = adIdentityFromOrder(order);
   const userData = {
     client_ip_address: ip ?? undefined,
     client_user_agent: userAgent ?? undefined,
@@ -155,6 +188,9 @@ async function sendMetaPurchase(
     st: match.st ? [match.st] : undefined,
     zp: match.zp ? [match.zp] : undefined,
     country: match.country ? [match.country] : undefined,
+    fbp: adIdentity.fbp,
+    fbc: adIdentity.fbc,
+    external_id: adIdentity.externalId ? [adIdentity.externalId] : undefined,
   };
 
   try {
@@ -172,12 +208,26 @@ async function sendMetaPurchase(
               event_time: Math.floor(Date.now() / 1000),
               event_id: `purchase-${order.id}`,
               action_source: "website",
+              // Required for web action_source per Meta's docs. Shopify's
+              // own order-status page is the one real, order-specific URL
+              // that exists for this purchase (the payment step itself runs
+              // on Shopify's checkout domain, which has no stable per-order
+              // URL to report) — falls back to this storefront's own domain
+              // on the rare order payload that omits it.
+              event_source_url: order.order_status_url || shopifyConfig().siteUrl,
               user_data: userData,
               custom_data: {
                 currency: order.currency ?? "USD",
                 value,
                 content_ids: items.map((i) => String(i.variant_id ?? i.id)),
                 content_type: "product",
+                // Richer than content_ids alone — id/quantity/item_price per
+                // line, same shape Meta's docs use for Purchase `contents`.
+                contents: items.map((i) => ({
+                  id: String(i.variant_id ?? i.id),
+                  quantity: i.quantity ?? 1,
+                  item_price: Number(i.price ?? 0),
+                })),
                 num_items: items.reduce((n, i) => n + (i.quantity ?? 1), 0),
                 order_id: String(order.id),
               },
