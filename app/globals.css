@@ -45,6 +45,16 @@
   --color-terracotta: #b4715a;
   --color-terracotta-soft: #f5e6e0;
 
+  /* ── Google's own colours: source attribution only ────────────────
+     The star gold and the link blue Google uses on a review card. Not
+     part of the palette above, deliberately: these two are the only
+     colours on the site that belong to someone else, and they may be
+     used only inside Google-supplied review chrome — the star row of a
+     Google review and the word "Google" itself. The four colours of the
+     mark stay inline in GoogleMark's SVG paths. */
+  --color-google-gold: #fbbc05;
+  --color-google-blue: #1a73e8;
+
   /* ── Semantic tokens (what components actually reference) ───────── */
   --color-canvas: #faf7f1;
   --color-surface: #ffffff;
@@ -443,6 +453,20 @@ p {
   );
   background-size: 200% 100%;
   animation: fn-shimmer 1.4s linear infinite;
+}
+
+/* Hidden scrollbar for the horizontal rails that carry their own affordance
+   instead — the customer-posts marquee (whose drift and arrows already say
+   "this moves") and the two existing strips that already assumed this class
+   existed: the mobile account tabs (AccountNav) and the product gallery
+   thumbnails (ProductGallery). `scrollbar-width: none` covers Firefox, the
+   pseudo-element covers the WebKit/Blink engines; the track stays
+   scrollable and keyboard-focusable either way. */
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 /* CSS-only scroll reveal, for anything that doesn't need JS. Progressive

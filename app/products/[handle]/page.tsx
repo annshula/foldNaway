@@ -9,6 +9,7 @@ import { ProductDetails } from "@/components/product/ProductDetails";
 import { ProductPurchase } from "@/components/product/ProductPurchase";
 import ProductReviews from "@/components/product/ProductReviews";
 import QualityTests from "@/components/product/QualityTests";
+import ReviewSocialPosts from "@/components/product/ReviewSocialPosts";
 import Faq from "@/components/sections/Faq";
 import FinalCta from "@/components/sections/FinalCta";
 import HowItWorks from "@/components/sections/HowItWorks";
@@ -17,6 +18,7 @@ import { quickAnswers } from "@/content/answers";
 import { faq } from "@/content/copy";
 import { reviewSetForHandle } from "@/data/reviews";
 import { pathForHandle } from "@/lib/catalog";
+import { getGoogleReviews } from "@/lib/google-reviews";
 import { getProductByHandle, products } from "@/lib/product";
 import { absoluteUrl } from "@/lib/seo";
 import { site } from "@/lib/site";
@@ -41,7 +43,10 @@ export async function generateMetadata({
   const { handle } = await params;
   const product = getProductByHandle(handle);
   if (!product) {
-    return { title: "Product not found", robots: { index: false, follow: false } };
+    return {
+      title: "Product not found",
+      robots: { index: false, follow: false },
+    };
   }
   const path = pathForHandle(product.handle);
   const description =
@@ -57,7 +62,9 @@ export async function generateMetadata({
       url: absoluteUrl(path),
       title: product.title,
       description,
-      images: cover ? [{ url: cover.src, width: cover.width, height: cover.height }] : undefined,
+      images: cover
+        ? [{ url: cover.src, width: cover.width, height: cover.height }]
+        : undefined,
     },
     twitter: {
       card: "summary_large_image",
@@ -84,10 +91,26 @@ export default async function ProductPage({
     ? { average: reviewSet.summary.average, count: reviewSet.summary.count }
     : undefined;
 
+  // The customer-photo subset, which the "Customer posts" wall re-presents as
+  // the Facebook / Instagram posts and messages those photos arrived as. Same
+  // records the review feed paginates — one dataset, so the wall can't invent
+  // a review the feed doesn't have.
+  const photoReviews = reviewSet?.reviews.filter((r) => r.images?.length) ?? [];
+
+  // Google's own reviews, read here on the server so the visitor's browser
+  // never talks to api.featurable.com (see lib/google-reviews.ts). Fetched in
+  // parallel with nothing else to wait on, and `null` on any failure — the
+  // section then renders its social cards without the Google rating rather
+  // than losing the section or the page.
+  const googleReviews = await getGoogleReviews();
+
   return (
     <main>
       <ProductPurchase product={product} rating={rating} />
       <TrustBar />
+      {photoReviews.length > 0 && (
+        <ReviewSocialPosts reviews={photoReviews} google={googleReviews} />
+      )}
       <ProductBenefitCards />
       <ProductDetails product={product} />
       <QualityTests />

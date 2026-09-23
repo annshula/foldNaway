@@ -9,7 +9,9 @@ import { cn } from "@/lib/utils";
  *   partial fifth star reads accurately instead of rounding up to 5.
  *
  * Filled = sage (the brand accent), empty = line-strong (a quiet warm
- * hairline) — see app/globals.css @theme.
+ * hairline) — see app/globals.css @theme. `filledClassName` overrides the
+ * filled colour where the stars belong to third-party chrome rather than to
+ * this brand: a Google review's stars are Google's gold, not our sage.
  */
 
 function StarIcon({
@@ -50,10 +52,12 @@ export function StarRow({
   stars,
   className,
   starClassName,
+  filledClassName = "text-sage",
 }: {
   stars: number;
   className?: string;
   starClassName?: string;
+  filledClassName?: string;
 }) {
   return (
     <span
@@ -67,7 +71,7 @@ export function StarRow({
           filled={i < stars}
           className={cn(
             "h-3.5 w-3.5 shrink-0",
-            i < stars ? "text-sage" : "text-line-strong",
+            i < stars ? filledClassName : "text-line-strong",
             starClassName,
           )}
         />
@@ -80,10 +84,12 @@ export function RatingStars({
   value,
   className,
   starClassName,
+  filledClassName = "text-sage",
 }: {
   value: number;
   className?: string;
   starClassName?: string;
+  filledClassName?: string;
 }) {
   const clamped = Math.max(0, Math.min(5, value));
   const pct = (clamped / 5) * 100;
@@ -101,7 +107,7 @@ export function RatingStars({
         className="absolute inset-y-0 left-0 overflow-hidden"
         style={{ width: `${pct}%` }}
       >
-        <span className="flex items-center gap-0.5 text-sage">
+        <span className={cn("flex items-center gap-0.5", filledClassName)}>
           <Row count={5} className={starClassName} />
         </span>
       </span>
