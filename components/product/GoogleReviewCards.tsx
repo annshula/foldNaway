@@ -128,6 +128,13 @@ export function GoogleRatingCard({
  * a review that ends mid-sentence always ends on that ellipsis. The rest of the
  * review is one click away in the sheet.
  *
+ * The clamped <p> is `shrink-0` and hugs its own lines — never `flex-1`, never
+ * carrying vertical padding. A clamp truncates the text at line three, but the
+ * clip happens at the box's own edge, so any box taller than three lines (a
+ * flex-1 paragraph, a padded one) gives line four a few pixels to paint the top
+ * of itself into: the half-line that appears under the "…" and reads as a
+ * glitch. Leftover card height goes under the text, not inside it.
+ *
  * No hover state, on purpose. The card is a button only so the full review has
  * somewhere to open from — it is a quote, not a call to action — and a row of
  * cards lifting under the cursor on a rail that is already drifting drew the
@@ -168,7 +175,7 @@ export function GoogleReviewCard({
         filledClassName="text-google-gold"
       />
 
-      <p className="mt-2 line-clamp-3 min-h-0 flex-1 overflow-hidden text-[0.82rem] leading-[1.6] text-espresso-soft text-pretty">
+      <p className="mt-2 line-clamp-3 shrink-0 overflow-hidden text-[0.82rem] leading-[1.6] text-espresso-soft text-pretty">
         {review.comment}
       </p>
     </button>
