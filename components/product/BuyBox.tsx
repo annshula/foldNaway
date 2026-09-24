@@ -10,7 +10,7 @@ import {
 } from "@/components/providers/LocalizationProvider";
 import { DeliveryPincodeCheck } from "@/components/product/DeliveryPincodeCheck";
 import Button from "@/components/ui/Button";
-import { Icon } from "@/components/ui/Icons";
+import { Icon, ShopPayWordmark } from "@/components/ui/Icons";
 import Image from "@/components/ui/Image";
 import { RatingStars } from "@/components/ui/Stars";
 import { quality } from "@/content/quality";
@@ -162,7 +162,10 @@ export function BuyBox({
           row below. */}
       <ul className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
         {[
-          { icon: "trending-up" as const, label: "17k+ sold in the last 5 months" },
+          {
+            icon: "trending-up" as const,
+            label: "17k+ sold in the last 5 months",
+          },
           { icon: "award" as const, label: "Best Seller 2026" },
           { icon: "star" as const, label: "Highest rated seller" },
         ].map((f) => (
@@ -334,7 +337,13 @@ export function BuyBox({
         <div
           role="radiogroup"
           aria-label="Pack size"
-          className="mt-3 grid gap-2.5 sm:grid-cols-3"
+          // Extra vertical gap below `sm`: stacked in one column, each
+          // tile's "Most popular"/"Best value" badge floats to -top-2.5
+          // (-10px) — exactly the old gap-2.5, so it visually bridged into
+          // the card above it and read as no space at all. Side-by-side on
+          // sm+ doesn't have this problem (the badge floats into clear
+          // space above the row), so only mobile needs the wider gap.
+          className="mt-3 grid gap-y-5 gap-x-2.5 sm:grid-cols-3 sm:gap-y-2.5"
         >
           {packTiers.map((tier) => {
             const isSelected = tier.size === packSize;
@@ -458,13 +467,37 @@ export function BuyBox({
         <Button
           onClick={handleBuyNow}
           disabled={!selected.availableForSale || buying}
-          className="w-full sm:flex-1"
+          // Shop Pay's real button is indigo (#5433EB); this site uses
+          // Shopify's blue (#0a6cff) instead, with the same "Shop [Pay]"
+          // lockup recolored to white (ShopPayWordmark, traced from
+          // Shop_Pay_logo.svg — the lockup's own fill doesn't carry the
+          // indigo, so swapping the button's bg here is enough). Shoppers
+          // still pattern-match the lockup + accent-color pairing to "fast
+          // checkout" from every other Shopify store, while this goes
+          // through this site's own handleBuyNow/checkout route (no
+          // Shopify Buy SDK here — see shopify-checkout.ts's doc comment on
+          // why the cart is created server-side).
+          //
+          // `!` (important) on bg/hover:bg because Button defaults to
+          // variant="sage" when unset, which bakes `bg-sage` into the same
+          // class string ahead of this override — Tailwind's generated
+          // stylesheet doesn't guarantee our later-in-string arbitrary value
+          // wins over that named utility, so this button rendered sage
+          // green instead of blue without `!`.
+          className="w-full bg-[#5B31F3]! text-white shadow-(--shadow-e2) hover:-translate-y-0.5 hover:bg-[#0857d1]! hover:shadow-(--shadow-e3) active:translate-y-0 sm:flex-1"
         >
-          {buying
-            ? buySlow
-              ? "Still connecting…"
-              : "Taking you to checkout…"
-            : "Buy it now"}
+          {buying ? (
+            buySlow ? (
+              "Still connecting…"
+            ) : (
+              "Taking you to checkout…"
+            )
+          ) : (
+            <span className="inline-flex items-center gap-1">
+              <span>Buy with</span>
+              <ShopPayWordmark className="h-4.5 w-auto shrink-0 text-white" />
+            </span>
+          )}
         </Button>
       </div>
 
