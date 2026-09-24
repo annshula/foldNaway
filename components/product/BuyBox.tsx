@@ -518,22 +518,49 @@ export function BuyBox({
         <DeliveryPincodeCheck sku={selected.sku} />
       </div>
 
-      {/* ---------------------------- promises ----------------------------- */}
-      <ul className="mt-8 grid gap-3 border-t border-sand/70 pt-6">
-        {[
-          { icon: "truck" as const, text: site.promise.shipping },
-          { icon: "shield" as const, text: site.promise.returns },
-          { icon: "chat" as const, text: site.promise.support },
-        ].map((row) => (
-          <li
-            key={row.text}
-            className="flex items-center gap-3 text-[0.87rem] text-espresso-soft"
-          >
-            <Icon name={row.icon} className="size-4.5 shrink-0 text-sage" />
-            {row.text}
-          </li>
-        ))}
-      </ul>
+      {/* -------------------------- description ----------------------------- */}
+      {/* Was the promises list (shipping/returns/support) — shipping and
+          returns are already stated above (the line under the price, and
+          the checkout/PDP copy respectively), so this repeated them for no
+          reason. Shopify's own description is more useful real estate here. */}
+      {product.descriptionHtml && (
+        <div className="mt-8 border-t border-sand/70 pt-6">
+          <DescriptionClamp html={product.descriptionHtml} />
+        </div>
+      )}
+    </div>
+  );
+}
+
+/**
+ * Shopify's `descriptionHtml`, clamped to 3 lines with a "Read more" toggle.
+ * Sits between price and the buy buttons — was a plain paragraph repeating
+ * the shipping perk that's already in the promises list a few rows down.
+ *
+ * `html` is sanitized at sync time (sanitizeProductHtml, run once in
+ * lib/shopify/sync-product.ts against the raw Shopify field), not here — so
+ * this is the only place in the buy box safe to hand straight to
+ * dangerouslySetInnerHTML.
+ */
+function DescriptionClamp({ html }: { html: string }) {
+  const [expanded, setExpanded] = useState(false);
+
+  return (
+    <div className="mt-1.5 text-[0.8rem] leading-[1.6] text-espresso-mute">
+      <div
+        className={cn(
+          "[&_a]:underline [&_a]:decoration-espresso-mute/40 [&_p]:m-0 [&_p+p]:mt-1.5",
+          !expanded && "line-clamp-3",
+        )}
+        dangerouslySetInnerHTML={{ __html: html }}
+      />
+      <button
+        type="button"
+        onClick={() => setExpanded((v) => !v)}
+        className="mt-1 font-medium text-espresso underline decoration-espresso/30 underline-offset-2 hover:decoration-espresso"
+      >
+        {expanded ? "Show less" : "Read more"}
+      </button>
     </div>
   );
 }
