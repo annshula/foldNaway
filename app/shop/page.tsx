@@ -7,10 +7,10 @@ import TrustBar from "@/components/sections/TrustBar";
 import { Icon } from "@/components/ui/Icons";
 import Image from "@/components/ui/Image";
 import { Reveal, Stagger, StaggerItem } from "@/components/ui/Motion";
+import { ProductCardPrice } from "@/components/product/ProductCardPrice";
 import { RatingStars } from "@/components/ui/Stars";
 import { reviewSetForHandle } from "@/data/reviews";
 import { pathForHandle } from "@/lib/catalog";
-import { formatMoney } from "@/lib/money";
 import { products } from "@/lib/product";
 import { absoluteUrl } from "@/lib/seo";
 import { site } from "@/lib/site";
@@ -123,9 +123,11 @@ export default function ShopPage() {
                     )}
 
                     <div className="mt-3 flex items-center justify-between gap-2">
-                      <span className="font-mono text-[0.9rem] font-semibold text-espresso">
-                        From {formatMoney(from, currency)}
-                      </span>
+                      <ProductCardPrice
+                        variantIds={product.variants.map((v) => v.id)}
+                        fallbackAmount={from}
+                        fallbackCurrency={currency}
+                      />
                       <span className="font-label inline-flex items-center gap-1 text-[0.62rem] font-bold tracking-widest text-sage-deep uppercase">
                         Shop
                         <Icon
