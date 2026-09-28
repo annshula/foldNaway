@@ -1,6 +1,6 @@
 {
   "version": 8,
-  "syncedAt": "2026-09-28T11:12:25.018Z",
+  "syncedAt": "2026-09-28T11:20:43.162Z",
   "shop": {
     "domain": "trackify-com.myshopify.com",
     "name": "Trackify",
@@ -195,12 +195,6 @@
           "height": 1000
         },
         {
-          "src": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/S8fd01a284bee4218bc9e6db1bebf46ebf_a1af7def-def8-4eb4-9050-e4facfe1d46f.webp?v=1790592471",
-          "alt": "Reusable Mini Keychain Tote Bag Lightweight Large Capacity Foldable Shopping Bag Key Ring Eco-Friendly Expandable Reusable Bag",
-          "width": 1000,
-          "height": 1000
-        },
-        {
           "src": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/S292179b05189457b9cfd19499672f83f5.webp?v=1790592471",
           "alt": "Reusable Mini Keychain Tote Bag Lightweight Large Capacity Foldable Shopping Bag Key Ring Eco-Friendly Expandable Reusable Bag",
           "width": 1000,
@@ -219,12 +213,6 @@
           "height": 1000
         },
         {
-          "src": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/S4721dbf9ab7e4689a735a723427283a2G.webp?v=1790592471",
-          "alt": "Reusable Mini Keychain Tote Bag Lightweight Large Capacity Foldable Shopping Bag Key Ring Eco-Friendly Expandable Reusable Bag",
-          "width": 1000,
-          "height": 1000
-        },
-        {
           "src": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/Sdd35032993114128851b103d07a118cef.webp?v=1790592471",
           "alt": "Reusable Mini Keychain Tote Bag Lightweight Large Capacity Foldable Shopping Bag Key Ring Eco-Friendly Expandable Reusable Bag",
           "width": 1000,
@@ -233,6 +221,36 @@
         {
           "src": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/S1b7a7f65eb274f9b9209befc37b3e3498.webp?v=1790592471",
           "alt": "Reusable Mini Keychain Tote Bag Lightweight Large Capacity Foldable Shopping Bag Key Ring Eco-Friendly Expandable Reusable Bag",
+          "width": 1000,
+          "height": 1000
+        },
+        {
+          "src": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/S5ef6479da6e243eeba8e1de46057c2edY.webp?v=1790592471",
+          "alt": "FoldNaway Foldable Keychain Bag",
+          "width": 1000,
+          "height": 1000
+        },
+        {
+          "src": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/S5089fa6432c44f26853e2ce3fd8e1e5fo.webp?v=1790592471",
+          "alt": "FoldNaway Foldable Keychain Bag",
+          "width": 1000,
+          "height": 1000
+        },
+        {
+          "src": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/S654c12b089ae4997933743bb72e6c405v.webp?v=1790592471",
+          "alt": "FoldNaway Foldable Keychain Bag",
+          "width": 1000,
+          "height": 1000
+        },
+        {
+          "src": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/Se2ebcb3f6b384c0da0a43a2fffaa0f8dv.webp?v=1790592471",
+          "alt": "FoldNaway Foldable Keychain Bag",
+          "width": 1000,
+          "height": 1000
+        },
+        {
+          "src": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/S4721dbf9ab7e4689a735a723427283a2G.webp?v=1790592471",
+          "alt": "FoldNaway Foldable Keychain Bag",
           "width": 1000,
           "height": 1000
         }
@@ -331,13 +349,6 @@
         },
         {
           "kind": "image",
-          "src": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/S8fd01a284bee4218bc9e6db1bebf46ebf_a1af7def-def8-4eb4-9050-e4facfe1d46f.webp?v=1790592471",
-          "alt": "Reusable Mini Keychain Tote Bag Lightweight Large Capacity Foldable Shopping Bag Key Ring Eco-Friendly Expandable Reusable Bag",
-          "width": 1000,
-          "height": 1000
-        },
-        {
-          "kind": "image",
           "src": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/S292179b05189457b9cfd19499672f83f5.webp?v=1790592471",
           "alt": "Reusable Mini Keychain Tote Bag Lightweight Large Capacity Foldable Shopping Bag Key Ring Eco-Friendly Expandable Reusable Bag",
           "width": 1000,
@@ -359,13 +370,6 @@
         },
         {
           "kind": "image",
-          "src": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/S4721dbf9ab7e4689a735a723427283a2G.webp?v=1790592471",
-          "alt": "Reusable Mini Keychain Tote Bag Lightweight Large Capacity Foldable Shopping Bag Key Ring Eco-Friendly Expandable Reusable Bag",
-          "width": 1000,
-          "height": 1000
-        },
-        {
-          "kind": "image",
           "src": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/Sdd35032993114128851b103d07a118cef.webp?v=1790592471",
           "alt": "Reusable Mini Keychain Tote Bag Lightweight Large Capacity Foldable Shopping Bag Key Ring Eco-Friendly Expandable Reusable Bag",
           "width": 1000,
@@ -375,6 +379,41 @@
           "kind": "image",
           "src": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/S1b7a7f65eb274f9b9209befc37b3e3498.webp?v=1790592471",
           "alt": "Reusable Mini Keychain Tote Bag Lightweight Large Capacity Foldable Shopping Bag Key Ring Eco-Friendly Expandable Reusable Bag",
+          "width": 1000,
+          "height": 1000
+        },
+        {
+          "kind": "image",
+          "src": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/S5ef6479da6e243eeba8e1de46057c2edY.webp?v=1790592471",
+          "alt": "FoldNaway Foldable Keychain Bag",
+          "width": 1000,
+          "height": 1000
+        },
+        {
+          "kind": "image",
+          "src": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/S5089fa6432c44f26853e2ce3fd8e1e5fo.webp?v=1790592471",
+          "alt": "FoldNaway Foldable Keychain Bag",
+          "width": 1000,
+          "height": 1000
+        },
+        {
+          "kind": "image",
+          "src": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/S654c12b089ae4997933743bb72e6c405v.webp?v=1790592471",
+          "alt": "",
+          "width": 1000,
+          "height": 1000
+        },
+        {
+          "kind": "image",
+          "src": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/Se2ebcb3f6b384c0da0a43a2fffaa0f8dv.webp?v=1790592471",
+          "alt": "",
+          "width": 1000,
+          "height": 1000
+        },
+        {
+          "kind": "image",
+          "src": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/S4721dbf9ab7e4689a735a723427283a2G.webp?v=1790592471",
+          "alt": "",
           "width": 1000,
           "height": 1000
         }
@@ -481,6 +520,12 @@
           },
           "video": null
         }
+      ],
+      "perks": [
+        "Folds to keychain size",
+        "Opens to a full-size tote",
+        "Reinforced nylon build",
+        "Great for shopping, errands, gym, travel"
       ]
     },
     {
@@ -501,15 +546,25 @@
           "availableForSale": true,
           "stockQuantity": 9000,
           "pricesByMarket": {
+            "AU": {
+              "amount": 39,
+              "compareAtAmount": 71,
+              "currencyCode": "AUD"
+            },
             "CA": {
               "amount": 38,
               "compareAtAmount": 69,
               "currencyCode": "CAD"
             },
-            "AU": {
-              "amount": 39,
-              "compareAtAmount": 71,
-              "currencyCode": "AUD"
+            "ZA": {
+              "amount": 449,
+              "compareAtAmount": 816,
+              "currencyCode": "ZAR"
+            },
+            "IN": {
+              "amount": 2622.21,
+              "compareAtAmount": 4765.61,
+              "currencyCode": "INR"
             },
             "US": {
               "amount": 26.78,
@@ -520,16 +575,6 @@
               "amount": 21,
               "compareAtAmount": 38,
               "currencyCode": "GBP"
-            },
-            "IN": {
-              "amount": 2622.21,
-              "compareAtAmount": 4765.61,
-              "currencyCode": "INR"
-            },
-            "ZA": {
-              "amount": 449,
-              "compareAtAmount": 816,
-              "currencyCode": "ZAR"
             }
           },
           "image": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/main_1.png?v=1790001353",
@@ -547,15 +592,25 @@
           "availableForSale": true,
           "stockQuantity": 8946,
           "pricesByMarket": {
+            "AU": {
+              "amount": 39,
+              "compareAtAmount": 71,
+              "currencyCode": "AUD"
+            },
             "CA": {
               "amount": 38,
               "compareAtAmount": 69,
               "currencyCode": "CAD"
             },
-            "AU": {
-              "amount": 39,
-              "compareAtAmount": 71,
-              "currencyCode": "AUD"
+            "ZA": {
+              "amount": 449,
+              "compareAtAmount": 816,
+              "currencyCode": "ZAR"
+            },
+            "IN": {
+              "amount": 2622.21,
+              "compareAtAmount": 4765.61,
+              "currencyCode": "INR"
             },
             "US": {
               "amount": 26.78,
@@ -566,16 +621,6 @@
               "amount": 21,
               "compareAtAmount": 38,
               "currencyCode": "GBP"
-            },
-            "IN": {
-              "amount": 2622.21,
-              "compareAtAmount": 4765.61,
-              "currencyCode": "INR"
-            },
-            "ZA": {
-              "amount": 449,
-              "compareAtAmount": 816,
-              "currencyCode": "ZAR"
             }
           },
           "image": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/b21c2d32-6708-4af0-95f3-0d5b5c2deda6.jpg?v=1789758210",
@@ -593,15 +638,25 @@
           "availableForSale": true,
           "stockQuantity": 9485,
           "pricesByMarket": {
+            "AU": {
+              "amount": 39,
+              "compareAtAmount": 71,
+              "currencyCode": "AUD"
+            },
             "CA": {
               "amount": 38,
               "compareAtAmount": 69,
               "currencyCode": "CAD"
             },
-            "AU": {
-              "amount": 39,
-              "compareAtAmount": 71,
-              "currencyCode": "AUD"
+            "ZA": {
+              "amount": 449,
+              "compareAtAmount": 816,
+              "currencyCode": "ZAR"
+            },
+            "IN": {
+              "amount": 2622.21,
+              "compareAtAmount": 4765.61,
+              "currencyCode": "INR"
             },
             "US": {
               "amount": 26.78,
@@ -612,16 +667,6 @@
               "amount": 21,
               "compareAtAmount": 38,
               "currencyCode": "GBP"
-            },
-            "IN": {
-              "amount": 2622.21,
-              "compareAtAmount": 4765.61,
-              "currencyCode": "INR"
-            },
-            "ZA": {
-              "amount": 449,
-              "compareAtAmount": 816,
-              "currencyCode": "ZAR"
             }
           },
           "image": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/brown.png?v=1790002201",
@@ -639,15 +684,25 @@
           "availableForSale": true,
           "stockQuantity": 6941,
           "pricesByMarket": {
+            "AU": {
+              "amount": 39,
+              "compareAtAmount": 71,
+              "currencyCode": "AUD"
+            },
             "CA": {
               "amount": 38,
               "compareAtAmount": 69,
               "currencyCode": "CAD"
             },
-            "AU": {
-              "amount": 39,
-              "compareAtAmount": 71,
-              "currencyCode": "AUD"
+            "ZA": {
+              "amount": 449,
+              "compareAtAmount": 816,
+              "currencyCode": "ZAR"
+            },
+            "IN": {
+              "amount": 2622.21,
+              "compareAtAmount": 4765.61,
+              "currencyCode": "INR"
             },
             "US": {
               "amount": 26.78,
@@ -658,16 +713,6 @@
               "amount": 21,
               "compareAtAmount": 38,
               "currencyCode": "GBP"
-            },
-            "IN": {
-              "amount": 2622.21,
-              "compareAtAmount": 4765.61,
-              "currencyCode": "INR"
-            },
-            "ZA": {
-              "amount": 449,
-              "compareAtAmount": 816,
-              "currencyCode": "ZAR"
             }
           },
           "image": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/green.png?v=1790001539",
@@ -685,15 +730,25 @@
           "availableForSale": true,
           "stockQuantity": 7926,
           "pricesByMarket": {
+            "AU": {
+              "amount": 39,
+              "compareAtAmount": 71,
+              "currencyCode": "AUD"
+            },
             "CA": {
               "amount": 38,
               "compareAtAmount": 69,
               "currencyCode": "CAD"
             },
-            "AU": {
-              "amount": 39,
-              "compareAtAmount": 71,
-              "currencyCode": "AUD"
+            "ZA": {
+              "amount": 449,
+              "compareAtAmount": 816,
+              "currencyCode": "ZAR"
+            },
+            "IN": {
+              "amount": 2622.21,
+              "compareAtAmount": 4765.61,
+              "currencyCode": "INR"
             },
             "US": {
               "amount": 26.78,
@@ -704,16 +759,6 @@
               "amount": 21,
               "compareAtAmount": 38,
               "currencyCode": "GBP"
-            },
-            "IN": {
-              "amount": 2622.21,
-              "compareAtAmount": 4765.61,
-              "currencyCode": "INR"
-            },
-            "ZA": {
-              "amount": 449,
-              "compareAtAmount": 816,
-              "currencyCode": "ZAR"
             }
           },
           "image": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/khaki.png?v=1790001882",
@@ -731,15 +776,25 @@
           "availableForSale": true,
           "stockQuantity": 7894,
           "pricesByMarket": {
+            "AU": {
+              "amount": 39,
+              "compareAtAmount": 71,
+              "currencyCode": "AUD"
+            },
             "CA": {
               "amount": 38,
               "compareAtAmount": 69,
               "currencyCode": "CAD"
             },
-            "AU": {
-              "amount": 39,
-              "compareAtAmount": 71,
-              "currencyCode": "AUD"
+            "ZA": {
+              "amount": 449,
+              "compareAtAmount": 816,
+              "currencyCode": "ZAR"
+            },
+            "IN": {
+              "amount": 2622.21,
+              "compareAtAmount": 4765.61,
+              "currencyCode": "INR"
             },
             "US": {
               "amount": 26.78,
@@ -750,16 +805,6 @@
               "amount": 21,
               "compareAtAmount": 38,
               "currencyCode": "GBP"
-            },
-            "IN": {
-              "amount": 2622.21,
-              "compareAtAmount": 4765.61,
-              "currencyCode": "INR"
-            },
-            "ZA": {
-              "amount": 449,
-              "compareAtAmount": 816,
-              "currencyCode": "ZAR"
             }
           },
           "image": "https://cdn.shopify.com/s/files/1/0721/8869/0659/files/wine.png?v=1790001649",
@@ -1080,6 +1125,12 @@
           },
           "video": null
         }
+      ],
+      "perks": [
+        "Folds to keychain size",
+        "Opens to a full-size tote",
+        "Reinforced polyester build",
+        "Great for shopping, errands, gym, travel"
       ]
     }
   ]
