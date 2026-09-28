@@ -1,7 +1,12 @@
 import "server-only";
 
 import { sanitizeProductHtml } from "@/lib/sanitize-html";
-import { CATALOG_PATH, acquireLock, readJsonFile, writeJsonFileAtomic } from "@/lib/catalog/storage";
+import {
+  CATALOG_PATH,
+  acquireLock,
+  readJsonFile,
+  writeJsonFileAtomic,
+} from "@/lib/catalog/storage";
 
 import { graphqlRequest } from "@/lib/shopify/client";
 import { getAdminToken } from "@/lib/shopify/admin-token";
@@ -133,6 +138,9 @@ const PRODUCTS_BY_ID_QUERY = /* GraphQL */ `
             }
           }
         }
+        perksField: metafield(namespace: "custom", key: "perks") {
+          value
+        }
         featureHighlights: metafield(
           namespace: "custom"
           key: "feature_highlights"
@@ -185,7 +193,22 @@ const PRODUCTS_BY_ID_QUERY = /* GraphQL */ `
             }
           }
         }
-        images(first: 20) {
+        # Shopify caps a connection at 250 items per page and nothing here
+        # paginates, so these MUST be read together: an image dropped from
+        # the images connection disappears from the listing card cover,
+        # OG/meta tags and ProductSchema; one dropped from media disappears
+        # from the product page gallery. Both were first: 20 when the catalog
+        # held 23 photos, so the last 3 (two of them the per-variant shots)
+        # never made it to the site. 250 is Shopify's own maximum, and
+        # hasNextPage is requested below so outgrowing even that is loud, not
+        # silent. NOTE: the images field is deprecated upstream (Admin lists
+        # it under Product's deprecated fields; media is the successor) —
+        # kept only so gallery stays a flat, images-only list for surfaces
+        # that can't render video.
+        images(first: 250) {
+          pageInfo {
+            hasNextPage
+          }
           nodes {
             url
             altText
@@ -193,19 +216,42 @@ const PRODUCTS_BY_ID_QUERY = /* GraphQL */ `
             height
           }
         }
-        media(first: 20) {
+        media(first: 250) {
+          pageInfo {
+            hasNextPage
+          }
           nodes {
             __typename
             ... on MediaImage {
-              image { url altText width height }
+              image {
+                url
+                altText
+                width
+                height
+              }
             }
             ... on Video {
-              sources { url mimeType format width height }
-              preview { image { url width height } }
+              sources {
+                url
+                mimeType
+                format
+                width
+                height
+              }
+              preview {
+                image {
+                  url
+                  width
+                  height
+                }
+              }
             }
           }
         }
         variants(first: 100) {
+          pageInfo {
+            hasNextPage
+          }
           nodes {
             id
             title
@@ -310,7 +356,12 @@ type MediaNode =
         height: number | null;
       }[];
       preview: { image: { url: string; width: number; height: number } } | null;
-    };
+    }
+  // Real Product.media entries with no renderable branch in ProductGallery.
+  // Listed in the union (the query asks only for their __typename) so the
+  // sync can name them in a warning instead of dropping them invisibly.
+  | { __typename: "Model3d" }
+  | { __typename: "ExternalVideo" };
 
 type ProductNode = {
   id: string;
@@ -319,13 +370,23 @@ type ProductNode = {
   descriptionHtml: string | null;
   subtitleField: { value: string } | null;
   materialField: { value: string } | null;
+  perksField: { value: string } | null;
   specsField: { references: { nodes: SpecNode[] } | null } | null;
   featureHighlights: {
     references: { nodes: FeatureHighlightNode[] } | null;
   } | null;
-  images: { nodes: ImageNode[] } | null;
-  media: { nodes: MediaNode[] } | null;
-  variants: { nodes: VariantNode[] } | null;
+  images: {
+    nodes: ImageNode[];
+    pageInfo: { hasNextPage: boolean };
+  } | null;
+  media: {
+    nodes: MediaNode[];
+    pageInfo: { hasNextPage: boolean };
+  } | null;
+  variants: {
+    nodes: VariantNode[];
+    pageInfo: { hasNextPage: boolean };
+  } | null;
 };
 
 type MarketPrice = {
@@ -392,6 +453,8 @@ type SyncedProduct = {
   descriptionHtml: string;
   specs: SyncedSpec[];
   features: SyncedFeature[];
+  /** From the custom.perks Shopify metafield (a JSON list of short strings) — a checkmarked list shown under the product title. */
+  perks: string[];
 };
 
 export type SyncedCatalogRecord = {
@@ -445,18 +508,37 @@ function toEntryVideo(field: MetaobjectVideoField): SyncedVideo | null {
   };
 }
 
-/** The product's actual Shopify media list, images and videos interleaved in Admin's real order, in the shape ProductGallery expects. Skips a MediaImage with no image (still processing) or a Video with no playable mp4 source (HLS-only, before transcoding finishes) rather than erroring the whole sync. */
+/** Shopify caps a connection at 250 items in one page and nothing here paginates, so the only way past that is to say so loudly — a product whose media outgrew the page would otherwise just render with photos quietly missing. */
+function warnIfTruncated(
+  handle: string,
+  field: string,
+  connection: { pageInfo: { hasNextPage: boolean } } | null | undefined,
+): void {
+  if (connection?.pageInfo.hasNextPage) {
+    console.error(
+      `[sync] "${handle}": Shopify has more ${field} than the sync's single page of 250 — the extras are NOT on the site`,
+    );
+  }
+}
+
+/** The product's actual Shopify media list, images and videos interleaved in Admin's real order, in the shape ProductGallery expects. Skips a MediaImage with no image (still processing) or a Video with no playable mp4 source (HLS-only, before transcoding finishes) rather than erroring the whole sync. Every skip is logged: an entry the merchant can see in Admin but the site can't render is exactly the "something is not coming" case, and staying quiet about it makes that a mystery instead of a one-line answer. */
 function toMediaItems(
   nodes: MediaNode[] | undefined,
   fallbackAlt: string,
   existingImageBySrc: Map<string, SyncedImage>,
+  handle: string,
 ): SyncedMediaItem[] {
   if (!nodes) return [];
   const items: SyncedMediaItem[] = [];
   for (const node of nodes) {
     if (node.__typename === "MediaImage") {
       const img = node.image;
-      if (!img) continue;
+      if (!img) {
+        console.error(
+          `[sync] "${handle}": a media image has no file yet (still processing in Shopify) — skipped`,
+        );
+        continue;
+      }
       items.push({
         kind: "image",
         src: img.url,
@@ -468,15 +550,42 @@ function toMediaItems(
       const mp4 = node.sources
         .filter((s) => s.mimeType === "video/mp4")
         .sort((a, b) => (b.width ?? 0) - (a.width ?? 0));
-      if (mp4.length === 0) continue;
+      if (mp4.length === 0) {
+        console.error(
+          `[sync] "${handle}": a video has no playable mp4 rendition yet (still transcoding) — skipped`,
+        );
+        continue;
+      }
       items.push({
         kind: "video",
         poster: node.preview?.image.url ?? "",
         sources: mp4.map((s) => ({ src: s.url, type: s.mimeType })),
       });
+    } else {
+      // A 3D model or an external (YouTube/Vimeo) embed. Both are real
+      // Product.media entries with no renderable branch in ProductGallery,
+      // so they can never show on the site — worth naming rather than
+      // letting a merchant wonder where their model went.
+      console.error(
+        `[sync] "${handle}": a ${node.__typename} in the product media has no renderer on the site — skipped`,
+      );
     }
   }
   return items;
+}
+
+/** A `custom.perks` metafield's JSON string array, dropping anything that isn't a non-empty string — never crash the sync over a malformed value, just show fewer perks. */
+function normalizePerks(field: { value: string } | null): string[] {
+  if (!field?.value) return [];
+  try {
+    const list = JSON.parse(field.value) as unknown;
+    if (!Array.isArray(list)) return [];
+    return list.filter(
+      (p): p is string => typeof p === "string" && p.trim().length > 0,
+    );
+  } catch {
+    return [];
+  }
 }
 
 /** Single-country markets are real, merchant-priced markets; multi-country ones are the "sell everywhere" catch-all. */
@@ -699,6 +808,10 @@ export async function syncAllProducts(): Promise<SyncedCatalogRecord> {
       existingProduct.features ??
       [];
 
+    warnIfTruncated(freshProduct.handle, "images", freshProduct.images);
+    warnIfTruncated(freshProduct.handle, "media", freshProduct.media);
+    warnIfTruncated(freshProduct.handle, "variants", freshProduct.variants);
+
     products.push({
       id: freshProduct.id,
       handle: freshProduct.handle,
@@ -721,6 +834,7 @@ export async function syncAllProducts(): Promise<SyncedCatalogRecord> {
         freshProduct.media?.nodes,
         freshProduct.title,
         existingImageBySrc,
+        freshProduct.handle,
       ),
       subtitle:
         freshProduct.subtitleField?.value ?? existingProduct.subtitle ?? "",
@@ -734,6 +848,7 @@ export async function syncAllProducts(): Promise<SyncedCatalogRecord> {
       ),
       specs: specs as SyncedSpec[],
       features: features as SyncedFeature[],
+      perks: normalizePerks(freshProduct.perksField),
     });
   }
 
@@ -783,7 +898,8 @@ export async function seedProductIntoCatalog(
         `${OUTPUT_PATH} does not exist — this seeds known products, it can't create the catalog from scratch.`,
       );
     }
-    if (record.products.some((p) => p.id === productId)) return { existed: true };
+    if (record.products.some((p) => p.id === productId))
+      return { existed: true };
 
     // Every field is a placeholder — the following syncAllProducts() overwrites
     // everything from Shopify (title, handle, price, variants, images, …). Only
@@ -804,6 +920,7 @@ export async function seedProductIntoCatalog(
       descriptionHtml: "",
       specs: [],
       features: [],
+      perks: [],
     });
 
     await writeJsonFileAtomic(OUTPUT_PATH, record);

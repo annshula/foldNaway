@@ -211,6 +211,7 @@ query ProductsByIds($ids: [ID!]!) {
           }
         }
       }
+      perksField: metafield(namespace: "custom", key: "perks") { value }
       featureHighlights: metafield(namespace: "custom", key: "feature_highlights") {
         references(first: 10) {
           nodes {
@@ -237,8 +238,24 @@ query ProductsByIds($ids: [ID!]!) {
           }
         }
       }
-      images(first: 20) { nodes { url altText width height } }
-      media(first: 20) {
+      # Shopify caps a connection at 250 items per page and nothing here
+      # paginates, so these MUST be read together: an image dropped from the
+      # images connection disappears from the listing card cover, OG/meta
+      # tags and ProductSchema; one dropped from media disappears from the
+      # product page gallery. Both were first: 20 when the catalog held 23
+      # photos, so the last 3 (two of them the per-variant shots) never made
+      # it to the site. 250 is Shopify's own maximum, and hasNextPage is
+      # requested below so outgrowing even that is loud, not silent.
+      # NOTE: the images field is deprecated upstream (Admin lists it under
+      # Product's deprecated fields; media is the successor) — kept only so
+      # gallery stays a flat, images-only list for surfaces that can't
+      # render video.
+      images(first: 250) {
+        pageInfo { hasNextPage }
+        nodes { url altText width height }
+      }
+      media(first: 250) {
+        pageInfo { hasNextPage }
         nodes {
           __typename
           ... on MediaImage {
@@ -251,6 +268,7 @@ query ProductsByIds($ids: [ID!]!) {
         }
       }
       variants(first: 100) {
+        pageInfo { hasNextPage }
         nodes {
           id
           title
@@ -296,9 +314,7 @@ async function discoverCuratedMarketCountries() {
   const codes = new Set();
   for (const market of data.markets.nodes) {
     if (!market.enabled) continue;
-    const regionCodes = market.regions.nodes
-      .map((r) => r.code)
-      .filter(Boolean);
+    const regionCodes = market.regions.nodes.map((r) => r.code).filter(Boolean);
     if (regionCodes.length === 1) codes.add(regionCodes[0]);
   }
   return [...codes];
@@ -320,7 +336,9 @@ async function pricesForMarket(variantIds, country) {
       prices[node.id] = {
         amount: Number(node.price.amount),
         compareAtAmount:
-          node.compareAtPrice != null ? Number(node.compareAtPrice.amount) : null,
+          node.compareAtPrice != null
+            ? Number(node.compareAtPrice.amount)
+            : null,
         currencyCode: node.price.currencyCode,
       };
     }
@@ -342,7 +360,12 @@ function parseMetaobjectList(referencesNodes, requiredKeys, pick) {
 function toEntryImage(field, fallbackAlt) {
   const img = field?.reference?.image;
   if (!img) return null;
-  return { src: img.url, alt: img.altText ?? fallbackAlt, width: img.width, height: img.height };
+  return {
+    src: img.url,
+    alt: img.altText ?? fallbackAlt,
+    width: img.width,
+    height: img.height,
+  };
 }
 
 /** A file_reference metaobject field's Video, in the {poster, sources} shape ParallaxBenefit's media prop expects — or null if the merchant hasn't attached a video to this entry. Shopify auto-transcodes an upload into several mp4 renditions plus an HLS (.m3u8) stream; only the mp4 ones go in `sources` since a plain <video> element can't play HLS without extra JS, sorted HD-first so the browser's first-playable-source pick is the best one. */
@@ -359,14 +382,28 @@ function toEntryVideo(field) {
   };
 }
 
-/** The product's actual Shopify media list, images and videos interleaved in Admin's real order, in the shape ProductGallery expects. Skips a MediaImage with no image (still processing) or a Video with no playable mp4 source (HLS-only, before transcoding finishes) rather than erroring the whole sync. */
-function toMediaItems(nodes, fallbackAlt, existingImageBySrc) {
+/** Shopify caps a connection at 250 items in one page and nothing here paginates, so the only way past that is to say so loudly — a product whose media outgrew the page would otherwise just render with photos quietly missing. */
+function warnIfTruncated(handle, field, connection) {
+  if (connection?.pageInfo?.hasNextPage) {
+    console.error(
+      `  ✖ "${handle}": Shopify has more ${field} than the sync's single page of 250 — the extras are NOT on the site`,
+    );
+  }
+}
+
+/** The product's actual Shopify media list, images and videos interleaved in Admin's real order, in the shape ProductGallery expects. Skips a MediaImage with no image (still processing) or a Video with no playable mp4 source (HLS-only, before transcoding finishes) rather than erroring the whole sync. Every skip is logged: an entry the merchant can see in Admin but the site can't render is exactly the "something is not coming" case, and staying quiet about it makes that a mystery instead of a one-line answer. */
+function toMediaItems(nodes, fallbackAlt, existingImageBySrc, handle) {
   if (!nodes) return [];
   const items = [];
   for (const node of nodes) {
     if (node.__typename === "MediaImage") {
       const img = node.image;
-      if (!img) continue;
+      if (!img) {
+        console.error(
+          `  ✖ "${handle}": a media image has no file yet (still processing in Shopify) — skipped`,
+        );
+        continue;
+      }
       items.push({
         kind: "image",
         src: img.url,
@@ -378,15 +415,40 @@ function toMediaItems(nodes, fallbackAlt, existingImageBySrc) {
       const mp4 = (node.sources ?? [])
         .filter((s) => s.mimeType === "video/mp4")
         .sort((a, b) => (b.width ?? 0) - (a.width ?? 0));
-      if (mp4.length === 0) continue;
+      if (mp4.length === 0) {
+        console.error(
+          `  ✖ "${handle}": a video has no playable mp4 rendition yet (still transcoding) — skipped`,
+        );
+        continue;
+      }
       items.push({
         kind: "video",
         poster: node.preview?.image?.url ?? "",
         sources: mp4.map((s) => ({ src: s.url, type: s.mimeType })),
       });
+    } else {
+      // A 3D model or an external (YouTube/Vimeo) embed. Both are real
+      // Product.media entries with no renderable branch in ProductGallery,
+      // so they can never show on the site — worth naming rather than
+      // letting a merchant wonder where their model went.
+      console.error(
+        `  ✖ "${handle}": a ${node.__typename} in the product media has no renderer on the site — skipped`,
+      );
     }
   }
   return items;
+}
+
+/** A `custom.perks` metafield's JSON string array, dropping anything that isn't a non-empty string — never crash the sync over a malformed value, just show fewer perks. */
+function normalizePerks(field) {
+  if (!field?.value) return [];
+  try {
+    const list = JSON.parse(field.value);
+    if (!Array.isArray(list)) return [];
+    return list.filter((p) => typeof p === "string" && p.trim().length > 0);
+  } catch {
+    return [];
+  }
 }
 
 function toImage(node, fallbackAlt, existingBySrc) {
@@ -411,13 +473,16 @@ async function main() {
   }
   const existing = JSON.parse(readFileSync(OUTPUT, "utf8"));
   const knownIds = existing.products.map((p) => p.id);
-  console.log(`· syncing ${knownIds.length} known product(s) from ${cfg.storeDomain}`);
+  console.log(
+    `· syncing ${knownIds.length} known product(s) from ${cfg.storeDomain}`,
+  );
 
   const [shopData, fresh] = await Promise.all([
     adminRequest(SHOP_QUERY),
     adminRequest(PRODUCTS_BY_ID_QUERY, { ids: knownIds }),
   ]);
-  const currency = shopData?.shop?.currencyCode || existing.shop?.currencyCode || "USD";
+  const currency =
+    shopData?.shop?.currencyCode || existing.shop?.currencyCode || "USD";
 
   const existingById = new Map(existing.products.map((p) => [p.id, p]));
   const fetchedById = new Map(
@@ -451,15 +516,21 @@ async function main() {
   console.log("· discovering curated markets…");
   let markets = [];
   if (!cfg.storefrontToken) {
-    console.log("  SHOPIFY_STOREFRONT_API_TOKEN not set — skipping per-market prices");
+    console.log(
+      "  SHOPIFY_STOREFRONT_API_TOKEN not set — skipping per-market prices",
+    );
   } else {
     try {
       markets = await discoverCuratedMarketCountries();
-      console.log(`  ${markets.length} curated market(s): ${markets.join(", ") || "none"}`);
+      console.log(
+        `  ${markets.length} curated market(s): ${markets.join(", ") || "none"}`,
+      );
     } catch (err) {
       // A permissions gap (e.g. the Admin app is missing the read_markets
       // scope) must not take down the base sync — just skip market prices.
-      console.log(`  ✖ market discovery failed, skipping per-market prices: ${err.message}`);
+      console.log(
+        `  ✖ market discovery failed, skipping per-market prices: ${err.message}`,
+      );
     }
   }
 
@@ -470,10 +541,12 @@ async function main() {
 
   await Promise.all(
     markets.map(async (country) => {
-      const prices = await pricesForMarket(allVariantIds, country).catch((err) => {
-        console.error(`  ✖ ${country} prices failed: ${err.message}`);
-        return {};
-      });
+      const prices = await pricesForMarket(allVariantIds, country).catch(
+        (err) => {
+          console.error(`  ✖ ${country} prices failed: ${err.message}`);
+          return {};
+        },
+      );
       for (const [variantId, localized] of Object.entries(prices)) {
         const bucket = pricesByVariant.get(variantId);
         if (bucket) bucket[country] = localized;
@@ -504,10 +577,15 @@ async function main() {
     const rawVariants = freshProduct.variants?.nodes ?? [];
     const priced = rawVariants.filter((v) => v.price != null);
     const saleVariant = priced.find((v) => v.availableForSale) ?? priced[0];
-    const price = saleVariant ? Number(saleVariant.price) : existingProduct.price;
+    const price = saleVariant
+      ? Number(saleVariant.price)
+      : existingProduct.price;
     const compareRaw =
-      saleVariant?.compareAtPrice != null ? Number(saleVariant.compareAtPrice) : null;
-    const compareAtPrice = compareRaw != null && compareRaw > price ? compareRaw : null;
+      saleVariant?.compareAtPrice != null
+        ? Number(saleVariant.compareAtPrice)
+        : null;
+    const compareAtPrice =
+      compareRaw != null && compareRaw > price ? compareRaw : null;
 
     const variants = priced.map((v) => {
       const curated = existingVariantById.get(v.id);
@@ -517,7 +595,8 @@ async function main() {
           `  + new variant on "${freshProduct.title}": ${v.title} (${v.sku}) — using Shopify's raw title until curated`,
         );
       }
-      const compare = v.compareAtPrice != null ? Number(v.compareAtPrice) : null;
+      const compare =
+        v.compareAtPrice != null ? Number(v.compareAtPrice) : null;
       const variantPrice = Number(v.price);
       return {
         id: v.id,
@@ -528,7 +607,8 @@ async function main() {
         title: curated?.title ?? v.title,
         sku: v.sku,
         price: variantPrice,
-        compareAtPrice: compare != null && compare > variantPrice ? compare : null,
+        compareAtPrice:
+          compare != null && compare > variantPrice ? compare : null,
         availableForSale: v.availableForSale,
         // Only meaningful when Shopify is actually tracking inventory for
         // this variant — untracked variants report a large/negative
@@ -548,22 +628,38 @@ async function main() {
     });
 
     const specs =
-      parseMetaobjectList(freshProduct.specsField?.references?.nodes, ["label", "value"], (n) => ({
-        label: n.label?.value,
-        value: n.value?.value,
-        description: n.description?.value || undefined,
-        image: toEntryImage(n.image, freshProduct.title),
-        video: toEntryVideo(n.video),
-      })) ?? existingProduct.specs ?? [];
+      parseMetaobjectList(
+        freshProduct.specsField?.references?.nodes,
+        ["label", "value"],
+        (n) => ({
+          label: n.label?.value,
+          value: n.value?.value,
+          description: n.description?.value || undefined,
+          image: toEntryImage(n.image, freshProduct.title),
+          video: toEntryVideo(n.video),
+        }),
+      ) ??
+      existingProduct.specs ??
+      [];
 
     const features =
-      parseMetaobjectList(freshProduct.featureHighlights?.references?.nodes, ["icon", "label", "body"], (n) => ({
-        icon: n.icon?.value,
-        label: n.label?.value,
-        body: n.body?.value,
-        image: toEntryImage(n.image, freshProduct.title),
-        video: toEntryVideo(n.video),
-      })) ?? existingProduct.features ?? [];
+      parseMetaobjectList(
+        freshProduct.featureHighlights?.references?.nodes,
+        ["icon", "label", "body"],
+        (n) => ({
+          icon: n.icon?.value,
+          label: n.label?.value,
+          body: n.body?.value,
+          image: toEntryImage(n.image, freshProduct.title),
+          video: toEntryVideo(n.video),
+        }),
+      ) ??
+      existingProduct.features ??
+      [];
+
+    warnIfTruncated(freshProduct.handle, "images", freshProduct.images);
+    warnIfTruncated(freshProduct.handle, "media", freshProduct.media);
+    warnIfTruncated(freshProduct.handle, "variants", freshProduct.variants);
 
     products.push({
       id: freshProduct.id,
@@ -577,12 +673,21 @@ async function main() {
       images: (freshProduct.images?.nodes ?? []).map((img) =>
         toImage(img, freshProduct.title, existingImageBySrc),
       ),
-      media: toMediaItems(freshProduct.media?.nodes, freshProduct.title, existingImageBySrc),
-      subtitle: freshProduct.subtitleField?.value ?? existingProduct.subtitle ?? "",
-      material: freshProduct.materialField?.value ?? existingProduct.material ?? "",
-      descriptionHtml: freshProduct.descriptionHtml ?? existingProduct.descriptionHtml ?? "",
+      media: toMediaItems(
+        freshProduct.media?.nodes,
+        freshProduct.title,
+        existingImageBySrc,
+        freshProduct.handle,
+      ),
+      subtitle:
+        freshProduct.subtitleField?.value ?? existingProduct.subtitle ?? "",
+      material:
+        freshProduct.materialField?.value ?? existingProduct.material ?? "",
+      descriptionHtml:
+        freshProduct.descriptionHtml ?? existingProduct.descriptionHtml ?? "",
       specs,
       features,
+      perks: normalizePerks(freshProduct.perksField),
     });
   }
 

@@ -72,6 +72,8 @@ export type Product = {
   specs: { label: string; value: string; description?: string; image?: CatalogImage | null; video?: CatalogVideo | null }[];
   /** From the custom.feature_highlights Shopify metafield — merchant-editable in Shopify Admin, no code change needed. `icon` is validated against the known set where it's rendered (components/product/ProductShowcase.tsx), not here. */
   features: { icon: string; label: string; body: string; image?: CatalogImage | null; video?: CatalogVideo | null }[];
+  /** From the custom.perks Shopify metafield (a JSON list of short strings) — shown as a checkmarked list right under the product title in BuyBox, above the buy controls. Merchant-editable in Shopify Admin, no code change needed. */
+  perks: string[];
   variants: Variant[];
 };
 
@@ -105,6 +107,7 @@ export function mapSyncedProducts(
         : p.images.map((img) => ({ kind: "image" as const, ...img })),
     specs: p.specs,
     features: p.features ?? [],
+    perks: p.perks ?? [],
     variants: p.variants.map((v) => ({
       id: v.id,
       sku: v.sku,

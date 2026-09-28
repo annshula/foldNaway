@@ -151,81 +151,20 @@ export function BuyBox({
 
   return (
     <div className="flex flex-col">
-      {/* ⚠️ PLACEHOLDER SOCIAL PROOF — "17k+ sold", "Best Seller 2026" and
-          "Highest rated" are marketing copy with no figure behind them yet
-          (no sales-count field exists anywhere in the synced Shopify data or
-          site.metrics). Same policy as the "50 lbs" claim below and
-          site.metrics's own ⚠️ note: replace with real, evidenceable numbers
-          before this ships live — fabricated sales/ranking claims are an FTC
-          problem. Plain badge chips (not schema.org markup), so nothing here
-          is machine-read as verified fact. Wraps naturally on narrow screens
-          — no separate mobile markup needed, same pattern as the feature-chip
-          row below. */}
-      <ul className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
-        {[
-          {
-            icon: "trending-up" as const,
-            label: "17k+ sold in the last 5 months",
-          },
-          { icon: "award" as const, label: "Best Seller 2026" },
-          { icon: "star" as const, label: "Highest rated seller" },
-        ].map((f) => (
-          <li
-            key={f.label}
-            className="inline-flex items-center gap-1.5 text-[0.78rem] font-semibold text-terracotta"
-          >
-            <Icon name={f.icon} className="size-3.5 shrink-0" />
-            {f.label}
-          </li>
-        ))}
-      </ul>
-
-      <h1 className="font-display mt-3 text-[clamp(1.6rem,3vw,2.3rem)] leading-[1.15] font-medium tracking-[-0.02em] text-espresso text-balance">
-        {product.title}
-      </h1>
-
-      {/* Static feature callouts, not `product.subtitle` (Shopify's
-          custom.subtitle field) — deliberately overridden here rather than
-          edited in Shopify, same as the "50 lbs" claim in content/copy.ts's
-          productBenefits. ⚠️ "Holds 50 lbs" repeats that same unverified
-          weight-capacity claim; see the warning on productBenefits in
-          content/copy.ts before this ships live.
-
-          A row of small icon chips, not the single dense uppercase/
-          tracked-out text line this replaced — that read as one dense
-          string rather than three distinct, scannable facts. Each chip
-          pairs an icon with its own short label at normal tracking/case,
-          which is what actually reads as "minimal and modern" instead of
-          "loud all-caps banner". */}
-      <ul className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5">
-        {[
-          { icon: "weight" as const, label: "Holds 50 lbs" },
-          { icon: "fold" as const, label: "Folds to keychain size" },
-          { icon: "shield" as const, label: "Premium build" },
-        ].map((f) => (
-          <li
-            key={f.label}
-            className="inline-flex items-center gap-1.5 text-[0.78rem] font-medium text-espresso-soft"
-          >
-            <Icon name={f.icon} className="size-3.5 shrink-0 text-sage-deep" />
-            {f.label}
-          </li>
-        ))}
-      </ul>
-
       {/* Rating (jumps to #reviews) and the "checks passed" proof link
           (jumps to "Put to the test") sit side by side in one row — both
-          are the same kind of thing: a quick trust signal that jumps
-          further down the page. The checks-passed count is pulled from the
-          QC list itself so it can never drift from the section it jumps
-          to. Native CSS smooth-scroll plus globals.css's global
+          are the same kind of thing: a quick trust signal, shown before the
+          title since that's the credibility a shopper wants before reading
+          the name. The checks-passed count is pulled from the QC list
+          itself so it can never drift from the section it jumps to. Native
+          CSS smooth-scroll plus globals.css's global
           `scroll-padding-top: var(--nav-h)` handle the nav-clearing scroll
           position — no per-target scroll-mt-* and no JS handler needed;
           the two targets (ProductReviews.tsx, QualityTests.tsx) used to
           each carry their own scroll-mt-20, which didn't match --nav-h and
           stacked additively with this same global rule, landing 80px past
           the section's real top on every click. */}
-      <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
         {rating && (
           <a
             href="#reviews"
@@ -262,6 +201,32 @@ export function BuyBox({
           />
         </a>
       </div>
+
+      <h1 className="font-display text-[clamp(1.6rem,3vw,2.3rem)] leading-[1.15] font-medium tracking-[-0.02em] text-espresso text-balance">
+        {product.title}
+      </h1>
+
+      {/* Shopify-sourced (custom.perks metafield), not a hardcoded claim —
+          merchant-editable from Shopify Admin, no code change needed. This
+          replaced a hardcoded chip row that included an unverified "Holds
+          50 lbs" weight-capacity claim (an FTC risk with no measured spec
+          behind it) — see lib/product.ts's claim-policy note. */}
+      {product.perks.length > 0 && (
+        <ul className="mt-3 grid grid-cols-1 gap-x-4 gap-y-1.5 sm:grid-cols-2">
+          {product.perks.map((perk) => (
+            <li
+              key={perk}
+              className="flex items-start gap-1.5 text-[0.78rem] font-medium text-espresso-soft"
+            >
+              <Icon
+                name="check"
+                className="mt-0.5 size-3.5 shrink-0 text-sage-deep"
+              />
+              {perk}
+            </li>
+          ))}
+        </ul>
+      )}
 
       {/* ---------------------------- colourway ---------------------------- */}
       <fieldset className="mt-8">
@@ -338,13 +303,7 @@ export function BuyBox({
         <div
           role="radiogroup"
           aria-label="Pack size"
-          // Extra vertical gap below `sm`: stacked in one column, each
-          // tile's "Most popular"/"Best value" badge floats to -top-2.5
-          // (-10px) — exactly the old gap-2.5, so it visually bridged into
-          // the card above it and read as no space at all. Side-by-side on
-          // sm+ doesn't have this problem (the badge floats into clear
-          // space above the row), so only mobile needs the wider gap.
-          className="mt-3 grid gap-y-5 gap-x-2.5 sm:grid-cols-3 sm:gap-y-2.5"
+          className="mt-3 flex flex-col gap-3"
         >
           {packTiers.map((tier) => {
             const isSelected = tier.size === packSize;
@@ -361,55 +320,96 @@ export function BuyBox({
                 aria-checked={isSelected}
                 onClick={() => onSelectPackSize(tier.size)}
                 className={cn(
-                  "relative flex flex-col items-start gap-1 rounded-xl border-2 px-3.5 py-3 text-left transition-colors duration-200",
+                  "relative flex flex-col gap-2.5 rounded-xl border-2 px-4 py-3.5 text-left transition-colors duration-200 sm:flex-row sm:items-center sm:gap-4 sm:px-5 sm:py-4",
                   isSelected
                     ? "border-sage bg-sage-soft"
                     : "border-sand bg-paper hover:border-espresso/30",
                 )}
               >
-                {tier.badge && (
-                  <span
-                    className={cn(
-                      "font-label absolute -top-2.5 left-3 rounded-full px-2 py-0.5 text-[0.58rem] font-bold tracking-widest uppercase",
-                      isSelected
-                        ? "bg-sage text-white"
-                        : "bg-espresso text-cream",
-                    )}
-                  >
-                    {tier.badge}
+                {/* Top row on mobile: dot + label on the left, price on the
+                    right — the natural place an eye looks first. Desktop
+                    folds this into the one wide row via sm:contents. */}
+                <span className="flex items-center justify-between gap-3 sm:contents">
+                  <span className="flex min-w-0 items-center gap-3 sm:contents">
+                    <span
+                      aria-hidden="true"
+                      className={cn(
+                        "grid size-5 shrink-0 place-items-center rounded-full border-2 transition-colors duration-200",
+                        isSelected ? "border-sage bg-sage" : "border-sand",
+                      )}
+                    >
+                      {isSelected && (
+                        <Icon name="check" className="size-2.5 text-white" />
+                      )}
+                    </span>
+                    <span className="text-[0.9rem] font-semibold text-espresso sm:hidden">
+                      {tier.label}
+                    </span>
                   </span>
-                )}
 
-                <span className="flex w-full items-center justify-between gap-2">
-                  <span className="text-[0.9rem] font-semibold text-espresso">
-                    {tier.label}
-                  </span>
-                  <span
-                    aria-hidden="true"
-                    className={cn(
-                      "grid size-4.5 shrink-0 place-items-center rounded-full border-2 transition-colors duration-200",
-                      isSelected ? "border-sage bg-sage" : "border-sand",
-                    )}
-                  >
-                    {isSelected && (
-                      <Icon name="check" className="size-2.5 text-white" />
-                    )}
+                  <span className="flex shrink-0 items-baseline gap-1 sm:hidden">
+                    <span className="font-semibold text-espresso tabular-nums">
+                      {formatMoney(tierUnitCents / 100, currency)}
+                    </span>
+                    <span className="text-[0.72rem] font-normal text-espresso-mute">
+                      /unit
+                    </span>
                   </span>
                 </span>
 
-                <span className="text-[0.76rem] text-espresso-mute">
-                  {tier.blurb}
+                <span className="min-w-0 sm:flex-1">
+                  <span className="hidden flex-wrap items-center gap-2 sm:flex">
+                    <span className="text-[0.9rem] font-semibold text-espresso">
+                      {tier.label}
+                    </span>
+                    {tier.badge && (
+                      <span
+                        className={cn(
+                          "font-label inline-flex items-center rounded-full px-2.5 py-0.5 text-[0.58rem] font-bold tracking-widest uppercase",
+                          isSelected
+                            ? "bg-sage text-white"
+                            : "bg-espresso text-cream",
+                        )}
+                      >
+                        {tier.badge}
+                      </span>
+                    )}
+                  </span>
+                  {tier.badge && (
+                    <span className="flex flex-wrap items-center gap-1.5 sm:hidden">
+                      <span
+                        className={cn(
+                          "font-label inline-flex items-center rounded-full px-2 py-0.5 text-[0.58rem] font-bold tracking-widest uppercase",
+                          isSelected
+                            ? "bg-sage text-white"
+                            : "bg-espresso text-cream",
+                        )}
+                      >
+                        {tier.badge}
+                      </span>
+                    </span>
+                  )}
+                  <span className="mt-1 block text-[0.76rem] text-espresso-mute sm:mt-0.5">
+                    {tier.blurb}
+                  </span>
                 </span>
 
-                <span className="mt-1 font-semibold text-espresso tabular-nums">
-                  {formatMoney(tierUnitCents / 100, currency)}
-                  <span className="ml-1 text-[0.72rem] font-normal text-espresso-mute">
-                    /unit
+                <span className="hidden shrink-0 flex-col items-end sm:flex">
+                  <span className="font-semibold text-espresso tabular-nums">
+                    {formatMoney(tierUnitCents / 100, currency)}
+                    <span className="ml-1 text-[0.72rem] font-normal text-espresso-mute">
+                      /unit
+                    </span>
                   </span>
+                  {tier.discountPercent > 0 && (
+                    <span className="font-label text-[0.66rem] font-bold tracking-widest text-terracotta uppercase">
+                      Save {tier.discountPercent}%
+                    </span>
+                  )}
                 </span>
 
                 {tier.discountPercent > 0 && (
-                  <span className="font-label text-[0.66rem] font-bold tracking-widest text-terracotta uppercase">
+                  <span className="font-label text-[0.66rem] font-bold tracking-widest text-terracotta uppercase sm:hidden">
                     Save {tier.discountPercent}%
                   </span>
                 )}
