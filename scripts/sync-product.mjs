@@ -212,6 +212,7 @@ query ProductsByIds($ids: [ID!]!) {
         }
       }
       perksField: metafield(namespace: "custom", key: "perks") { value }
+      saleEndsAtField: metafield(namespace: "custom", key: "sale_ends_at") { value }
       featureHighlights: metafield(namespace: "custom", key: "feature_highlights") {
         references(first: 10) {
           nodes {
@@ -451,6 +452,15 @@ function normalizePerks(field) {
   }
 }
 
+/** Only kept when it's a valid timestamp that hasn't passed yet — never shows an expired countdown. */
+function normalizeSaleEndsAt(field) {
+  const raw = field?.value?.trim();
+  if (!raw) return null;
+  const time = Date.parse(raw);
+  if (Number.isNaN(time) || time <= Date.now()) return null;
+  return new Date(time).toISOString();
+}
+
 function toImage(node, fallbackAlt, existingBySrc) {
   const existing = existingBySrc.get(node.url);
   return {
@@ -688,6 +698,7 @@ async function main() {
       specs,
       features,
       perks: normalizePerks(freshProduct.perksField),
+      saleEndsAt: normalizeSaleEndsAt(freshProduct.saleEndsAtField),
     });
   }
 

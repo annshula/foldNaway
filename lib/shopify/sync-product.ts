@@ -141,6 +141,9 @@ const PRODUCTS_BY_ID_QUERY = /* GraphQL */ `
         perksField: metafield(namespace: "custom", key: "perks") {
           value
         }
+        saleEndsAtField: metafield(namespace: "custom", key: "sale_ends_at") {
+          value
+        }
         featureHighlights: metafield(
           namespace: "custom"
           key: "feature_highlights"
@@ -371,6 +374,7 @@ type ProductNode = {
   subtitleField: { value: string } | null;
   materialField: { value: string } | null;
   perksField: { value: string } | null;
+  saleEndsAtField: { value: string } | null;
   specsField: { references: { nodes: SpecNode[] } | null } | null;
   featureHighlights: {
     references: { nodes: FeatureHighlightNode[] } | null;
@@ -455,6 +459,8 @@ type SyncedProduct = {
   features: SyncedFeature[];
   /** From the custom.perks Shopify metafield (a JSON list of short strings) — a checkmarked list shown under the product title. */
   perks: string[];
+  /** From the custom.sale_ends_at Shopify metafield — an ISO timestamp, only ever kept when it's a valid future date (normalizeSaleEndsAt drops a past or malformed one). Drives SaleCountdown next to the price; null hides the countdown entirely. */
+  saleEndsAt: string | null;
 };
 
 export type SyncedCatalogRecord = {
@@ -586,6 +592,15 @@ function normalizePerks(field: { value: string } | null): string[] {
   } catch {
     return [];
   }
+}
+
+/** Only kept when it's a valid timestamp that hasn't passed yet — never shows an expired countdown. */
+function normalizeSaleEndsAt(field: { value: string } | null): string | null {
+  const raw = field?.value?.trim();
+  if (!raw) return null;
+  const time = Date.parse(raw);
+  if (Number.isNaN(time) || time <= Date.now()) return null;
+  return new Date(time).toISOString();
 }
 
 /** Single-country markets are real, merchant-priced markets; multi-country ones are the "sell everywhere" catch-all. */
@@ -849,6 +864,7 @@ export async function syncAllProducts(): Promise<SyncedCatalogRecord> {
       specs: specs as SyncedSpec[],
       features: features as SyncedFeature[],
       perks: normalizePerks(freshProduct.perksField),
+      saleEndsAt: normalizeSaleEndsAt(freshProduct.saleEndsAtField),
     });
   }
 
@@ -921,6 +937,7 @@ export async function seedProductIntoCatalog(
       specs: [],
       features: [],
       perks: [],
+      saleEndsAt: null,
     });
 
     await writeJsonFileAtomic(OUTPUT_PATH, record);

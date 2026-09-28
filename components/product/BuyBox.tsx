@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { useCart } from "@/components/providers/CartProvider";
 import { useLocalizedAmount } from "@/components/providers/LocalizationProvider";
 import { ProductAccordion } from "@/components/product/ProductAccordion";
+import { SaleCountdown } from "@/components/product/SaleCountdown";
 import Button from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icons";
 import Image from "@/components/ui/Image";
@@ -415,19 +416,24 @@ export function BuyBox({
           bigger absolute crossed-out number is the point, for conversion.
           No quantity stepper here — the pack tiles above are the only
           quantity control. */}
-      <div className="mt-7 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-        {hasMarkdown && (
-          <span className="text-[1.35rem] text-espresso-mute line-through tabular-nums">
-            {formatMoney(compareAt * qty, currency)}
+      <div className="mt-7 flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
+        <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+          {hasMarkdown && (
+            <span className="text-[1.35rem] text-espresso-mute line-through tabular-nums">
+              {formatMoney(compareAt * qty, currency)}
+            </span>
+          )}
+          <span className="font-display text-[2rem] leading-none font-semibold text-espresso tabular-nums">
+            {formatMoney(packTotalCents / 100, currency)}
           </span>
-        )}
-        <span className="font-display text-[2rem] leading-none font-semibold text-espresso tabular-nums">
-          {formatMoney(packTotalCents / 100, currency)}
-        </span>
-        {totalSavingsPercent > 0 && (
-          <span className="font-label rounded-full bg-terracotta-soft px-2.5 py-1 text-[0.65rem] font-bold tracking-widest text-terracotta uppercase">
-            Save {totalSavingsPercent}%
-          </span>
+          {totalSavingsPercent > 0 && (
+            <span className="font-label rounded-full bg-terracotta-soft px-2.5 py-1 text-[0.65rem] font-bold tracking-widest text-terracotta uppercase">
+              Save {totalSavingsPercent}%
+            </span>
+          )}
+        </div>
+        {product.saleEndsAt && (
+          <SaleCountdown endsAt={product.saleEndsAt} />
         )}
       </div>
       <p className="mt-1.5 text-[0.8rem] text-espresso-mute">

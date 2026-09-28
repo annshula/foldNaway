@@ -74,6 +74,8 @@ export type Product = {
   features: { icon: string; label: string; body: string; image?: CatalogImage | null; video?: CatalogVideo | null }[];
   /** From the custom.perks Shopify metafield (a JSON list of short strings) — shown as a checkmarked list right under the product title in BuyBox, above the buy controls. Merchant-editable in Shopify Admin, no code change needed. */
   perks: string[];
+  /** From the custom.sale_ends_at Shopify metafield — an ISO timestamp, only ever set when it's a real future deadline (the sync drops a past or malformed one). Drives SaleCountdown next to the price in BuyBox; null hides the countdown entirely. */
+  saleEndsAt: string | null;
   variants: Variant[];
 };
 
@@ -108,6 +110,7 @@ export function mapSyncedProducts(
     specs: p.specs,
     features: p.features ?? [],
     perks: p.perks ?? [],
+    saleEndsAt: p.saleEndsAt ?? null,
     variants: p.variants.map((v) => ({
       id: v.id,
       sku: v.sku,
