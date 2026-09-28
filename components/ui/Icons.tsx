@@ -197,6 +197,12 @@ const paths = {
     </>
   ),
   "chevron-right": <path d="m9 6 6 6-6 6" {...stroke} />,
+  clock: (
+    <>
+      <circle cx="12" cy="12" r="9" {...stroke} />
+      <path d="M12 7v5l3.5 2" {...stroke} />
+    </>
+  ),
   volume: (
     <>
       <path d="M4 9v6h4l5 4V5L8 9H4Z" {...stroke} />

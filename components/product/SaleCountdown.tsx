@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 
+import { Icon } from "@/components/ui/Icons";
+
 /** Digits only, no design decisions — remaining time to a real, merchant-set Shopify deadline. */
 function remaining(
   target: number,
@@ -33,6 +35,16 @@ const pad = (n: number) => n.toString().padStart(2, "0");
  * what the client immediately recomputes — a React hydration-mismatch error
  * (#418), not just a visual flicker. Filling it in from an effect after
  * mount avoids that, at the cost of one tick where nothing renders.
+ *
+ * Deliberately the loudest thing in the price row (filled terracotta, not
+ * the soft/tint terracotta used everywhere else on this page) — this is the
+ * one element whose whole job is urgency, so it reads as a distinct, higher-
+ * priority signal than the "Save X%" badges beside it, not another badge in
+ * the same family. The ring pulse is the only continuous animation on the
+ * page and is purely decorative (the digits ticking down are what actually
+ * carries the "hurry" meaning), so it's gated on `motion-reduce:` — a
+ * continuous animation is otherwise exactly what UX guidelines flag against
+ * using outside a loading indicator.
  */
 export function SaleCountdown({ endsAt }: { endsAt: string }) {
   const target = Date.parse(endsAt);
@@ -47,12 +59,20 @@ export function SaleCountdown({ endsAt }: { endsAt: string }) {
   if (!left) return null;
 
   return (
-    <p
-      className="font-label inline-flex items-center gap-1.5 rounded-full bg-terracotta-soft px-2.5 py-1 text-[0.65rem] font-bold tracking-widest text-terracotta uppercase tabular-nums"
+    <div
+      className="relative inline-flex items-center gap-2 rounded-full bg-terracotta px-3.5 py-2 text-paper shadow-e2 motion-safe:animate-pulse-ring"
       role="timer"
       aria-live="off"
     >
-      Offer ends {pad(left.hours)}:{pad(left.minutes)}:{pad(left.seconds)}
-    </p>
+      <Icon name="clock" className="size-4 shrink-0" />
+      <span className="flex items-center gap-1.5">
+        <span className="font-label text-[0.62rem] font-bold tracking-widest uppercase">
+          Offer ends
+        </span>
+        <span className="font-display text-[0.95rem] font-semibold tabular-nums">
+          {pad(left.hours)}:{pad(left.minutes)}:{pad(left.seconds)}
+        </span>
+      </span>
+    </div>
   );
 }

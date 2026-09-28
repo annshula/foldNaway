@@ -424,6 +424,15 @@ p {
     background-position: 200% 0;
   }
 }
+@keyframes fn-pulse-ring {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-terracotta) 45%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--color-terracotta) 0%, transparent);
+  }
+}
 
 @utility animate-fade-up {
   animation: fn-fade-up 0.45s var(--ease-out-soft) both;
@@ -443,6 +452,9 @@ p {
 @utility reveal-item {
   animation: fn-fade-up 0.5s var(--ease-out-soft) both;
   animation-delay: calc(var(--i, 0) * 55ms);
+}
+@utility animate-pulse-ring {
+  animation: fn-pulse-ring 2.2s ease-in-out infinite;
 }
 @utility skeleton {
   background-image: linear-gradient(
