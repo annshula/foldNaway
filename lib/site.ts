@@ -42,9 +42,9 @@ export const site = {
 
   promise: {
     shipping: "Free tracked shipping worldwide",
-    shippingDetail: "Dispatched in 1–3 business days",
+    shippingDetail: "Tracked delivery in 4–10 days",
     shippingFull:
-      "Orders are processed within 1–3 business days, then tracked delivery typically takes 7–15 business days depending on where you are.",
+      "Orders are processed within 1–3 business days, then tracked delivery typically takes 4–10 business days depending on where you are.",
     // Real, any-reason 30-day returns — matches the actual account return
     // flow (lib/account/order-status.ts's RETURN_WINDOW_DAYS,
     // SELECTABLE_RETURN_REASONS, and /account/orders/[id]/return), not just

@@ -53,6 +53,18 @@ export function ProductGallery({
   const [index, setIndex] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
 
+  // The main slot's own load state, keyed to the image currently shown —
+  // `.skeleton`'s shimmer (app/globals.css) is the right loading treatment
+  // for the small thumbnails, but on this large a box its two gradient
+  // stops (--color-surface-sunken, --color-line) read as barely-there
+  // against this slot's own bg-cream-deep background (the same hex as
+  // --color-surface-sunken), so a switch between images looked like a
+  // blank flash rather than "loading". A spinner overlay is unambiguous at
+  // any size. Reset to false on every index change (a new image starts
+  // unloaded) rather than tracked per-src, since only the current slot's
+  // state is ever shown.
+  const [imageLoaded, setImageLoaded] = useState(false);
+
   // Follow the parent's variant image when it changes, if that image is in
   // the gallery. A variant photo that isn't in the gallery leaves the view
   // where it is rather than blanking it.
@@ -63,6 +75,12 @@ export function ProductGallery({
     );
     if (found >= 0) setIndex(found);
   }, [activeSrc, media]);
+
+  // A newly-selected image starts unloaded — next/image's `onLoad` flips
+  // this back on once the new src has actually painted.
+  useEffect(() => {
+    setImageLoaded(false);
+  }, [index]);
 
   if (media.length === 0) return null;
   const current = media[Math.min(index, media.length - 1)];
@@ -174,16 +192,35 @@ export function ProductGallery({
             ))}
           </video>
         ) : (
-          <Image
-            key={current.src}
-            src={current.src}
-            alt={current.alt}
-            fill
-            priority={index === 0}
-            sizes="(max-width: 1024px) 100vw, 460px"
-            quality={82}
-            className="animate-fade-in object-cover"
-          />
+          <>
+            <Image
+              key={current.src}
+              src={current.src}
+              alt={current.alt}
+              fill
+              priority={index === 0}
+              sizes="(max-width: 1024px) 100vw, 460px"
+              quality={82}
+              onLoad={() => setImageLoaded(true)}
+              // The spinner below is this slot's own loading treatment —
+              // the default `.skeleton` shimmer is switched off here since
+              // its two gradient stops are nearly invisible against this
+              // slot's bg-cream-deep (see imageLoaded's doc comment above).
+              skeleton={false}
+              className={cn(
+                "object-cover transition-opacity duration-300",
+                imageLoaded ? "animate-fade-in opacity-100" : "opacity-0",
+              )}
+            />
+            {!imageLoaded && (
+              <div
+                aria-hidden
+                className="absolute inset-0 grid place-items-center"
+              >
+                <span className="size-9 animate-spin rounded-full border-2 border-sand border-t-sage" />
+              </div>
+            )}
+          </>
         )}
 
         {media.length > 1 && !isVideo && (

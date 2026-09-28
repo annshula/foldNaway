@@ -1,38 +1,34 @@
 "use client";
 
-import { useRef, useState } from "react";
+import Link from "next/link";
+import { useState } from "react";
 import { toast } from "sonner";
 
 import { useCart } from "@/components/providers/CartProvider";
-import {
-  useLocalization,
-  useLocalizedAmount,
-} from "@/components/providers/LocalizationProvider";
-import { DeliveryPincodeCheck } from "@/components/product/DeliveryPincodeCheck";
-import QualityTeaser from "@/components/product/QualityTeaser";
+import { useLocalizedAmount } from "@/components/providers/LocalizationProvider";
+import { ProductAccordion } from "@/components/product/ProductAccordion";
 import Button from "@/components/ui/Button";
-import { Icon, ShopPayWordmark } from "@/components/ui/Icons";
+import { Icon } from "@/components/ui/Icons";
 import Image from "@/components/ui/Image";
 import { RatingStars } from "@/components/ui/Stars";
+import { howItWorks } from "@/content/copy";
 import { quality } from "@/content/quality";
 import { formatMoney } from "@/lib/money";
 import type { Product } from "@/lib/product";
-import { shopifyCheckout } from "@/lib/shopify-checkout";
 import { applyPackDiscount, packTiers, site, type PackTier } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 /**
- * The purchase surface: price, colourway swatches, pack size, and the two
- * ways to check out. The gallery sits beside this in ProductPurchase.
+ * The purchase surface: price, colourway swatches, pack size, and add to
+ * bag. The gallery sits beside this in ProductPurchase.
  *
  * `selectedId` / `onSelectId` are controlled by the parent rather than owned
  * here, so picking a colourway can also move the gallery's main image to
  * match it — internal state couldn't reach outside this component to do that.
  *
- * Both purchase paths go through the shared choke points, so the analytics
- * events can never be missed:
- *   • "Add to bag"  → useCart().add()      → trackAddToCart
- *   • "Buy it now"  → shopifyCheckout()    → trackInitiateCheckout
+ * One purchase path — "Add to bag" → useCart().add() → trackAddToCart — no
+ * separate Buy Now/Shop Pay button (matches reference/PurchasePanel.tsx's
+ * single-CTA pattern; see shopify-checkout.ts if that flow is ever restored).
  */
 export function BuyBox({
   product,
@@ -53,16 +49,7 @@ export function BuyBox({
   ctaRef?: React.RefObject<HTMLDivElement | null>;
   rating?: { average: number; count: number };
 }) {
-  const [buying, setBuying] = useState(false);
-  const [buySlow, setBuySlow] = useState(false);
-  const [buyError, setBuyError] = useState<string | null>(null);
-  const slowTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const { add } = useCart();
-  // Same resolution CartProvider uses for its own lines, so the market
-  // Shopify prices the checkout cart in is exactly the one this page's
-  // price came from — see shopifyCheckout's country param doc comment.
-  const { country, defaultCountry } = useLocalization();
-  const effectiveCountry = country ?? defaultCountry?.isoCode ?? null;
 
   // No separate quantity stepper — the cart-line quantity IS the chosen pack
   // size (1/2/3). applyPackDiscount(unitCents, qty) resolves its discount
@@ -114,39 +101,6 @@ export function BuyBox({
     toast.success("Added to your bag", {
       description: `${product.title}, ${selected.title}`,
     });
-  };
-
-  const handleBuyNow = async () => {
-    if (buying) return;
-    setBuying(true);
-    setBuyError(null);
-    setBuySlow(false);
-    // On a slow/flaky network the request itself can take several seconds
-    // (see lib/shopify/client.ts's timeout+retry) before it either succeeds
-    // or errors — with no signal in between, "Taking you to checkout…"
-    // reads as frozen rather than working. This swaps the label once we've
-    // clearly exceeded the fast-network case, so the shopper knows it's
-    // still in flight instead of assuming the button is dead.
-    slowTimerRef.current = setTimeout(() => setBuySlow(true), 5_000);
-    const result = await shopifyCheckout(
-      [
-        {
-          variantId: selected.id,
-          qty,
-          priceCents: packUnitPriceCents,
-        },
-      ],
-      currency,
-      effectiveCountry,
-    );
-    if (slowTimerRef.current) clearTimeout(slowTimerRef.current);
-    if (result.ok) {
-      window.location.href = result.checkoutUrl;
-      return;
-    }
-    setBuyError(result.error);
-    setBuying(false);
-    setBuySlow(false);
   };
 
   return (
@@ -216,12 +170,11 @@ export function BuyBox({
           {product.perks.map((perk) => (
             <li
               key={perk}
-              className="flex items-start gap-1.5 text-[0.78rem] font-medium text-espresso-soft"
+              className="flex items-center gap-2 text-[0.78rem] font-medium text-espresso-soft"
             >
-              <Icon
-                name="check"
-                className="mt-0.5 size-3.5 shrink-0 text-sage-deep"
-              />
+              <span className="grid size-4.5 shrink-0 place-items-center rounded-full bg-sage">
+                <Icon name="check" className="size-2.5 text-white" />
+              </span>
               {perk}
             </li>
           ))}
@@ -307,10 +260,21 @@ export function BuyBox({
         >
           {packTiers.map((tier) => {
             const isSelected = tier.size === packSize;
-            const { unitPriceCents: tierUnitCents } = applyPackDiscount(
-              Math.round(price * 100),
-              tier.size,
+            const {
+              unitPriceCents: tierUnitCents,
+              lineTotalCents: tierTotalCents,
+            } = applyPackDiscount(Math.round(price * 100), tier.size);
+
+            // Same reference price the hero price block uses (the
+            // variant's own markdown compare-at when there is one,
+            // otherwise the plain price), scaled to this tier's quantity —
+            // so every tile's "was → now → save" reads apples-to-apples
+            // with the hero price below, never a different reference.
+            const tierReferenceCents = Math.round(
+              (hasMarkdown ? compareAt! : price) * 100 * tier.size,
             );
+            const tierSavingsCents = tierReferenceCents - tierTotalCents;
+            const tierHasMarkdown = tierSavingsCents > 0;
 
             return (
               <button
@@ -339,7 +303,7 @@ export function BuyBox({
                       )}
                     >
                       {isSelected && (
-                        <Icon name="check" className="size-2.5 text-white" />
+                        <span className="size-2 rounded-full bg-white" />
                       )}
                     </span>
                     <span className="text-[0.9rem] font-semibold text-espresso sm:hidden">
@@ -347,12 +311,14 @@ export function BuyBox({
                     </span>
                   </span>
 
-                  <span className="flex shrink-0 items-baseline gap-1 sm:hidden">
-                    <span className="font-semibold text-espresso tabular-nums">
-                      {formatMoney(tierUnitCents / 100, currency)}
-                    </span>
-                    <span className="text-[0.72rem] font-normal text-espresso-mute">
-                      /unit
+                  <span className="flex shrink-0 items-baseline gap-1.5 sm:hidden">
+                    {tierHasMarkdown && (
+                      <span className="text-[0.72rem] text-espresso-mute line-through tabular-nums">
+                        {formatMoney(tierReferenceCents / 100, currency)}
+                      </span>
+                    )}
+                    <span className="text-[1rem] font-semibold text-espresso tabular-nums">
+                      {formatMoney(tierTotalCents / 100, currency)}
                     </span>
                   </span>
                 </span>
@@ -389,30 +355,45 @@ export function BuyBox({
                       </span>
                     </span>
                   )}
-                  <span className="mt-1 block text-[0.76rem] text-espresso-mute sm:mt-0.5">
-                    {tier.blurb}
-                  </span>
-                </span>
-
-                <span className="hidden shrink-0 flex-col items-end sm:flex">
-                  <span className="font-semibold text-espresso tabular-nums">
-                    {formatMoney(tierUnitCents / 100, currency)}
-                    <span className="ml-1 text-[0.72rem] font-normal text-espresso-mute">
-                      /unit
+                  {/* 1-pack: just the savings line (no per-unit split to
+                      show). 2/3-pack: per-unit price, then savings — same
+                      "X / set · Save Y" shape as the reference's combo
+                      line. */}
+                  {tier.size > 1 && (
+                    <span className="mt-1 block text-[0.75rem] text-espresso-mute tabular-nums sm:mt-0.5">
+                      {formatMoney(tierUnitCents / 100, currency)} / set
+                      {tierHasMarkdown && (
+                        <span className="text-terracotta">
+                          {" "}
+                          · Save {formatMoney(tierSavingsCents / 100, currency)}
+                        </span>
+                      )}
                     </span>
-                  </span>
-                  {tier.discountPercent > 0 && (
-                    <span className="font-label text-[0.66rem] font-bold tracking-widest text-terracotta uppercase">
-                      Save {tier.discountPercent}%
+                  )}
+                  {tier.size === 1 && tierHasMarkdown && (
+                    <span className="mt-1 block text-[0.75rem] font-medium text-terracotta tabular-nums sm:mt-0.5">
+                      Save {formatMoney(tierSavingsCents / 100, currency)}
                     </span>
                   )}
                 </span>
 
-                {tier.discountPercent > 0 && (
-                  <span className="font-label text-[0.66rem] font-bold tracking-widest text-terracotta uppercase sm:hidden">
-                    Save {tier.discountPercent}%
+                <span className="hidden shrink-0 flex-col items-end sm:flex">
+                  <span className="flex items-baseline gap-1.5">
+                    {tierHasMarkdown && (
+                      <span className="text-[0.7rem] text-espresso-mute line-through tabular-nums">
+                        {formatMoney(tierReferenceCents / 100, currency)}
+                      </span>
+                    )}
+                    <span className="text-[1.15rem] font-semibold text-espresso tabular-nums">
+                      {formatMoney(tierTotalCents / 100, currency)}
+                    </span>
                   </span>
-                )}
+                  {tierHasMarkdown && (
+                    <span className="text-[0.72rem] font-medium text-terracotta tabular-nums">
+                      Save {formatMoney(tierSavingsCents / 100, currency)}
+                    </span>
+                  )}
+                </span>
               </button>
             );
           })}
@@ -454,84 +435,117 @@ export function BuyBox({
       </p>
 
       {/* ------------------------------ buy -------------------------------- */}
-      {/* Stacked on narrow screens (a half-width button is too tight once
-          "Taking you to checkout…" has to fit), side by side from `sm:` up. */}
-      <div ref={ctaRef} className="mt-4 flex flex-col gap-3 sm:flex-row">
+      {/* Single full-width "Add to bag" — matches reference/PurchasePanel.tsx
+          (one CTA, no separate Buy Now/Shop Pay path). */}
+      <div ref={ctaRef} className="mt-4">
         <Button
-          variant="outline-primary"
           onClick={handleAdd}
           disabled={!selected.availableForSale}
-          className="w-full sm:flex-1"
+          className="w-full"
         >
           {selected.availableForSale ? "Add to bag" : "Sold out"}
         </Button>
-        <Button
-          onClick={handleBuyNow}
-          disabled={!selected.availableForSale || buying}
-          // Shop Pay's real button is indigo (#5433EB); this site uses
-          // Shopify's blue (#0a6cff) instead, with the same "Shop [Pay]"
-          // lockup recolored to white (ShopPayWordmark, traced from
-          // Shop_Pay_logo.svg — the lockup's own fill doesn't carry the
-          // indigo, so swapping the button's bg here is enough). Shoppers
-          // still pattern-match the lockup + accent-color pairing to "fast
-          // checkout" from every other Shopify store, while this goes
-          // through this site's own handleBuyNow/checkout route (no
-          // Shopify Buy SDK here — see shopify-checkout.ts's doc comment on
-          // why the cart is created server-side).
-          //
-          // `!` (important) on bg/hover:bg because Button defaults to
-          // variant="sage" when unset, which bakes `bg-sage` into the same
-          // class string ahead of this override — Tailwind's generated
-          // stylesheet doesn't guarantee our later-in-string arbitrary value
-          // wins over that named utility, so this button rendered sage
-          // green instead of blue without `!`.
-          className="w-full bg-[#5B31F3]! text-white shadow-(--shadow-e2) hover:-translate-y-0.5 hover:bg-[#0857d1]! hover:shadow-(--shadow-e3) active:translate-y-0 sm:flex-1"
-        >
-          {buying ? (
-            buySlow ? (
-              "Still connecting…"
-            ) : (
-              "Taking you to checkout…"
-            )
-          ) : (
-            <span className="inline-flex items-center gap-1">
-              <span>Buy with</span>
-              <ShopPayWordmark className="h-4.5 w-auto shrink-0 text-white" />
-            </span>
-          )}
-        </Button>
       </div>
 
-      {buyError && (
-        <p
-          role="alert"
-          className="mt-3 rounded-xl bg-terracotta-soft px-4 py-3 text-[0.82rem] leading-snug text-terracotta"
-        >
-          {buyError}
-        </p>
-      )}
+      <p className="mt-3 flex items-center justify-center gap-1.5 text-[0.8rem] font-medium text-espresso-mute">
+        <Icon name="shield" className="size-3.5 shrink-0 text-sage-deep" />
+        Secure payment by Shopify
+      </p>
 
-      {/* ------------------------- delivery estimate ------------------------ */}
-      {/* Checked against `selected` (the current colourway) — transit time
-          barely moves between colourways of the same physical item, so this
-          doesn't need to track the pack/quantity picker above it. */}
-      <div className="mt-4">
-        <DeliveryPincodeCheck sku={selected.sku} />
-      </div>
+      {/* ---------------------------- quick reference ------------------------ */}
+      {/* How to use, material & care, storage — matches
+          reference/components/product/ProductAccordion.tsx's placement
+          (right under the buy button and trust line) and its real-content
+          pattern (steps/material pulled from content already on the page,
+          not invented copy). */}
+      <ProductAccordion
+        items={[
+          {
+            title: "How to use",
+            body: (
+              <ol className="flex flex-col gap-2">
+                {howItWorks.steps.map((step) => (
+                  <li key={step.step}>
+                    <strong className="font-medium text-espresso">
+                      {step.label}.
+                    </strong>{" "}
+                    {step.body}
+                  </li>
+                ))}
+              </ol>
+            ),
+          },
+          {
+            title: "Material & care",
+            body: (
+              <p>
+                {product.material || "Reinforced woven fabric"}, built to be
+                folded and unfolded daily without stretching out or splitting at
+                the seams. Wipe clean with a damp cloth; air dry before folding
+                it back into its pouch.
+              </p>
+            ),
+          },
+          {
+            title: "Storage & clip",
+            body: (
+              <p>
+                The carabiner comes pre-attached and is rated for a keyring,
+                belt loop, backpack strap or stroller handle. Stuff the bag into
+                its own pouch and pull the drawcord — no folding pattern to
+                remember.
+              </p>
+            ),
+          },
+        ]}
+      />
+
+      {/* ------------------------------ promises ----------------------------- */}
+      {/* Matches reference/app/products/[slug]/page.tsx's promise strip —
+          delivery window, checkout trust, and the return/refund line, each
+          with a jump to /faq (this site has no separate /pages/shipping or
+          /pages/refund-policy route; FAQ covers both). */}
+      <ul className="mt-6 flex flex-col gap-3.5 rounded-xl bg-cream/80 p-5 text-[0.82rem] text-espresso-soft">
+        <li className="flex gap-3">
+          <Icon name="truck" className="size-5 shrink-0 text-sage-deep" />
+          <span>
+            Tracked delivery in 4–10 days.{" "}
+            <Link
+              href="/faq"
+              className="font-medium text-espresso underline decoration-espresso/30 underline-offset-2 hover:decoration-espresso"
+            >
+              Shipping details
+            </Link>
+          </span>
+        </li>
+        <li className="flex gap-3">
+          <Icon name="shield" className="size-5 shrink-0 text-sage-deep" />
+          <span>Secure checkout by Shopify.</span>
+        </li>
+        <li className="flex gap-3">
+          <Icon name="refresh" className="size-5 shrink-0 text-sage-deep" />
+          <span>
+            Damaged, defective or wrong item? We&apos;ll put it right.{" "}
+            <Link
+              href="/faq"
+              className="font-medium text-espresso underline decoration-espresso/30 underline-offset-2 hover:decoration-espresso"
+            >
+              Refund policy
+            </Link>
+          </span>
+        </li>
+      </ul>
 
       {/* -------------------------- description ----------------------------- */}
-      {/* Commented out for now — kept the QC teaser below instead. Was the
-          promises list (shipping/returns/support); shipping and returns are
-          already stated above (the line under the price, and the checkout/
-          PDP copy respectively), so that repeated them for no reason. */}
+      {/* Commented out for now. Was the promises list (shipping/returns/
+          support); shipping and returns are already stated above (the line
+          under the price, and the checkout/PDP copy respectively), so that
+          repeated them for no reason. */}
       {/* {product.descriptionHtml && (
         <div className="mt-8 border-t border-sand/70 pt-6">
           <DescriptionClamp html={product.descriptionHtml} />
         </div>
       )} */}
-
-      {/* --------------------------- QC teaser ------------------------------ */}
-      <QualityTeaser />
     </div>
   );
 }
